@@ -12,7 +12,7 @@ import { PasswordForgot } from "../components/PasswordForgot";
 import { Toaster } from "@/components/ui/toaster"
 
 export const LoginPage = () => {
-  const { theme } = useSelector((state) => state.login);
+  const { theme } = useSelector((state) => state.ui);
   const [loginState, setloginState] = useState("login"); // si es false es login y si es true es register
 
   const toggleAcction = () => {

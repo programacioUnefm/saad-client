@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/components/ui/use-toast";
-import { LogOutApp } from "@/features/login/LoginThunk";
+import { LogOutApp } from "@/features/auth/LoginThunk";
 import { CircleUser } from "lucide-react";
 import React from "react";
 import { useDispatch } from "react-redux";

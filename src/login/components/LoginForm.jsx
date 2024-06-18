@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { LoginApp } from "@/features/login/LoginThunk";
+import { LoginApp } from "@/features/auth/LoginThunk";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";

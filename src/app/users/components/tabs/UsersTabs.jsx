@@ -10,15 +10,11 @@ import { ListUsers } from "./components/ListUsers";
 import {
   Table,
   TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
 } from "@/components/ui/table";
+import { TableHeaderUsers } from "./components/TableHeaderUsers";
 
 export const UsersTabs = ({ users }) => {
-  const { layout } = useSelector((state) => state.login);
+  const { layout } = useSelector((state) => state.ui);
   const [action, setAction] = useState({ dialog: false, action: "", user: {} });
   const dispatch = useDispatch();
   const { toast } = useToast();
@@ -61,16 +57,7 @@ export const UsersTabs = ({ users }) => {
       ) : (
         <div className="w-full">
           <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[100px]">Cédula</TableHead>
-                <TableHead className="hidden md:table-cell w-[100px]">Nombre</TableHead>
-                <TableHead className="hidden md:table-cell w-[100px]">Apellido</TableHead>
-                <TableHead className="hidden md:table-cell w-[100px]">Correo</TableHead>
-                <TableHead>Roles</TableHead>
-                <TableHead className="text-right pr-24">Acciones</TableHead>
-              </TableRow>
-            </TableHeader>
+            <TableHeaderUsers />
             <TableBody>
               {users.map((user) => (
                 <ListUsers user={user} key={user.id} setAction={setAction} />

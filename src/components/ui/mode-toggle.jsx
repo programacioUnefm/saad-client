@@ -4,7 +4,7 @@ import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 import { useDispatch } from "react-redux";
-import { themeState } from "@/features/login/LoginSlice";
+import { themeChange } from "@/features/ui/UiSlice";
 
 export function ModeToggle() {
   const { setTheme } = useTheme();
@@ -12,14 +12,14 @@ export function ModeToggle() {
   const dispatch = useDispatch();
   const themeHandled = () => {
     setTheme(theme == "dark" ? "light" : "dark");
-    dispatch(themeState(theme == "dark" ? "light" : "dark"));
+    dispatch(themeChange(theme == "dark" ? "light" : "dark"));
   };
 
   return (
     <div className="theme-toggle">
       <Button
         size="sm"
-        className="rounded-full px-3 shadow-md border-2 border-grey-300 bg-slate-200 text-black hover:bg-slate-100"
+        className="rounded-full h-[50px] w-[50px] dark:bg-accent-foreground hover:dark:dark:bg-accent-foreground/80 dark:text-black bg-accent-foreground hover:bg-accent-foreground/80"
         onClick={() => themeHandled()}
       >
         {theme == "dark" ? <Sun /> : <Moon />}

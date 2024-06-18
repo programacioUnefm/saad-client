@@ -1,24 +1,26 @@
 import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { layoutHandle } from "@/features/LayoutSelected";
-import { layout } from "@/features/login/LoginSlice";
+import { layoutChanged } from "@/features/ui/UiSlice";
+
+
 import { LayoutGrid, List } from "lucide-react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export const HeaderUser = ({route = "", placeholder = ""}) => {
   const dispatch = useDispatch()
-  const layoutDafult = localStorage.getItem("layoutList")
-  const layoutChanged = (value) => {
+  const layoutDafult = localStorage.getItem("layoutList");
+  const {layout} = useSelector(state => state.ui)
+  const layoutChangedHandle = (value) => {
     localStorage.setItem("layoutList", value);
-    dispatch(layout(value));
+    dispatch(layoutChanged(value))
   }
   return (
-    <div className="grid grid-cols-2 mb-4">
+    <div className="flex md:grid md:grid-cols-2 mb-4">
       <div className="w-full">
         <Input type="email" placeholder={`buscar ${placeholder}...`} />
       </div>
       <div className="flex justify-end">
-      <ToggleGroup type="single" onValueChange={(e) => layoutChanged(e)} defaultValue={layoutDafult}>
+      <ToggleGroup type="single" onValueChange={(value) => layoutChangedHandle(value)} defaultValue={layoutDafult}>
           <ToggleGroupItem value="grid">
             <LayoutGrid className="text-muted-foreground" />
           </ToggleGroupItem>

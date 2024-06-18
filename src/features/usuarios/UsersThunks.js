@@ -4,7 +4,7 @@ import { roleRegister, usersRegister } from "./UsersSlice";
 export const GetUsersList = () => {
   return async (dispatch) => {
     try {
-      const resp = await saadApi.get(`users`);
+      const resp = await saadApi.get(`admin/users`);
       if (resp.status == 200) {
         const { data } = resp.data;
         dispatch(usersRegister(data));
@@ -18,7 +18,7 @@ export const GetUsersList = () => {
 export const deleteUser = (id) => {
   return async (dispatch) => {
     try {
-      const resp = await saadApi.delete(`users/${id}`);
+      const resp = await saadApi.delete(`admin/users/${id}`);
 
       if (resp.status == 200) {
         dispatch(GetUsersList());
@@ -34,7 +34,7 @@ export const userRoleAssign = (data) => {
   return async (dispatch) => {
     try {
       const {userId, roles} = data;
-      const resp = await saadApi.post(`users/${userId}/roles`, roles);
+      const resp = await saadApi.post(`admin/users/${userId}/roles`, roles);
       console.log(resp)
       if (resp.status == 200) {
         const { data } = resp.data;
@@ -50,7 +50,7 @@ export const userRoleAssign = (data) => {
 export const GetRolesList = () => {
   return async (dispatch) => {
     try {
-      const resp = await saadApi.get(`roles`);
+      const resp = await saadApi.get(`admin/roles`);
       if (resp.status == 200) {
         const { data } = resp.data;
         // const newData = data.map(item => ({ ...item, status: false }))

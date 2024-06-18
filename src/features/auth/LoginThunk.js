@@ -1,6 +1,6 @@
 import { saadApi } from "@/api/SaddApp";
-import { login } from "./LoginSlice";
 import { GetUsersList } from "../usuarios/UsersThunks";
+import { login } from "./AuthSlice";
 
 export const RegisterApp = (data) => {
   return async (dispatch) => {
@@ -20,10 +20,11 @@ export const LoginApp = (data) => {
       const resp = await saadApi.post(`auth/login`, data);
       const code = resp.data.responseCode;
       const {data:user} = resp.data
+      console.log(resp)
       if (code == 200) {
         const { data } = resp.data;
         localStorage.setItem("token_access", data.token);
-        dispatch(login(user))
+        dispatch(login({...data, authSate: true}))
       }
       return { user, code };
     } catch (error) {
@@ -33,18 +34,18 @@ export const LoginApp = (data) => {
   };
 };
 
-export const VerifyUserApp = () => {
+export const VerifyUser = () => {
   return async (dispatch) => {
     try {
-      const resp = await saadApi.get(`users`);
-      // console.log(resp)
-      // const code = resp.data.responseCode;
-      // const {data:user} = resp.data
-      // if (code == 200) {
-      //   const { data } = resp.data;
-      //   localStorage.setItem("token_access", data.token);
-      //   dispatch(login(user))
-      // }
+      const resp = await saadApi.get(`/auth/whoIAm`);
+      const code = resp.data.responseCode;
+      const {data} = resp.data
+      if (code == 200) {
+        const token = localStorage.getItem("token_access");
+        const {name, id} = data.user
+        const newState = {name, id, token, role: [], Authstatus:true}
+        dispatch(login(newState))
+      }
       // return { user, code };
     } catch (error) {
       const {code} = error

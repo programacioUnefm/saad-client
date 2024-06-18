@@ -17,24 +17,12 @@ import {
   ShoppingCart,
   Users,
   ClipboardList,
-  ClipboardMinus,
-  LockOpen,
   Table,
   BarChart3,
-  RefreshCw,
-  Activity,
-  BookCopy,
-  TextSearch,
-  FileSearch,
-  User2,
   PieChart,
   GraduationCap,
-  AlignLeft,
   Building,
   Glasses,
-  TableProperties,
-  Notebook,
-  ChevronDown,
 } from "lucide-react";
 import { useMemo, useState } from "react";
 
@@ -281,7 +269,7 @@ const menuJson = [
 ];
 
 export const Sidebar = () => {
-  const { theme } = useSelector((state) => state.login);
+  const { theme } = useSelector((state) => state.ui);
   const [menuState, setMenuState] = useState(menuJson);
   return (
     <div className="hidden border-r bg-muted/40 md:block">
