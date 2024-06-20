@@ -1,21 +1,22 @@
 import React, { useState } from "react";
-import { GridUsers } from "./components/GridUsers";
+import { GridUsers } from "./components/layouts/GridUsers";
 import { ConfirmDelete } from "../ConfirmDelete";
 import { RoleAssign } from "../RoleAssign";
 import { EditUser } from "../EditUser";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUser, userRoleAssign } from "@/features/usuarios/UsersThunks";
 import { useToast } from "@/components/ui/use-toast";
-import { ListUsers } from "./components/ListUsers";
-import {
-  Table,
-  TableBody,
-} from "@/components/ui/table";
+import { ListUsers } from "./components/layouts/ListUsers";
+import { Table, TableBody } from "@/components/ui/table";
 import { TableHeaderUsers } from "./components/TableHeaderUsers";
 
-export const UsersTabs = ({ users }) => {
+export const UsersTabs = ({ users, tabState }) => {
   const { layout } = useSelector((state) => state.ui);
-  const [action, setAction] = useState({ dialog: false, action: "", user: {} });
+  const [action, setAction] = useState({
+    dialog: false,
+    action: "",
+    arrayItem: {},
+  });
   const dispatch = useDispatch();
   const { toast } = useToast();
 
@@ -45,25 +46,41 @@ export const UsersTabs = ({ users }) => {
       toastAction("El usuario fué eliminado satisfactoriamente.");
     }
   };
-  
+
   return (
     <>
       {layout == "grid" ? (
         <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4">
-          {users.map((user) => (
-            <GridUsers user={user} key={user.id} setAction={setAction} />
-          ))}
+          {users.data != undefined
+            ? users.data.map((user) => (
+                <GridUsers
+                  user={user}
+                  key={user.id}
+                  setAction={setAction}
+                  tabState={tabState}
+                />
+              ))
+            : "Cargando grid de usuarios"}
         </div>
       ) : (
         <div className="w-full">
-          <Table>
-            <TableHeaderUsers />
-            <TableBody>
-              {users.map((user) => (
-                <ListUsers user={user} key={user.id} setAction={setAction} />
-              ))}
-            </TableBody>
-          </Table>
+          {users.data != undefined ? (
+            <Table>
+              <TableHeaderUsers />
+              <TableBody>
+                {users.data.map((user) => (
+                  <ListUsers
+                    user={user}
+                    key={user.id}
+                    setAction={setAction}
+                    tabState={tabState}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+          ) : (
+            "Cargando datos"
+          )}
         </div>
       )}
 
@@ -73,19 +90,20 @@ export const UsersTabs = ({ users }) => {
           setAction={setAction}
           action={action}
           dialogAction={deleUser}
+          description="quizás este usuario haga un trabajo único dentro del sistema, ¿estás completamente segur@ de eliminarlo?"
         />
-      ) : action.action == "role" ? (
+      ) : action.action == "assign" ? (
         <RoleAssign
           open={action.dialog}
           setAction={setAction}
-          user={action.user}
+          user={action.arrayItem}
           dialogAction={roleAssign}
         />
       ) : action.action == "edit" ? (
         <EditUser
           open={action.dialog}
           setAction={setAction}
-          user={action.user}
+          user={action.arrayItem}
           dialogAction={editUser}
         />
       ) : (

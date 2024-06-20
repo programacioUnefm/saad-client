@@ -6,6 +6,11 @@ export const ui = createSlice({
   initialState: {
     theme: "",
     layout: "",
+    dialog:{
+      message: "",
+      status:false,
+      duration: 3000,
+    }
   },
   reducers: {
     themeChange: (state, {payload}) => {
@@ -13,10 +18,13 @@ export const ui = createSlice({
     }, 
     layoutChanged:(state, {payload}) => {
       state.layout = payload;
+    },
+    dialogChange:(state, {payload}) => {
+      state.dialog = payload;
     }
   }
 })
 
-export const { themeChange, layoutChanged} = ui.actions
+export const { themeChange, layoutChanged, dialogChange} = ui.actions
 
 export default ui.reducer

@@ -10,16 +10,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { ButtonsActions } from "./ButtonsActions";
-import { RolesChip } from "./RolesChip";
+import { ButtonsActions } from "../ButtonsActions";
+import { RolesChip } from "../RolesChip";
 
-export const GridUsers = ({ user, setAction }) => {
+export const GridUsers = ({ user, setAction, tabState }) => {
   return (
     <>
       <Card>
@@ -46,7 +40,7 @@ export const GridUsers = ({ user, setAction }) => {
         </CardContent>
 
         <CardFooter className="grid grid-cols-3 gap-2">
-          <ButtonsActions setAction={setAction} user={user} />
+          <ButtonsActions setAction={setAction} arrayItem={user} tabState={tabState} />
         </CardFooter>
       </Card>
     </>

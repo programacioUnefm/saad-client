@@ -4,9 +4,9 @@ export const Auth = createSlice({
   name: "loginState",
   initialState: {
     user: {
-      Authstatus: false,
+      Authstatus: true,
       name: "",
-      role: [1],
+      role: [],
       token: "",
     },
   },

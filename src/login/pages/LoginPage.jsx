@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../login.css";
 import { LoginForm } from "../components/LoginForm";
 import logo from "/saad-logo.svg";
@@ -9,11 +9,20 @@ import laptop from "/laptop.svg";
 import { useSelector } from "react-redux";
 import { RegisterForm } from "../components/RegisterForm";
 import { PasswordForgot } from "../components/PasswordForgot";
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/toaster";
+import { useToast } from "@/components/ui/use-toast";
 
 export const LoginPage = () => {
-  const { theme } = useSelector((state) => state.ui);
+  const { theme, dialog } = useSelector((state) => state.ui);
   const [loginState, setloginState] = useState("login"); // si es false es login y si es true es register
+  const { toast } = useToast();
+  useEffect(() => {
+    dialog.status &&
+      toast({
+        variant: "destructive",
+        title: dialog.message,
+      });
+  }, [dialog]);
 
   const toggleAcction = () => {
     if (loginState === "login") {
@@ -52,12 +61,18 @@ export const LoginPage = () => {
             <span>
               {loginState == "register"
                 ? "¿Crees que posees una cuenta?"
-                : loginState == "login" ? "No posees una cuenta aún": "¿Te equivocaste?"}
+                : loginState == "login"
+                ? "No posees una cuenta aún"
+                : "¿Te equivocaste?"}
               <span
                 className="text-blue-500 font-medium hover:text-blue-300 ml-2 cursor-pointer"
                 onClick={() => toggleAcction()}
               >
-                {loginState == "register" ? "inicia sesión" : loginState == "login" ? "create una ahora" : "volver inicio de sesión"}
+                {loginState == "register"
+                  ? "inicia sesión"
+                  : loginState == "login"
+                  ? "create una ahora"
+                  : "volver inicio de sesión"}
               </span>
             </span>
           </div>

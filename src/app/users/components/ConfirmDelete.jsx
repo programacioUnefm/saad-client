@@ -7,17 +7,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-export const ConfirmDelete = ({ open, setAction, action, dialogAction }) => {
+export const ConfirmDelete = ({ open, setAction, action, dialogAction, description = "" }) => {
   return (
     <Dialog open={open}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="mb-4">
-            ¿Estás segur@ de eliminar el usuario?
+            Estás a punto de borrar algo importante.
           </DialogTitle>
           <DialogDescription>
-            Borrar este usuario puede ser peligroso para el sistema ¿estás
-            completamente seguro de borrarlo?
+            {description}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
@@ -27,7 +26,7 @@ export const ConfirmDelete = ({ open, setAction, action, dialogAction }) => {
           >
             Cancelar
           </Button>
-          <Button className="bg-destructive hover:bg-destructive/50" onClick={() => {setAction({ dialog: false, action: "" }); dialogAction(action.user)}}>
+          <Button className="bg-destructive hover:bg-destructive/50" onClick={() => {setAction({ dialog: false, action: "" }); dialogAction(action.arrayItem)}}>
             Eliminar
           </Button>
         </DialogFooter>

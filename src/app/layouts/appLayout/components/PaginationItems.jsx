@@ -1,41 +1,80 @@
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
 } from "@/components/ui/pagination";
+import { pagination } from "@/features/Pagination";
+import { useDispatch } from "react-redux";
+export const PaginationItems = ({ numResult = 0, array }) => {
+  const dispatch = useDispatch();
+  let arrayLinks = [];
+  if (array.length == undefined) {
+    arrayLinks = [...array.links];
+    arrayLinks[0] = { ...arrayLinks[0], label: "Anterior" };
+    const last = array.links.length - 1;
+    arrayLinks[last] = { ...arrayLinks[last], label: "Siguiente" };
+    // const itemActivo = arrayLinks.find(item => item.active === true);
+    // arrayLinks = obtenerListaPaginada(arrayLinks, itemActivo);
+  }
+  const paginationHandle = (page) => {
+    const baseUrl = import.meta.env.VITE_API_URL;
+    const apiGet = page.url;
+    const url = apiGet.replace(baseUrl, "");
+    !page.active && dispatch(pagination(url));
+  };
 
-export const PaginationItems = () => {
+  // function obtenerListaPaginada(listaCompleta, elementoActivo) {
+  //   const indiceActivo = listaCompleta.indexOf(elementoActivo);
+  
+  //   if (indiceActivo === -1) {
+  //     return [];
+  //   }
+  
+  //   const indiceAnterior = Math.max(indiceActivo - 1, 0);
+  //   const indiceSiguiente1 = Math.min(indiceActivo + 1, listaCompleta.length - 1);
+  //   const indiceSiguiente2 = Math.min(indiceActivo + 2, listaCompleta.length - 1);
+  
+  //   const primerElemento = listaCompleta[0];
+  //   const ultimoElemento = listaCompleta[listaCompleta.length - 1];
+  //   return [
+  //     primerElemento.url != null && primerElemento,
+  //     listaCompleta[indiceAnterior],
+  //     listaCompleta[indiceActivo],
+  //     listaCompleta[indiceSiguiente1],
+  //     listaCompleta[indiceSiguiente2],
+  //     ultimoElemento.url != null && ultimoElemento
+  //   ];
+  // }
+
   return (
-    <div className="p-2 flex items-center px-4">
-      <span className="flex whitespace-nowrap">107 resultados</span>
-     <Pagination>
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious href="#" />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">1</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#" isActive>
-            2
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">3</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationEllipsis />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationNext href="#" />
-        </PaginationItem>
-      </PaginationContent>
-    </Pagination>
-    </div>
+    <>
+      {array.length == undefined && array.last_page > 1 ? (
+        <div className="p-2 flex flex-col items-center md:flex-row md:justify-between justify-center px-4 md:pt-4 md:-mb-4">
+          <span className="flex whitespace-nowrap">{numResult}</span>
+          <Pagination className="md:mr-8">
+            <PaginationContent>
+              {arrayLinks.map((page) => (
+                <PaginationItem key={page.label}>
+                  {page.url != null && (
+                    <PaginationLink
+                      onClick={() => {
+                        paginationHandle(page);
+                      }}
+                      className="cursor-pointer"
+                      isActive={page.active}
+                    >
+                      {page.label}
+                    </PaginationLink>
+                  )}
+                </PaginationItem>
+              ))}
+            </PaginationContent>
+          </Pagination>
+        </div>
+      ) : (
+        ""
+      )}
+    </>
   );
 };

@@ -15,7 +15,7 @@ export function AppLayout({
   titleButton = "",
   functionButton = undefined,
   pagination = false,
-  arrayPagination = []
+  arrayPagination = undefined
 }) {
   const { theme } = useSelector((state) => state.auth);
   return (
@@ -39,7 +39,7 @@ export function AppLayout({
             <ScrollArea className="h-[72vh] w-full px-4">
               {children}
             </ScrollArea>
-            {pagination && <PaginationItems />}
+            {pagination && arrayPagination != undefined && arrayPagination != [] && <PaginationItems numResult={`${arrayPagination.total} usuarios`} array={arrayPagination}/>}
           </div>
         </main>
       </div>

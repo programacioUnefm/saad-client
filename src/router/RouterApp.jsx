@@ -21,6 +21,7 @@ import { PlanCompras } from "@/app/administrativo/compras/components/PlanCompras
 import { UsersListPage } from "@/app/users/UsersListPage";
 import { layoutChanged, themeChange } from "@/features/ui/UiSlice";
 import { VerifyUser } from "@/features/auth/LoginThunk";
+import { login } from "@/features/auth/AuthSlice";
 
 export const RouterApp = () => {
   let theme = localStorage.getItem("vite-ui-theme");
@@ -36,11 +37,12 @@ export const RouterApp = () => {
       dispatch(layoutChanged(defaultLayout))
     }
     if (token != null && token != undefined) {
-      dispatch(VerifyUser(token));
+      dispatch(VerifyUser(token))
+    }else{
+      dispatch(login({Authstatus: false, name: "", role: [], token: "",
+      }))
     }
-    if(token != null && !user.Authstatus){
-      
-    }
+    
     dispatch(themeChange(theme));
   }, []);
   return (

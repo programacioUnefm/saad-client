@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LoginApp } from "@/features/auth/LoginThunk";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
@@ -15,6 +15,7 @@ export const LoginForm = ({ setloginState }) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const user = useSelector((state) => state.auth);
   const { toast } = useToast();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -22,7 +23,6 @@ export const LoginForm = ({ setloginState }) => {
   const onSubmit = async (data) => {
     setload(true);
     const resp = await dispatch(LoginApp(data));
-    setload(false);
     switch (resp.code) {
       case 200:
         toast({
@@ -43,9 +43,11 @@ export const LoginForm = ({ setloginState }) => {
         toast({
           variant: "destructive",
           title: "Tenemos problemas",
-          description: "Estamos tratando de solucionar lo más pronto posible, si el problema persiste por favor llamar a servicio técnico",
+          description:
+            "Estamos tratando de solucionar lo más pronto posible, si el problema persiste por favor llamar a servicio técnico",
         });
         setload(false);
+        break;
     }
   };
 
