@@ -15,14 +15,15 @@ export function AppLayout({
   titleButton = "",
   functionButton = undefined,
   pagination = false,
-  arrayPagination = undefined
+  arrayPagination = undefined,
 }) {
   const { theme } = useSelector((state) => state.auth);
+  
   return (
     
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <Sidebar />
-      <div className="flex flex-col">
+      <div className="flex flex-col bg-slate-50 dark:bg-background">
         <HeaderApp />
         <main className="flex flex-1 flex-col bg-muted/10 gap-4 p-4 lg:gap-6 lg:p-6">
           <div className="grid grid-cols-2">
@@ -35,11 +36,12 @@ export function AppLayout({
               </div>
             )}
           </div>
-          <div className="p-5 bg-background rounded-lg border border-dashed shadow-sm h-full">
+          <div className="p-5 dark:bg-background bg-slate-100 rounded-lg border border-dashed shadow-sm h-full">
             <ScrollArea className="h-[72vh] w-full px-4">
               {children}
             </ScrollArea>
-            {pagination && arrayPagination != undefined && arrayPagination != [] && <PaginationItems numResult={`${arrayPagination.total} usuarios`} array={arrayPagination}/>}
+            
+            {pagination && arrayPagination != undefined && arrayPagination != [] && <PaginationItems numResult={`Mostrando ${arrayPagination.from} a ${arrayPagination.to}`} array={arrayPagination}/>}
           </div>
         </main>
       </div>

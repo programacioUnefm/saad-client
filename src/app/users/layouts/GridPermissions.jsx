@@ -12,11 +12,12 @@ import {
   TooltipTrigger,
 } from "@radix-ui/react-tooltip";
 import React from "react";
-import { ButtonsActions } from "../ButtonsActions";
+import { ButtonsActions } from "../components/tabs/components/ButtonsActions";
+
 
 export const GridPermissions = ({ permission, setAction, tabState }) => {
   return (
-    <Card>
+    <Card className="bg-background dark:bg-muted/20">
       <CardHeader className="text-center">
         <h2 className="font-bold uppercase truncate">{permission.name}</h2>
         <div className="flex flex-col">

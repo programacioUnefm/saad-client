@@ -8,7 +8,8 @@ export const ButtonsActions = ({ setAction, arrayItem, tabState }) => {
     
       <Button
         disabled={arrayItem.id == 1}
-        className="dark:bg-accent dark:hover:bg-accent/50 bg-slate-400 hover:bg-slate-500  h-6  w-full xl:h-[40px]"
+        variant="outline"
+        className="h-6  w-full xl:h-[40px]"
         onClick={() =>
           setAction({ dialog: true, action: "edit", arrayItem: arrayItem })
         }
@@ -24,7 +25,8 @@ export const ButtonsActions = ({ setAction, arrayItem, tabState }) => {
       {tabState == "users" || tabState == "role" ? (
           <Button
             disabled={arrayItem.id == 1}
-            className="dark:bg-accent dark:hover:bg-accent/50 bg-slate-400 hover:bg-slate-500  h-6  w-full xl:h-[40px]"
+            variant="outline"
+            className="h-6  w-full xl:h-[40px]"
             onClick={() =>
               setAction({
                 dialog: true,
@@ -43,7 +45,8 @@ export const ButtonsActions = ({ setAction, arrayItem, tabState }) => {
         ): ""}
       <Button
         disabled={arrayItem.id == 1}
-        className="bg-destructive hover:bg-destructive/50 h-6 w-full xl:h-[40px]"
+        variant="outline"
+        className="bg-destructive hover:bg-destructive/50 h-6 w-full text-white xl:h-[40px]"
         onClick={() =>
           setAction({ dialog: true, action: "delete", arrayItem: arrayItem })
         }

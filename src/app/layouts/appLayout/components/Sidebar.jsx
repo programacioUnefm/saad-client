@@ -272,8 +272,8 @@ export const Sidebar = () => {
   const { theme } = useSelector((state) => state.ui);
   const [menuState, setMenuState] = useState(menuJson);
   return (
-    <div className="hidden border-r bg-muted/40 md:block">
-      <div className="flex h-full max-h-screen flex-col gap-2">
+    <div className="hidden border-r dark:bg-background bg-white md:block h-full">
+      <div className="flex h-[100vh] max-h-screen flex-col gap-2">
         <div className="flex px-4 mt-4 border-b  mb-5">
           <Link to="/inicio/" className="mb-2">
             <img src={theme == "dark" ? logoReversed : logo} alt="logo saad" />
@@ -287,7 +287,7 @@ export const Sidebar = () => {
           />
         </div>
         <div className="mt-auto p-4">
-          <Card x-chunk="dashboard-02-chunk-0">
+          <Card className="bg-gray-100 dark:bg-accent/30">
             <CardHeader className="p-2 pt-0 md:p-4">
               <CardTitle className="mb-2">Hola de nuevo</CardTitle>
               <CardDescription>

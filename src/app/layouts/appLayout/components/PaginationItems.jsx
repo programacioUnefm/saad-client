@@ -4,10 +4,11 @@ import {
   PaginationItem,
   PaginationLink,
 } from "@/components/ui/pagination";
-import { pagination } from "@/features/Pagination";
-import { useDispatch } from "react-redux";
+import { paginationAdminUserPrivileges } from "@/features/Pagination";
+import { useDispatch, useSelector } from "react-redux";
 export const PaginationItems = ({ numResult = 0, array }) => {
   const dispatch = useDispatch();
+  const {tabState} = useSelector(state => state.usersList)
   let arrayLinks = [];
   if (array.length == undefined) {
     arrayLinks = [...array.links];
@@ -21,7 +22,7 @@ export const PaginationItems = ({ numResult = 0, array }) => {
     const baseUrl = import.meta.env.VITE_API_URL;
     const apiGet = page.url;
     const url = apiGet.replace(baseUrl, "");
-    !page.active && dispatch(pagination(url));
+    !page.active && dispatch(paginationAdminUserPrivileges(url, tabState));
   };
 
   // function obtenerListaPaginada(listaCompleta, elementoActivo) {
@@ -51,7 +52,7 @@ export const PaginationItems = ({ numResult = 0, array }) => {
     <>
       {array.length == undefined && array.last_page > 1 ? (
         <div className="p-2 flex flex-col items-center md:flex-row md:justify-between justify-center px-4 md:pt-4 md:-mb-4">
-          <span className="flex whitespace-nowrap">{numResult}</span>
+          <span className="flex whitespace-nowrap text-foreground/80">{numResult}</span>
           <Pagination className="md:mr-8">
             <PaginationContent>
               {arrayLinks.map((page) => (

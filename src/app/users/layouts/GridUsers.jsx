@@ -10,13 +10,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ButtonsActions } from "../ButtonsActions";
-import { RolesChip } from "../RolesChip";
+import { ButtonsActions } from "../components/tabs/components/ButtonsActions";
+import { RolesChip } from "../components/tabs/components/RolesChip";
+
 
 export const GridUsers = ({ user, setAction, tabState }) => {
   return (
     <>
-      <Card>
+      <Card className="bg-background dark:bg-muted/20">
         <CardHeader className="text-center">
           <h2 className="font-bold">C.I: {user.document_id}</h2>
           <span className="text-sm text-primary truncate">{user.email}</span>

@@ -1,10 +1,13 @@
 import { saadApi } from "@/api/SaddApp";
 import { permissionsRegister, roleRegister, usersRegister } from "./UsersSlice";
 
+
+
 export const GetUsersList = () => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const paginationNum = getState().ui.paginationNumber
     try {
-      const resp = await saadApi.get(`admin/users/results/${30}`);
+      const resp = await saadApi.get(`admin/users/results/${paginationNum}`);
       if (resp.data.responseCode == 200) {
         const { data } = resp.data;
         dispatch(usersRegister(data));
@@ -52,9 +55,10 @@ export const userRoleAssign = (data) => {
 };
 
 export const GetRolesList = () => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
-      const resp = await saadApi.get(`admin/roles`);
+      const paginationNum = getState().ui.paginationNumber
+      const resp = await saadApi.get(`admin/roles/results/${paginationNum}`);
       if (resp.data.responseCode == 200) {
         const { data } = resp.data;
         dispatch(roleRegister(data));  
@@ -111,9 +115,10 @@ export const UpdateRolAsync = (data) => {
 };
 
 export const GetPermissionsList = () => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
-      const resp = await saadApi.get(`admin/permissions`);
+      const paginationNum = getState().ui.paginationNumber
+      const resp = await saadApi.get(`admin/permissions/results/${paginationNum}`);
       if (resp.data.responseCode == 200) {
         const { data } = resp.data;
         dispatch(permissionsRegister(data));  

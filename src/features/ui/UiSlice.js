@@ -6,6 +6,7 @@ export const ui = createSlice({
   initialState: {
     theme: "",
     layout: "",
+    paginationNumber: 12,
     dialog:{
       message: "",
       status:false,

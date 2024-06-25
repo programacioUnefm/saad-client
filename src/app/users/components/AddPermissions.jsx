@@ -15,7 +15,7 @@ export const AddPermissions = ({ addPermissionsDialog, setPermissionsDialog }) =
     
   return (
     <Dialog open={addPermissionsDialog}>
-      <Button variant="outline" onClick={() => setPermissionsDialog(true)}>
+      <Button className="uppercase" variant="outline" onClick={() => setPermissionsDialog(true)}>
         Agregar permiso
       </Button>
       <DialogContent>

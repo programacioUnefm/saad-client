@@ -2,14 +2,15 @@ import { Table, TableBody } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GridRoles } from "./components/layouts/GridRoles";
+import { GridRoles } from "../../layouts/GridRoles";
 import { ConfirmDelete } from "../ConfirmDelete";
-import { RoleAssign } from "../RoleAssign";
-import { EditUser } from "../EditUser";
 import { deleteRol } from "@/features/usuarios/UsersThunks";
-import { AddRoles } from "../AddRoles";
 import { EditRolesDialog } from "./components/EditRolesDialog";
 import { PermissionsAssign } from "./components/PermissionsAssign";
+import { TableHeaderRoles } from "../../layouts/TableHeaderRoles";
+import { ListRoles } from "../../layouts/ListRoles";
+import { SkeletonGrid } from "@/components/Skeletons/SkeletonGrid";
+import { SkeletonList } from "@/components/Skeletons/SkeletonList";
 
 export const RolesTab = ({ roles, tabState }) => {
   const { layout } = useSelector((state) => state.ui);
@@ -22,11 +23,11 @@ export const RolesTab = ({ roles, tabState }) => {
   const dispatch = useDispatch();
   const { toast } = useToast();
   useEffect(() => {
-    if(action.action == "edit"){
-      setAddRoleDialog(true)
+    if (action.action == "edit") {
+      setAddRoleDialog(true);
     }
-  }, [action])
-  
+  }, [action]);
+
   const toastAction = (description = "") => {
     toast({
       title: "Operación realizada",
@@ -41,23 +42,39 @@ export const RolesTab = ({ roles, tabState }) => {
 
   return (
     <>
-      {layout == "grid" ? (
-        <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4">
-          {roles.map((rol) => (
-            <GridRoles key={rol.id} rol={rol} setAction={setAction} tabState={tabState}/>
-          ))}
-        </div>
+      {roles.data != undefined ? (
+        layout == "grid" ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4">
+            {roles.data.map((rol) => (
+              <GridRoles
+                key={rol.id}
+                rol={rol}
+                setAction={setAction}
+                tabState={tabState}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="w-full">
+            <Table className="bg-background p-2 rounded-sm">
+              <TableHeaderRoles />
+              <TableBody>
+                {roles.data.map((rol) => (
+                  <ListRoles
+                    rol={rol}
+                    key={Math.random()}
+                    tabState={tabState}
+                    setAction={setAction}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )
+      ) : layout == "grid" ? (
+        <SkeletonGrid />
       ) : (
-        <div className="w-full">
-          <Table>
-            {/* <TableHeaderUsers /> */}
-            <TableBody>
-              {/* {users.map((user) => (
-                <ListUsers user={user} key={user.id} setAction={setAction} />
-              ))} */}
-            </TableBody>
-          </Table>
-        </div>
+        <SkeletonList />
       )}
 
       {action.action == "delete" ? (

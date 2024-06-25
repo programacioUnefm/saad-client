@@ -34,7 +34,7 @@ export const LoginApp = (data) => {
   };
 };
 
-export const VerifyUser = (token) => {
+export const VerifyUser = () => {
   return async (dispatch) => {
     try {
       const resp = await saadApi.get(`/auth/whoIAm`);
@@ -42,23 +42,22 @@ export const VerifyUser = (token) => {
       const { data } = resp.data;
       if (code == 200) {
         const token = localStorage.getItem("token_access");
-        const { name, id } = data.user;
-        const newState = { name, id, token, role: [], Authstatus: true };
+        const newState = { name:data.name, id:data.id, document_id:data.document_id, token, roles: data.roles, Authstatus: true };
         dispatch(login(newState));
       }
-      return { user, code };
+      return { code };
     } catch (error) {
-      // const message = error.response.data.message;
-      // if (message == "Unauthenticated.") {
-      //   dispatch(login({ Authstatus: false, name: "", role: [], token: "" }));
-      //   dispatch(
-      //     dialogChange({
-      //       message: "Tu sesión ha expirado inicia sesión nuevamente",
-      //       status: true,
-      //       duration: 3000,
-      //     })
-      //   );
-      // }
+      const message = error.response.data.message;
+      if (message == "Unauthenticated.") {
+        dispatch(login({ Authstatus: false, name: "",document_id:"", roles: [], token: "" }));
+        dispatch(
+          dialogChange({
+            message: "Tu sesión ha expirado inicia sesión nuevamente",
+            status: true,
+            duration: 3000,
+          })
+        );
+      }
     }
   };
 };

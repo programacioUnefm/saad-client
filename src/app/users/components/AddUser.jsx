@@ -13,7 +13,7 @@ export const AddUser = ({ addUserDialog, setaddUserDialog }) => {
   };
   return (
     <Dialog open={addUserDialog}>
-      <Button variant="outline" onClick={() => setaddUserDialog(true)}>
+      <Button className="uppercase" variant="outline" onClick={() => setaddUserDialog(true)}>
         Agregar usuario
       </Button>
       <DialogContent>

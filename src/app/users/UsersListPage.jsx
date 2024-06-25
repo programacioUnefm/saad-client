@@ -14,6 +14,7 @@ import { RolesTab } from "./components/tabs/RolesTab";
 import { AddRoles } from "./components/AddRoles";
 import { PermissionsTab } from "./components/tabs/PermissionsTab";
 import { AddPermissions } from "./components/AddPermissions";
+import { tabStateChange } from "@/features/usuarios/UsersSlice";
 
 export const UsersListPage = () => {
   const dispatch = useDispatch();
@@ -28,10 +29,11 @@ export const UsersListPage = () => {
   const [addUserDialog, setaddUserDialog] = useState(false);
   const [addRoleDialog, setAddRoleDialog] = useState(false);
   const [addPermissionsDialog, setPermissionsDialog] = useState(false);
-  const addUser = () => {};
   const tabHandle = (value) => {
     setTabState(value);
+    dispatch(tabStateChange(value));
   };
+  
 
   return (
     <AppLayout
@@ -44,7 +46,7 @@ export const UsersListPage = () => {
       <Tabs defaultValue={tabState} onValueChange={(value) => tabHandle(value)}>
         <div className="grid grid-cols-2">
           <div>
-            <TabsList>
+            <TabsList className="bg-slate-200 dark:bg-accent/50">
               <TabsTrigger className="uppercase" value="users">
                 Usuarios
               </TabsTrigger>
@@ -78,19 +80,19 @@ export const UsersListPage = () => {
           </div>
         </div>
         <TabsContent value="users">
-          <div className="sticky top-0 bg-background z-50	px-1">
+          <div className="sticky top-0 bg-slate-100 dark:bg-background z-10	px-1">
             <HeaderUser route={"users"} placeholder={"usuarios"} />
           </div>
           <UsersTabs users={users} tabState={tabState} />
         </TabsContent>
         <TabsContent value="role">
-          <div className="sticky top-0 bg-background z-50	px-1">
+          <div className="sticky top-0 bg-slate-100 dark:bg-background z-10	px-1">
             <HeaderUser route={"roles"} placeholder={"roles"} />
           </div>
           <RolesTab roles={roles} tabState={tabState} />
         </TabsContent>
         <TabsContent value="permissions">
-          <div className="sticky top-0 bg-background z-50	px-1">
+          <div className="sticky top-0 bg-slate-100 dark:bg-background z-10	px-1">
             <HeaderUser
               route={"permissions"}
               placeholder={"permisos"}

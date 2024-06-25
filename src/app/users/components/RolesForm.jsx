@@ -19,33 +19,33 @@ export const RolesForm = ({ setAddRoleDialog, data = undefined }) => {
   });
   const { toast } = useToast();
   const dispatch = useDispatch();
-  const onSubmit = async (data) => {
+  const onSubmit = async (formData) => {
     if (data == undefined) {
-      const resp = await dispatch(addRolAsync(data));
+      const resp = await dispatch(addRolAsync(formData));
       if (resp == 200) {
         setAddRoleDialog(false);
         toast({
-          title: `El rol "${data.name}" fué agregado.`,
+          title: `El rol "${formData.name}" fué agregado.`,
         });
       }
       if (resp == 400) {
         toast({
           variant: "destructive",
-          title: `El rol "${data.name}" no se pudo agregar debido a que estás ingresando algún dato erróneo.`,
+          title: `El rol "${formData.name}" no se pudo agregar debido a que estás ingresando algún dato erróneo.`,
         });
       }
     } else {
-      const resp = await dispatch(UpdateRolAsync(data));
+      const resp = await dispatch(UpdateRolAsync(formData));
       if (resp == 200) {
         setAddRoleDialog(false);
         toast({
-          title: `El rol "${data.name}" fué editado.`,
+          title: `El rol "${formData.name}" fué editado.`,
         });
       }
       if (resp == 400) {
         toast({
           variant: "destructive",
-          title: `El rol "${data.name}" no se pudo agregar debido a que estás ingresando algún dato erróneo.`,
+          title: `El rol "${formData.name}" no se pudo agregar debido a que estás ingresando algún dato erróneo.`,
         });
       }
     }
@@ -100,7 +100,7 @@ export const RolesForm = ({ setAddRoleDialog, data = undefined }) => {
           <Label htmlFor="description">Descripción</Label>
           <Textarea
             id="description"
-            placeholder="Descripción larga sobre el rol"
+            placeholder="Descripción corta sobre el Rol"
             className={errors.description ? "mt-2 border-red-500" : "mt-2"}
             {...register("description", {
               maxLength: {
@@ -127,11 +127,7 @@ export const RolesForm = ({ setAddRoleDialog, data = undefined }) => {
             Cancelar
           </Button>
           <Button
-            className={
-              data == undefined
-                ? "uppercase"
-                : "uppercase bg-amber-700 hover:bg-amber-600"
-            }
+            className="uppercase"
             type="submit"
           >
             {data == undefined ? "Agregar nuevo rol" : "Editar rol"}

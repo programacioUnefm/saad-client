@@ -9,7 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 export const HeaderUser = ({route = "", placeholder = ""}) => {
   const dispatch = useDispatch()
   const layoutDafult = localStorage.getItem("layoutList");
-  const {layout} = useSelector(state => state.ui)
+  const {layout, theme} = useSelector(state => state.ui)
+  const state = useSelector(state => state.ui)
   const layoutChangedHandle = (value) => {
     localStorage.setItem("layoutList", value);
     dispatch(layoutChanged(value))
@@ -17,14 +18,14 @@ export const HeaderUser = ({route = "", placeholder = ""}) => {
   return (
     <div className="flex md:grid md:grid-cols-2 mb-4">
       <div className="w-full">
-        <Input type="email" placeholder={`buscar ${placeholder}...`} />
+        <Input type="text" placeholder={`Buscar ${placeholder}...`} />
       </div>
       <div className="flex justify-end">
       <ToggleGroup type="single" onValueChange={(value) => layoutChangedHandle(value)} defaultValue={layoutDafult}>
-          <ToggleGroupItem value="grid">
+          <ToggleGroupItem value="grid" style={layout == "grid" && theme == "dark" ? { backgroundColor: "#1E293B" }: layout == "grid" && theme == "light"? { backgroundColor: "#E2E8F0" } : null}>
             <LayoutGrid className="text-muted-foreground" />
           </ToggleGroupItem>
-          <ToggleGroupItem value="list">
+          <ToggleGroupItem value="list" style={layout == "list" && theme == "dark" ? { backgroundColor: "#1E293B" }: layout == "list" && theme == "light"? { backgroundColor: "#E2E8F0" } : null}>
             <List className="text-muted-foreground" />
           </ToggleGroupItem>
         </ToggleGroup>

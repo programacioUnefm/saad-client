@@ -16,7 +16,7 @@ export const TableHeaderUsers = () => {
         <TableHead className="hidden xl:table-cell w-[100px]">CORREO</TableHead>
         <TableHead className="hidden md:table-cell">ROLES</TableHead>
         {/* pr-24 */}
-        <TableHead className="text-right pr-14 xl:pr-20">ACCIONES</TableHead>
+        <TableHead className="text-center">ACCIONES</TableHead>
       </TableRow>
     </TableHeader>
   );

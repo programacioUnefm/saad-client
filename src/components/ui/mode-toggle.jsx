@@ -19,7 +19,7 @@ export function ModeToggle() {
     <div className="theme-toggle">
       <Button
         size="sm"
-        className="rounded-full h-[50px] w-[50px] dark:bg-accent-foreground hover:dark:dark:bg-accent-foreground/80 dark:text-black bg-accent-foreground hover:bg-accent-foreground/80"
+        className="rounded-full h-[50px] w-[50px] dark:bg-accent-foreground hover:dark:dark:bg-accent-foreground/80 text-white hover:text-white dark:text-black bg-accent-foreground hover:bg-accent-foreground/80"
         onClick={() => themeHandled()}
       >
         {theme == "dark" ? <Sun /> : <Moon />}

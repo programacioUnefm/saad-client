@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { GridUsers } from "./components/layouts/GridUsers";
+import { GridUsers } from "../../layouts/GridUsers";
 import { ConfirmDelete } from "../ConfirmDelete";
 import { RoleAssign } from "../RoleAssign";
 import { EditUser } from "../EditUser";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUser, userRoleAssign } from "@/features/usuarios/UsersThunks";
 import { useToast } from "@/components/ui/use-toast";
-import { ListUsers } from "./components/layouts/ListUsers";
+import { ListUsers } from "../../layouts/ListUsers";
 import { Table, TableBody } from "@/components/ui/table";
-import { TableHeaderUsers } from "./components/TableHeaderUsers";
+import { TableHeaderUsers } from "../../layouts/TableHeaderUsers";
+import { SkeletonGrid } from "@/components/Skeletons/SkeletonGrid";
+import { SkeletonList } from "@/components/Skeletons/SkeletonList";
 
 export const UsersTabs = ({ users, tabState }) => {
   const { layout } = useSelector((state) => state.ui);
@@ -49,23 +51,23 @@ export const UsersTabs = ({ users, tabState }) => {
 
   return (
     <>
-      {layout == "grid" ? (
-        <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4">
-          {users.data != undefined
-            ? users.data.map((user) => (
-                <GridUsers
-                  user={user}
-                  key={user.id}
-                  setAction={setAction}
-                  tabState={tabState}
-                />
-              ))
-            : "Cargando grid de usuarios"}
-        </div>
-      ) : (
-        <div className="w-full">
-          {users.data != undefined ? (
-            <Table>
+      {users.data != undefined ? (
+        layout == "grid" ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4">
+            {users.data != undefined
+              ? users.data.map((user) => (
+                  <GridUsers
+                    user={user}
+                    key={user.id}
+                    setAction={setAction}
+                    tabState={tabState}
+                  />
+                ))
+              : "Cargando grid de usuarios"}
+          </div>
+        ) : (
+          <div className="w-full">
+            <Table className="bg-background p-2 rounded-sm">
               <TableHeaderUsers />
               <TableBody>
                 {users.data.map((user) => (
@@ -78,12 +80,11 @@ export const UsersTabs = ({ users, tabState }) => {
                 ))}
               </TableBody>
             </Table>
-          ) : (
-            "Cargando datos"
-          )}
-        </div>
+          </div>
+        )
+      ) : (
+        layout == "grid" ? <SkeletonGrid />: <SkeletonList />
       )}
-
       {action.action == "delete" ? (
         <ConfirmDelete
           open={action.dialog}

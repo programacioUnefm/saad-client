@@ -14,10 +14,12 @@ import {
   } from "lucide-react";
 import { UserIcon } from "./UserIcon";
 import { InputApp } from "./InputApp";
+import { MegaMenu } from "./megamenu/MegaMenu";
 
 export const HeaderApp = () => {
   return (
-    <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+    <header className="flex h-14 items-center gap-4 border-b dark:bg-background bg-white px-4 lg:h-[60px] lg:px-6">
+      {/* menu movil */}
       <Sheet>
         <SheetTrigger asChild>
           <Button variant="outline" size="icon" className="shrink-0 md:hidden">
@@ -75,8 +77,9 @@ export const HeaderApp = () => {
           </nav>
         </SheetContent>
       </Sheet>
-      <div className="w-full flex-1">
-        <InputApp />
+      <div className="w-full flex">
+        <InputApp /> 
+        <MegaMenu />
       </div>
       <UserIcon />
     </header>

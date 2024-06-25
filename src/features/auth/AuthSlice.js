@@ -6,7 +6,8 @@ export const Auth = createSlice({
     user: {
       Authstatus: true,
       name: "",
-      role: [],
+      roles: [],
+      document_id: "",
       token: "",
     },
   },
