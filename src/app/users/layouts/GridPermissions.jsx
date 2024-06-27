@@ -61,7 +61,7 @@ export const GridPermissions = ({ permission, setAction, tabState }) => {
           </div>
         </div>
       </CardContent>
-      <CardFooter className="grid grid-cols-2 gap-2">
+      <CardFooter className="grid grid-cols-2 gap-2 max-w-[300px]">
         <ButtonsActions setAction={setAction} arrayItem={permission} tabState={tabState}/>
       </CardFooter>
     </Card>

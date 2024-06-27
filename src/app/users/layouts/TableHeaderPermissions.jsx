@@ -12,7 +12,7 @@ export const TableHeaderPermissions = () => {
         <TableHead className="uppercase">Descripción</TableHead>
         <TableHead className="uppercase text-center">Padre</TableHead>
         <TableHead className="uppercase">Código</TableHead>
-        <TableHead className="text-center uppercase">Acciones</TableHead>
+        <TableHead className="text-center uppercase w-[200px]">Acciones</TableHead>
       </TableRow>
     </TableHeader>
   );

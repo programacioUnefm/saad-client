@@ -14,9 +14,9 @@ export const TableHeaderUsers = () => {
           APELLIDOS
         </TableHead>
         <TableHead className="hidden xl:table-cell w-[100px]">CORREO</TableHead>
-        <TableHead className="hidden md:table-cell">ROLES</TableHead>
+        <TableHead className="hidden md:table-cell w-full">ROLES</TableHead>
         {/* pr-24 */}
-        <TableHead className="text-center">ACCIONES</TableHead>
+        <TableHead className="text-center max-w-[300px]">ACCIONES</TableHead>
       </TableRow>
     </TableHeader>
   );

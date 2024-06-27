@@ -45,7 +45,7 @@ export const ListUsers = ({ user, setAction, tabState }) => {
           )}
         </div>
       </TableCell>
-      <TableCell className="flex gap-2 justify-end">
+      <TableCell className="flex gap-2 justify-end max-w-[300px]">
         <ButtonsActions
           setAction={setAction}
           arrayItem={user}

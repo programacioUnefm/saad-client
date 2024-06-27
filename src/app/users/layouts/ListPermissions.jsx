@@ -18,7 +18,7 @@ export const ListPermissions = ({ permission, setAction, tabState }) => {
       <TableCell>
         <Chip text={permission.code} />
       </TableCell>
-      <TableCell className="flex gap-2 justify-end">
+      <TableCell className="flex gap-2 justify-end max-w-[300px]">
         <ButtonsActions
           setAction={setAction}
           arrayItem={permission}
