@@ -1,5 +1,5 @@
 import { saadApi } from "@/api/SaddApp";
-import { permissionsRegister, roleRegister, usersRegister } from "./usuarios/UsersSlice";
+import { permissionsPagination, roleRegister, usersRegister } from "./usuarios/UsersSlice";
 export const paginationAdminUserPrivileges = (url, tabState) => {
   return async (dispatch) => {
     try {
@@ -14,7 +14,7 @@ export const paginationAdminUserPrivileges = (url, tabState) => {
             dispatch(roleRegister(data));
             break;
           case "permissions":
-            dispatch(permissionsRegister(data));
+            dispatch(permissionsPagination(data));
             break;
         }
       }

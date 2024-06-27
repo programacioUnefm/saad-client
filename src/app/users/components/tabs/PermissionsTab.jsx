@@ -7,6 +7,9 @@ import { TableHeaderPermissions } from "../../layouts/TableHeaderPermissions";
 import { ListPermissions } from "../../layouts/ListPermissions";
 import { SkeletonList } from "@/components/Skeletons/SkeletonList";
 import { SkeletonGrid } from "@/components/Skeletons/SkeletonGrid";
+import { ConfirmDelete } from "../ConfirmDelete";
+import { deletePermission } from "@/features/usuarios/UsersThunks";
+import { EditPermissionsDIalog } from "./components/EditPermissionsDIalog";
 
 export const PermissionsTab = ({ permissions, tabState }) => {
   const { layout } = useSelector((state) => state.ui);
@@ -17,7 +20,14 @@ export const PermissionsTab = ({ permissions, tabState }) => {
   });
   const dispatch = useDispatch();
   const { toast } = useToast();
-
+  const detePermission = () => {
+    dispatch(deletePermission(action.arrayItem.id));
+    toast({
+      title: "Operación realizada",
+      variant: "destructive",
+      description: `El permiso "${action.arrayItem.name}" fué eliminado de la base de datos.`,
+    });
+  };
   return (
     <>
       {permissions.data != undefined ? (
@@ -49,9 +59,24 @@ export const PermissionsTab = ({ permissions, tabState }) => {
             </Table>
           </div>
         )
-      ) : 
-        layout == "grid" ? <SkeletonGrid />: <SkeletonList />
-      }
+      ) : layout == "grid" ? (
+        <SkeletonGrid />
+      ) : (
+        <SkeletonList />
+      )}
+      {action.action == "delete" ? (
+        <ConfirmDelete
+          open={action.dialog}
+          setAction={setAction}
+          action={action}
+          dialogAction={detePermission}
+          description={
+            "Estás a punto de elminar un permiso, quizás varios usuarios posean este permiso y está accion afectara a varios roles los cuales tengan ese permiso ¿estás totalmente seguro de realizar esta acción?"
+          }
+        />
+      ) : action.action == "edit" ? (
+        <EditPermissionsDIalog action={action} setAction={setAction} />
+      ) : null}
     </>
   );
 };

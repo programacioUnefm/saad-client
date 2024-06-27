@@ -6,6 +6,7 @@ export const UsersSlice = createSlice({
     users: [],
     roles:[],
     permissions:[],
+    permissionsFull:[],
     tabState: "users",
   },
   reducers: {
@@ -15,15 +16,19 @@ export const UsersSlice = createSlice({
     roleRegister: (state, action) => {
       state.roles = action.payload;
     },
-    permissionsRegister: (state, action) => {
-      state.permissions = action.payload;
+    permissionsRegister: (state, {payload}) => {
+      state.permissions = payload.data;
+      state.permissionsFull = payload.dataFull;
     },
+    permissionsPagination: (state, {payload}) => {
+      state.permissions = payload;
+    }, 
     tabStateChange: (state, {payload}) => {
       state.tabState = payload;
     }
   },
 });
 
-export const { usersRegister, roleRegister, permissionsRegister, tabStateChange } = UsersSlice.actions;
+export const { usersRegister, roleRegister, permissionsRegister,permissionsPagination, tabStateChange } = UsersSlice.actions;
 
 export default UsersSlice.reducer;

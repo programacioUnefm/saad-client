@@ -48,6 +48,7 @@ export const UsersTabs = ({ users, tabState }) => {
       toastAction("El usuario fué eliminado satisfactoriamente.");
     }
   };
+  
 
   return (
     <>

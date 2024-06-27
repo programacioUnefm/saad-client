@@ -4,21 +4,19 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog";
-import { RolesForm } from "../../RolesForm";
+import { PermissionsForm } from "../../PermissionsForm";
 
-
-export const EditRolesDialog = ({ addRoleDialog, setAddRoleDialog, data = {} }) => {
+export const EditPermissionsDIalog = ({ action, setAction }) => {
   return (
-    <Dialog open={addRoleDialog}>
+    <Dialog open={action.dialog}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="mb-4 uppercase">
-            Editar rol "{data.name}"
+            Editar permiso
           </DialogTitle>
         </DialogHeader>
-        <RolesForm setAddRoleDialog={setAddRoleDialog} data={data}/>
+        <PermissionsForm setPermissionsDialog={setAction} data={action.arrayItem} />
       </DialogContent>
     </Dialog>
   );

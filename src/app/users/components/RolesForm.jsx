@@ -118,7 +118,7 @@ export const RolesForm = ({ setAddRoleDialog, data = undefined }) => {
       </div>
 
       <DialogFooter>
-        <div className="grid grid-cols-2 w-full gap-4">
+        <div className="grid grid-cols-3 w-full gap-2">
           <Button
             className="w-full bg-muted hover:bg-muted/80  uppercase"
             onClick={() => setAddRoleDialog(false)}
@@ -127,10 +127,17 @@ export const RolesForm = ({ setAddRoleDialog, data = undefined }) => {
             Cancelar
           </Button>
           <Button
+            className="w-full  uppercase"
+            onClick={() => setAddRoleDialog(false)}
+            type="button"
+          >
+            permisos
+          </Button>
+          <Button
             className="uppercase"
             type="submit"
           >
-            {data == undefined ? "Agregar nuevo rol" : "Editar rol"}
+            {data == undefined ? "Agregar rol" : "Editar rol"}
           </Button>
         </div>
       </DialogFooter>

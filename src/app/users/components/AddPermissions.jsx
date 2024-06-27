@@ -5,18 +5,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useEffect } from "react";
 import { PermissionsForm } from "./PermissionsForm";
 
 
 export const AddPermissions = ({ addPermissionsDialog, setPermissionsDialog }) => {
     
     
-    
   return (
     <Dialog open={addPermissionsDialog}>
       <Button className="uppercase" variant="outline" onClick={() => setPermissionsDialog(true)}>
-        Agregar permiso
+        Agregar permiso 
       </Button>
       <DialogContent>
         <DialogHeader>

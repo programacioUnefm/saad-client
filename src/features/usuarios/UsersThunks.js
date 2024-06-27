@@ -119,10 +119,57 @@ export const GetPermissionsList = () => {
     try {
       const paginationNum = getState().ui.paginationNumber
       const resp = await saadApi.get(`admin/permissions/results/${paginationNum}`);
+      const respFull = await saadApi.get(`admin/permissions/`);
       if (resp.data.responseCode == 200) {
         const { data } = resp.data;
-        dispatch(permissionsRegister(data));  
+        const {data:dataFull} = respFull.data
+        dispatch(permissionsRegister({data, dataFull}));  
       }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+
+export const addPermissionAsync = (data) => {
+  return async (dispatch) => {
+    try {
+      const resp = await saadApi.post(`admin/permissions`, data);
+      if (resp.data.responseCode == 200) {
+        dispatch(GetPermissionsList());
+      }
+      return resp.data.responseCode;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const editPermission = (data) => {
+  return async (dispatch) => {
+    try {
+      const resp = await saadApi.put(`admin/permissions/${data.id}`, data);
+      if (resp.data.responseCode == 200) {
+        dispatch(GetPermissionsList());
+      }
+      return resp.data.responseCode;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+
+
+export const deletePermission = (id) => {
+  return async (dispatch) => {
+    try {
+      const resp = await saadApi.delete(`admin/permissions/${id}`);
+      if (resp.data.responseCode == 200) {
+        dispatch(GetPermissionsList());
+      }
+      return resp.data.responseCode;
     } catch (error) {
       console.log(error);
     }

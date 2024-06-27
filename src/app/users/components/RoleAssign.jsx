@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetFooter,
@@ -18,8 +17,6 @@ export const RoleAssign = ({ open, setAction, user, dialogAction }) => {
     defaultRoles.push(element.id)
   });
   const [rolActive, setRolActive] = useState([...defaultRoles])
-
-
   
   return (
     <Sheet open={open}>
@@ -32,7 +29,7 @@ export const RoleAssign = ({ open, setAction, user, dialogAction }) => {
               <span className="font-bold uppercase text-right">Código</span>
             </div>
             <ToggleGroup type="multiple" value={rolActive} className="flex flex-col" onValueChange={(e) => {setRolActive(e)}}>
-              {roles.map((role) => (
+              {roles.data.map((role) => (
                 <ToggleGroupItem
                   value={role.id}
                   className="w-full flex"

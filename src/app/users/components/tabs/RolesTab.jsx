@@ -6,7 +6,7 @@ import { GridRoles } from "../../layouts/GridRoles";
 import { ConfirmDelete } from "../ConfirmDelete";
 import { deleteRol } from "@/features/usuarios/UsersThunks";
 import { EditRolesDialog } from "./components/EditRolesDialog";
-import { PermissionsAssign } from "./components/PermissionsAssign";
+import { PermissionsAssign } from "./components/PermissionsAcctions/PermissionsAssign";
 import { TableHeaderRoles } from "../../layouts/TableHeaderRoles";
 import { ListRoles } from "../../layouts/ListRoles";
 import { SkeletonGrid } from "@/components/Skeletons/SkeletonGrid";
@@ -20,11 +20,15 @@ export const RolesTab = ({ roles, tabState }) => {
     arrayItem: {},
   });
   const [addRoleDialog, setAddRoleDialog] = useState(true);
+  const [addPermissions, setaddPermissions] = useState(true);
   const dispatch = useDispatch();
   const { toast } = useToast();
   useEffect(() => {
     if (action.action == "edit") {
       setAddRoleDialog(true);
+    }
+    if (action.action == "assign") {
+      setaddPermissions(true);
     }
   }, [action]);
 
@@ -88,15 +92,17 @@ export const RolesTab = ({ roles, tabState }) => {
           }
         />
       ) : action.action == "assign" ? (
-        <PermissionsAssign />
+        <PermissionsAssign
+          data={action.arrayItem}
+          addPermissions={addPermissions}
+          setaddPermissions={setaddPermissions}
+        />
       ) : action.action == "edit" ? (
-        <>
-          <EditRolesDialog
-            addRoleDialog={addRoleDialog}
-            setAddRoleDialog={setAddRoleDialog}
-            data={action.arrayItem}
-          />
-        </>
+        <EditRolesDialog
+          addRoleDialog={addRoleDialog}
+          setAddRoleDialog={setAddRoleDialog}
+          data={action.arrayItem}
+        />
       ) : null}
     </>
   );

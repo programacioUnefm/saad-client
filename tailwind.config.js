@@ -21,6 +21,19 @@ module.exports = {
     },
     extend: {
       colors: {
+        rockblue: {
+          50: "#f4f7f9",
+          100: "#ecf0f3",
+          200: "#dce4e9",
+          300: "#c6d2db",
+          400: "#aebccb",
+          500: "#94a3b8",
+          600: "#828fa9",
+          700: "#6f7a93",
+          800: "#5c6677",
+          900: "#4d5462",
+          950: "#2d3139",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -44,6 +57,7 @@ module.exports = {
           DEFAULT: "#06b6d4",
           dark: "#0e7490",
         },
+
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
