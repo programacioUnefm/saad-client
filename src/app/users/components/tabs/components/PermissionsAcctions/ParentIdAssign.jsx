@@ -6,7 +6,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { AccordionItems } from "./AccordionItems";
+import { PermissionsTree } from "./PermissionsTree";
 import permissions from "./permission.json";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -20,7 +20,7 @@ export const ParentIdAssign = ({ open, setopen, setValue }) => {
         <ScrollArea className="h-[88%] pr-4">
           <div className="mt-2 text-sm">
             {permissions.map((permission) => (
-              <AccordionItems key={Math.random()} setValue={setValue} item={permission} setopen={setopen} />
+              <PermissionsTree key={Math.random()} setValue={setValue} item={permission} setopen={setopen} />
             ))}
           </div>
         </ScrollArea>
