@@ -5,7 +5,6 @@ export const ButtonsActions = ({ setAction, arrayItem, tabState }) => {
   
   return (
     <>
-    
       <Button
         disabled={arrayItem.id == 1}
         className="w-full"

@@ -55,8 +55,19 @@ export const VerifyUser = () => {
             message: "Tu sesión ha expirado inicia sesión nuevamente",
             status: true,
             duration: 3000,
+            variant: "destructive"
           })
         );
+        setTimeout(() => {
+          dispatch(
+            dialogChange({
+              message: "",
+              status: false,
+              duration: 3000,
+              variant: ""
+            })
+          );
+        }, 3000);
       }
     }
   };

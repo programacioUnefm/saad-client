@@ -73,7 +73,7 @@ export const PermissionsTab = ({ permissions, tabState }) => {
         <div className="flex">
           <AddPermisionCard parent={parent} setparent={setparent} />
         </div>
-        <ScrollArea className="h-[64vh] border-2 border-dashed p-4 rounded-md bg-white dark:bg-accent/20 ">
+        <ScrollArea className="h-[62vh] border-2 border-dashed p-4 rounded-md bg-white dark:bg-accent/20 flex justify-center">
           {dataSort != null &&
             dataSort.map((parent) => (
               <TreeNode key={parent.id} data={parent} />

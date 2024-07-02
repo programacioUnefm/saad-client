@@ -7,11 +7,12 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import permissions from "./permission.json";
 import { ToggleGroup } from "@radix-ui/react-toggle-group";
 import { ToggleGroupItem } from "@/components/ui/toggle-group";
+import { updatePermissionToRole } from "@/features/usuarios/UsersThunks";
+import { dialogChange } from "@/features/ui/UiSlice";
 
 export const PermissionsAssign = ({
   addPermissions,
@@ -20,31 +21,56 @@ export const PermissionsAssign = ({
 }) => {
   const { permissionsFull } = useSelector((state) => state.usersList);
   const [active, setactive] = useState([]);
+  const dispatch = useDispatch();
+  const onAssignHandle = async () => {
+    const resp = await dispatch(
+      updatePermissionToRole({ permissions: active }, data.id)
+    );
+    if (resp == 200) {
+      dispatch(
+        dialogChange({
+          title: "Permisos asignados",
+          message: "La lista de permisos ha sido asignada al rol",
+          status: true,
+          duration: 3000,
+        })
+      );
+      setTimeout(() => {
+        dispatch(
+          dialogChange({
+            title: "",
+            message: "",
+            status: false,
+            duration: 3000,
+          })
+        );
+      }, 3000);
+      setaddPermissions(false);
+    }
+  };
+
+  useEffect(() => {
+    if (data.permissions.length > 0) {
+      data.permissions.forEach((element) => {
+        setactive((prev) => [...prev, element.id]);
+      });
+    }else{
+      setactive([]);
+    }
+  }, [data]);
+
   const TreeNode = ({ data }) => {
     return (
-      <div className="w-full">
+      <>
         <ToggleGroupItem
           className={
             data.children
               ? "w-[95%] justify-start m-2 bg-primary/20 hover:bg-primary/40 data-[state=on]:bg-primary/80 data-[state=on]:text-white"
               : "w-[95%] justify-start m-1 hover:bg-primary/40 data-[state=on]:bg-primary/80 data-[state=on]:text-white"
           }
-          onClick={() => parentVerify(data)}
           value={data.id}
         >
-          <div className="grid grid-cols-2 w-full">
-            <div className="w-[150%] text-left">
-              <span>{data.name}</span>
-            </div>
-            {data.parent && !data.children && (
-              <div className="text-right">
-                <span className="text-[8px] uppercase truncate font-bold">
-                  {data.parent.name}
-                </span>
-              </div>
-            )}
-            {data.children && <div className="text-right uppercase text-[10px] font-bold">Padre</div>}
-          </div>
+          {data.name}
         </ToggleGroupItem>
         {data.children && data.children.length > 0 && (
           <div className="ml-4 mt-2 relative">
@@ -56,50 +82,12 @@ export const PermissionsAssign = ({
             ))}
           </div>
         )}
-      </div>
+      </>
     );
   };
 
   const parentVerify = (e) => {
-    e.status = !e.status;
-    let ids = [];
-
-    if (e.children) {
-      ids.push(e.id);
-      const children = recursiveMap(e);
-      ids = [...children];
-      if (e.status) {
-        setactive([...active, ...ids]);
-        e.children.forEach((element) => {
-          element.status = true;
-        });
-      } else {
-        const result = active.filter((id) => !ids.includes(id));
-        setactive([...result]);
-        e.children.forEach((element) => {
-          element.status = false;
-        });
-      }
-    } else {
-      if (e.status) {
-        setactive([...active, e.id]);
-      } else {
-        const result = active.filter((item) => item !== e.id);
-        setactive([...result]);
-      }
-    }
-  };
-
-  let ids = [];
-
-  const recursiveMap = (object) => {
-    ids.push(object.id);
-    if (object.children) {
-      object.children.forEach((child) => {
-        recursiveMap(child);
-      });
-    }
-    return ids;
+    setactive(e);
   };
 
   return (
@@ -112,7 +100,11 @@ export const PermissionsAssign = ({
         </SheetHeader>
         <ScrollArea className="h-[88%] pr-4">
           <div className="mt-4">
-            <ToggleGroup type="multiple" value={active}>
+            <ToggleGroup
+              type="multiple"
+              value={active}
+              onValueChange={(e) => parentVerify(e)}
+            >
               <TreeNode data={permissionsFull[0]} />
             </ToggleGroup>
           </div>
@@ -122,10 +114,11 @@ export const PermissionsAssign = ({
             <Button
               className="bg-accent hover:bg-accent/50"
               onClick={() => setaddPermissions(false)}
+              size="md"
             >
               Cancelar
             </Button>
-            <Button>Asignar</Button>
+            <Button size="md" onClick={() => onAssignHandle()}>Asignar</Button>
           </div>
         </SheetFooter>
       </SheetContent>

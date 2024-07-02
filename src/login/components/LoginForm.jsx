@@ -74,7 +74,7 @@ export const LoginForm = ({ setloginState }) => {
         />
       </div>
       <div className="mt-8 w-full flex justify-center align-middle text-center">
-        <Button disabled={load} className="w-full uppercase" type="submit">
+        <Button disabled={load} size="lg" className="w-full uppercase" type="submit">
           {load && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
           {load ? "Enviando..." : "Iniciar sesión"}
         </Button>

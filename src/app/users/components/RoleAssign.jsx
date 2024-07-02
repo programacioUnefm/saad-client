@@ -46,6 +46,7 @@ export const RoleAssign = ({ open, setAction, user, dialogAction }) => {
           <div className="flex w-full gap-2 mt-4">
             <Button
               className="w-1/2 bg-accent hover:bg-accent/50"
+              size="md"
               onClick={() => {
                 setAction({ dialog: false, action: "" });
               }}
@@ -54,6 +55,7 @@ export const RoleAssign = ({ open, setAction, user, dialogAction }) => {
             </Button>
             <Button
               className="w-1/2"
+              size="md"
               onClick={() => {
                 setAction({ dialog: false, action: "" });
                 dialogAction({user, rolActive});

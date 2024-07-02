@@ -17,6 +17,7 @@ export const ui = createSlice({
       message: "",
       status: false,
       duration: 3000,
+      variant: ""
     },
   },
   reducers: {

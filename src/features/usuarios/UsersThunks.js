@@ -98,6 +98,21 @@ export const addRolAsync = (data) => {
   };
 };
 
+
+export const updatePermissionToRole = (data, id) => {
+  return async (dispatch) => {
+    try {
+      const resp = await saadApi.post(`admin/roles/${id}/assign-permissions`, data);
+      if (resp.data.responseCode == 200) {
+        dispatch(GetRolesList());
+      }
+      return resp.data.responseCode;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 export const UpdateRolAsync = (data) => {
   return async (dispatch) => {
     try {
@@ -147,7 +162,6 @@ export const addPermissionAsync = (data) => {
 export const editPermission = (data) => {
   return async (dispatch) => {
     try {
-      console.log(data)
       const resp = await saadApi.put(`admin/permissions/${data.id}`, data);
       if (resp.data.responseCode == 200) {
         dispatch(GetPermissionsList());

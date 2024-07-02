@@ -25,7 +25,7 @@ export function AppLayout({
     dialog.status &&
       toast({
         title: dialog.title,
-        variant: "destructive",
+        variant: dialog.variant,
         description: dialog.message,
       });
   }, [dialog]);

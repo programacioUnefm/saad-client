@@ -219,7 +219,7 @@ export const AddPermisionCard = ({ parent, setparent }) => {
         </form>
       ) : (
         <div className="flex flex-col gap-2 items-center justify-center text-center">
-          <Card>
+          <Card className="bg-white dark:bg-muted/20">
             <CardHeader>
               <CardTitle className="text-xl uppercase font-bold text-muted-foreground/90">
                 Selecciona una acción
@@ -228,7 +228,7 @@ export const AddPermisionCard = ({ parent, setparent }) => {
             <CardContent>
               <p className="text-sm text-muted-foreground">
                 Crea un nuevo permiso, tambien puedes crear un permiso como hijo
-                de otro permiso, elminar editar o agregar permisos dando clik en
+                de otro permiso, elminar editar o agregar permisos dando clic en
                 el nombre del permiso y seleccionando la opción correspondiente
                 o crea un permiso padre en el botón que está justo debajo
               </p>
