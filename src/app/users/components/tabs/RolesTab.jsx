@@ -13,7 +13,7 @@ import { SkeletonGrid } from "@/components/Skeletons/SkeletonGrid";
 import { SkeletonList } from "@/components/Skeletons/SkeletonList";
 
 export const RolesTab = ({ roles, tabState }) => {
-  const { layout } = useSelector((state) => state.ui);
+  const { layout, filters } = useSelector((state) => state.ui);
   const [action, setAction] = useState({
     dialog: false,
     action: "",
@@ -49,28 +49,46 @@ export const RolesTab = ({ roles, tabState }) => {
       {roles.data != undefined ? (
         layout == "grid" ? (
           <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4">
-            {roles.data.map((rol) => (
-              <GridRoles
-                key={rol.id}
-                rol={rol}
-                setAction={setAction}
-                tabState={tabState}
-              />
-            ))}
+            {filters.status
+              ? filters.result.data.data.map((search) => (
+                  <GridRoles
+                    key={search.id}
+                    rol={search}
+                    setAction={setAction}
+                    tabState={tabState}
+                  />
+                ))
+              : roles.data.map((rol) => (
+                  <GridRoles
+                    key={rol.id}
+                    rol={rol}
+                    setAction={setAction}
+                    tabState={tabState}
+                  />
+                ))}
           </div>
         ) : (
           <div className="w-full">
             <Table className="bg-background p-2 rounded-sm">
               <TableHeaderRoles />
               <TableBody>
-                {roles.data.map((rol) => (
-                  <ListRoles
-                    rol={rol}
-                    key={Math.random()}
-                    tabState={tabState}
-                    setAction={setAction}
-                  />
-                ))}
+                {filters.status
+                  ? filters.result.data.data.map((search) => (
+                      <ListRoles
+                        rol={search}
+                        key={Math.random()}
+                        tabState={tabState}
+                        setAction={setAction}
+                      />
+                    ))
+                  : roles.data.map((rol) => (
+                      <ListRoles
+                        rol={rol}
+                        key={Math.random()}
+                        tabState={tabState}
+                        setAction={setAction}
+                      />
+                    ))}
               </TableBody>
             </Table>
           </div>

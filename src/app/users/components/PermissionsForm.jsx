@@ -1,16 +1,15 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { Button } from "../../../components/ui/button";
+import { Input } from "../../../components/ui/input";
+import { Label } from "../../../components/ui/label";
+import { Textarea } from "../../../components/ui/textarea";
 import React, { useState } from "react";
-import { PermissionsParent } from "./tabs/components/PermissionsAcctions/PermissionsParent";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import {
   addPermissionAsync,
   editPermission,
-} from "@/features/usuarios/UsersThunks";
-import { useToast } from "@/components/ui/use-toast";
+} from "../../../features/usuarios/UsersThunks";
+import { useToast } from "../../../components/ui/use-toast";
 import { ParentIdAssign } from "./tabs/components/PermissionsAcctions/ParentIdAssign";
 
 export const PermissionsForm = ({ setPermissionsDialog, data = undefined }) => {

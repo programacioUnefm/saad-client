@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-import { Toaster } from "@/components/ui/toaster";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Toaster } from "../../../components/ui/toaster";
+import { ScrollArea } from "../../../components/ui/scroll-area";
 import { Sidebar } from "./components/Sidebar";
 import { useSelector } from "react-redux";
 import { TitleAndBradCrum } from "./components/TitleAndBradCrum";
 import { HeaderApp } from "./components/HeaderApp";
-import { Button } from "@/components/ui/button";
+import { Button } from "../../../components/ui/button";
 import { PaginationItems } from "./components/PaginationItems";
+import { useToast } from "@/components/ui/use-toast";
 
 export function AppLayout({
   children,
@@ -18,9 +19,18 @@ export function AppLayout({
   arrayPagination = undefined,
 }) {
   const { theme } = useSelector((state) => state.auth);
-  
+  const { dialog } = useSelector((state) => state.ui);
+  const { toast } = useToast();
+  useEffect(() => {
+    dialog.status &&
+      toast({
+        title: dialog.title,
+        variant: "destructive",
+        description: dialog.message,
+      });
+  }, [dialog]);
+
   return (
-    
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <Sidebar />
       <div className="flex flex-col bg-slate-50 dark:bg-background">
@@ -37,11 +47,16 @@ export function AppLayout({
             )}
           </div>
           <div className="p-5 dark:bg-background bg-slate-100 rounded-lg border border-dashed shadow-sm h-full">
-            <ScrollArea className="h-[72vh] w-full px-4">
-              {children}
-            </ScrollArea>
-            
-            {pagination && arrayPagination != undefined && arrayPagination != [] && <PaginationItems numResult={`Mostrando ${arrayPagination.from} a ${arrayPagination.to}`} array={arrayPagination}/>}
+            <ScrollArea className="h-[72vh] w-full px-4">{children}</ScrollArea>
+
+            {pagination &&
+              arrayPagination != undefined &&
+              arrayPagination != [] && (
+                <PaginationItems
+                  numResult={`Mostrando ${arrayPagination.from} a ${arrayPagination.to}`}
+                  array={arrayPagination}
+                />
+              )}
           </div>
         </main>
       </div>

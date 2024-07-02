@@ -1,31 +1,47 @@
-
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
 export const ui = createSlice({
-  name: 'ui',
+  name: "ui",
   initialState: {
     theme: "",
     layout: "",
     paginationNumber: 12,
-    dialog:{
+    filters: {
+      search: "",
+      status: false,
+      url: "",
+      result: [],
+    },
+    dialog: {
+      title: "",
       message: "",
-      status:false,
+      status: false,
       duration: 3000,
-    }
+    },
   },
   reducers: {
-    themeChange: (state, {payload}) => {
+    themeChange: (state, { payload }) => {
       state.theme = payload;
-    }, 
-    layoutChanged:(state, {payload}) => {
+    },
+    layoutChanged: (state, { payload }) => {
       state.layout = payload;
     },
-    dialogChange:(state, {payload}) => {
+    dialogChange: (state, { payload }) => {
       state.dialog = payload;
+    },
+    filtersChange: (state, { payload }) => {
+      state.filters = payload;
+    },
+    resetDialog: (state) => {
+      state.dialog = { title: "", message: "", status: false, duration: 3000 };
+    },
+    filterUrlChange:(state, {payload}) => {
+      state.filters = {...state.filters, url: payload};
     }
-  }
-})
+  },
+});
 
-export const { themeChange, layoutChanged, dialogChange} = ui.actions
+export const { themeChange, layoutChanged, dialogChange, filtersChange, resetDialog, filterUrlChange } =
+  ui.actions;
 
-export default ui.reducer
+export default ui.reducer;

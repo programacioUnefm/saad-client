@@ -9,8 +9,8 @@ import laptop from "/laptop.svg";
 import { useSelector } from "react-redux";
 import { RegisterForm } from "../components/RegisterForm";
 import { PasswordForgot } from "../components/PasswordForgot";
-import { Toaster } from "@/components/ui/toaster";
-import { useToast } from "@/components/ui/use-toast";
+import { Toaster } from "../../components/ui/toaster";
+import { useToast } from "../../components/ui/use-toast";
 
 export const LoginPage = () => {
   const { theme, dialog } = useSelector((state) => state.ui);

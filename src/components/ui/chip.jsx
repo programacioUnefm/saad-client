@@ -10,8 +10,8 @@ export const Chip = ({ text = "" }) => {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger>
-          <div className="text-center">
-            <span className="truncate text-foreground/70 text-[10px] border-2 hover:bg-accent p-1 uppercase rounded-md">
+          <div className="text-center max-w-24 truncate">
+            <span className="text-foreground/70 text-[10px] border-2 hover:bg-accent p-1 uppercase rounded-md">
               {text}
             </span>
           </div>

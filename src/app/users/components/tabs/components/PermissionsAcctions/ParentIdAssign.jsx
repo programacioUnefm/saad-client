@@ -7,10 +7,13 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { PermissionsTree } from "./PermissionsTree";
-import permissions from "./permission.json";
+
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useSelector } from "react-redux";
 
 export const ParentIdAssign = ({ open, setopen, setValue }) => {
+  const {permissionsFull} = useSelector(state => state.usersList);
+
   return (
     <Sheet open={open}>
       <SheetContent>
@@ -19,7 +22,7 @@ export const ParentIdAssign = ({ open, setopen, setValue }) => {
         </SheetHeader>
         <ScrollArea className="h-[88%] pr-4">
           <div className="mt-2 text-sm">
-            {permissions.map((permission) => (
+            {permissionsFull.map((permission) => (
               <PermissionsTree key={Math.random()} setValue={setValue} item={permission} setopen={setopen} />
             ))}
           </div>

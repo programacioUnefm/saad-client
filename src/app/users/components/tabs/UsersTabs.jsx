@@ -4,16 +4,19 @@ import { ConfirmDelete } from "../ConfirmDelete";
 import { RoleAssign } from "../RoleAssign";
 import { EditUser } from "../EditUser";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUser, userRoleAssign } from "@/features/usuarios/UsersThunks";
-import { useToast } from "@/components/ui/use-toast";
+import {
+  deleteUser,
+  userRoleAssign,
+} from "../../../../features/usuarios/UsersThunks";
+import { useToast } from "../../../../components/ui/use-toast";
 import { ListUsers } from "../../layouts/ListUsers";
-import { Table, TableBody } from "@/components/ui/table";
+import { Table, TableBody } from "../../../../components/ui/table";
 import { TableHeaderUsers } from "../../layouts/TableHeaderUsers";
-import { SkeletonGrid } from "@/components/Skeletons/SkeletonGrid";
-import { SkeletonList } from "@/components/Skeletons/SkeletonList";
+import { SkeletonGrid } from "../../../../components/Skeletons/SkeletonGrid";
+import { SkeletonList } from "../../../../components/Skeletons/SkeletonList";
 
 export const UsersTabs = ({ users, tabState }) => {
-  const { layout } = useSelector((state) => state.ui);
+  const { layout, filters } = useSelector((state) => state.ui);
   const [action, setAction] = useState({
     dialog: false,
     action: "",
@@ -31,7 +34,7 @@ export const UsersTabs = ({ users, tabState }) => {
 
   const roleAssign = async (e) => {
     const { user, rolActive } = e;
-    const newState = { userId: user.id, roles: { role_id: rolActive } };
+    const newState = { userId: user.id, roles: { roles: rolActive } };
     const resp = await dispatch(userRoleAssign(newState));
     if (resp == 200) {
       toastAction(`El usuario "${user.name}" tiene nuevos roles`);
@@ -48,43 +51,64 @@ export const UsersTabs = ({ users, tabState }) => {
       toastAction("El usuario fué eliminado satisfactoriamente.");
     }
   };
-  
 
   return (
     <>
       {users.data != undefined ? (
         layout == "grid" ? (
           <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4">
-            {users.data != undefined
-              ? users.data.map((user) => (
-                  <GridUsers
-                    user={user}
-                    key={user.id}
-                    setAction={setAction}
-                    tabState={tabState}
-                  />
-                ))
-              : "Cargando grid de usuarios"}
+            {users.data != undefined &&
+              !filters.status &&
+              users.data.map((user) => (
+                <GridUsers
+                  user={user}
+                  key={user.id}
+                  setAction={setAction}
+                  tabState={tabState}
+                />
+              ))}
+            {filters.status &&
+              filters.result.data.data.map((search) => (
+                <GridUsers
+                  user={search}
+                  key={search.id}
+                  setAction={setAction}
+                  tabState={tabState}
+                />
+              ))}
           </div>
         ) : (
           <div className="w-full">
             <Table className="bg-background p-2 rounded-sm">
               <TableHeaderUsers />
               <TableBody>
-                {users.data.map((user) => (
-                  <ListUsers
-                    user={user}
-                    key={user.id}
-                    setAction={setAction}
-                    tabState={tabState}
-                  />
-                ))}
+                {users.data != undefined &&
+                  !filters.status &&
+                  users.data.map((user) => (
+                    <ListUsers
+                      user={user}
+                      key={user.id}
+                      setAction={setAction}
+                      tabState={tabState}
+                    />
+                  ))}
+                {filters.status &&
+                  filters.result.data.data.map((search) => (
+                    <ListUsers
+                      user={search}
+                      key={search.id}
+                      setAction={setAction}
+                      tabState={tabState}
+                    />
+                  ))}
               </TableBody>
             </Table>
           </div>
         )
+      ) : layout == "grid" ? (
+        <SkeletonGrid />
       ) : (
-        layout == "grid" ? <SkeletonGrid />: <SkeletonList />
+        <SkeletonList />
       )}
       {action.action == "delete" ? (
         <ConfirmDelete

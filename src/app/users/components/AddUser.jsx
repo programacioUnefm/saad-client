@@ -1,19 +1,19 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "../../../components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/ui/dialog";
-import { RegisterForm } from "@/login/components/RegisterForm";
+} from "../../../components/ui/dialog";
+import { RegisterForm } from "../../../login/components/RegisterForm";
 export const AddUser = ({ addUserDialog, setaddUserDialog }) => {
   const closeDialogHandle = () => {
     setaddUserDialog(false);
   };
   return (
     <Dialog open={addUserDialog}>
-      <Button className="uppercase" variant="outline" onClick={() => setaddUserDialog(true)}>
+      <Button variant="outline" size="md" onClick={() => setaddUserDialog(true)}>
         Agregar usuario
       </Button>
       <DialogContent>

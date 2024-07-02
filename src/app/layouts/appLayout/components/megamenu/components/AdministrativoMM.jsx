@@ -1,10 +1,10 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "../../../../../../components/ui/button";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@/components/ui/hover-card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+} from "../../../../../../components/ui/hover-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../../../components/ui/tabs";
 import { ChevronRight } from "lucide-react";
 
 export const AdministrativoMM = () => {

@@ -24,8 +24,8 @@ export const GridPermissions = ({ permission, setAction, tabState }) => {
           <span className="uppercase font-bold " style={{ fontSize: "10px" }}>
             Padre
           </span>
-          <span className="text-primary">
-            {!!permission.parent_id? permission.parent_id : "N/A"}
+          <span className="text-primary uppercase">
+            {!!permission.parent_id? permission.parent.name : "N/A"}
           </span>
         </div>
       </CardHeader>

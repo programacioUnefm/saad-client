@@ -1,5 +1,5 @@
-import { AppLayout } from '@/app/layouts/appLayout/AppLayout'
-import React from 'react'
+import { AppLayout } from '../../../../app/layouts/appLayout/AppLayout'
+
 
 export const Movimientos = () => {
   return (

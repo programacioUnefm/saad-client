@@ -4,8 +4,8 @@ import ComprasSlice from '../features/compras/ComprasSlice'
 import HabilitaduriaSlice from '../features/habilitaruria/HabilitaduriaSlice'
 import ContabilidadSlice from '../features/contabilidad/ContabilidadSlice'
 import PresupuestoSlice from '../features/presupuesto/PresupuestoSlice'
-import UsersSlice from '@/features/usuarios/UsersSlice'
-import UiSlice from '@/features/ui/UiSlice'
+import UsersSlice from '../features/usuarios/UsersSlice'
+import UiSlice from '../features/ui/UiSlice'
 
 export default configureStore({
   reducer: {

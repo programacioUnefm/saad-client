@@ -1,13 +1,11 @@
 {
-    "compilerOptions": {
-      // ...
+  "compilerOptions": {
       "baseUrl": ".",
       "paths": {
-        "@/*": [
-          "./src/*"
-        ]
+          "@/*": ["./src/*"],
+          "pages/*": ["src/pages/*"],
+          "ui/*": ["src/components/ui/*"],
+          // Agrega más alias aquí
       }
-      // ...
-    }
   }
-  
+}

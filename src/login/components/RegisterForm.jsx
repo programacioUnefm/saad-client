@@ -1,10 +1,10 @@
-import { Input } from "@/components/ui/input";
+import { Input } from "../../components/ui/input";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { Button } from "@/components/ui/button";
+import { Button } from "../../components/ui/button";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { RegisterApp } from "@/features/auth/LoginThunk";
-import { useToast } from "@/components/ui/use-toast";
+import { RegisterApp } from "../../features/auth/LoginThunk";
+import { useToast } from "../../components/ui/use-toast";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 

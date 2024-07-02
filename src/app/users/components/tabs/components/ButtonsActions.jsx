@@ -8,13 +8,12 @@ export const ButtonsActions = ({ setAction, arrayItem, tabState }) => {
     
       <Button
         disabled={arrayItem.id == 1}
-        variant="outline"
-        className="h-6  w-full xl:h-[40px]"
+        className="w-full"
         onClick={() =>
           setAction({ dialog: true, action: "edit", arrayItem: arrayItem })
         }
       >
-        <span className="hidden xl:block">Editar</span>
+        <span className="hidden xl:block uppercase text-[10px]">Editar</span>
         <span
           className="block xl:hidden"
           style={{ fontSize: "13px!important" }}
@@ -22,11 +21,10 @@ export const ButtonsActions = ({ setAction, arrayItem, tabState }) => {
           <Pencil size={"15px"} />
         </span>
       </Button>
-      {tabState == "users" || tabState == "role" ? (
+      {tabState == "users" || tabState == "roles" ? (
           <Button
             disabled={arrayItem.id == 1}
-            variant="outline"
-            className="h-6  w-full xl:h-[40px]"
+            className="w-full"
             onClick={() =>
               setAction({
                 dialog: true,
@@ -35,7 +33,7 @@ export const ButtonsActions = ({ setAction, arrayItem, tabState }) => {
               })
             }
           >
-            <span className="hidden xl:block">
+            <span className="hidden xl:block uppercase text-[10px]">
               {tabState == "users" ? "roles" : "Permisos"}
             </span>
             <span className="block xl:hidden">
@@ -45,13 +43,12 @@ export const ButtonsActions = ({ setAction, arrayItem, tabState }) => {
         ): ""}
       <Button
         disabled={arrayItem.id == 1}
-        variant="outline"
-        className="bg-destructive hover:bg-destructive/50 h-6 w-full text-white xl:h-[40px]"
+        className="dark:bg-destructive/80 dark:hover:bg-destructive hover:bg-destructive bg-destructive/80 w-full text-white"
         onClick={() =>
           setAction({ dialog: true, action: "delete", arrayItem: arrayItem })
         }
       >
-        <span className="hidden xl:block">Eliminar</span>
+        <span className="hidden xl:block uppercase text-[10px]">Eliminar</span>
         <span className="block xl:hidden">
           <Trash size={"15px"} />
         </span>

@@ -1,4 +1,4 @@
-import { saadApi } from "@/api/SaddApp";
+import { saadApi } from "../../api/SaddApp";
 import { permissionsRegister, roleRegister, usersRegister } from "./UsersSlice";
 
 
@@ -34,14 +34,12 @@ export const deleteUser = (id) => {
 };
 
 
-
-
-
-
 export const userRoleAssign = (data) => {
   return async (dispatch) => {
     try {
       const {userId, roles} = data;
+      console.log(roles)
+      console.log(userId)
       const resp = await saadApi.post(`admin/users/${userId}/roles`, roles);
       if (resp.data.responseCode == 200) {
         const { data } = resp.data;
@@ -149,6 +147,7 @@ export const addPermissionAsync = (data) => {
 export const editPermission = (data) => {
   return async (dispatch) => {
     try {
+      console.log(data)
       const resp = await saadApi.put(`admin/permissions/${data.id}`, data);
       if (resp.data.responseCode == 200) {
         dispatch(GetPermissionsList());

@@ -1,10 +1,10 @@
 // components/mode-toggle.js
 import React from "react";
 import { Moon, Sun } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useTheme } from "@/components/theme-provider";
+import { Button } from "../../components/ui/button";
+import { useTheme } from "../../components/theme-provider";
 import { useDispatch } from "react-redux";
-import { themeChange } from "@/features/ui/UiSlice";
+import { themeChange } from "../../features/ui/UiSlice";
 
 export function ModeToggle() {
   const { setTheme } = useTheme();

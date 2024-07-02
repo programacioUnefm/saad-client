@@ -1,242 +1,338 @@
 [
-    {
-      "id": 1,
-      "name": "home",
-      "description": "Permission to access home",
-      "code": "HOME",
-      "status": false,
-      "parent_id": null,
-      "children": [
-        {
-          "id": 2,
-          "name": "view_content",
-          "description": "Permission to view content",
-          "code": "VIEW_CONTENT_HOME",
-          "parent_id": 1,
-          "status": true
-        },
-        {
-          "id": 11,
-          "name": "Administrativo",
-          "description": "administrativo",
+  {
+    "id": 1,
+    "name": "home",
+    "description": "Permission to access home",
+    "code": "HOME",
+    "status": false,
+    "parent_id": null,
+    "children": [
+      {
+        "id": 2,
+        "name": "view_content",
+        "description": "Permission to view content",
+        "code": "VIEW_CONTENT_HOME",
+        "parent_id": 1,
+        "status": true,
+        "parent": {
+          "id": 1,
+          "name": "home",
+          "description": "Permission to access home",
+          "code": "HOME",
           "status": false,
-          "code": "administrativo",
-          "parent_id": 1,
-          "children": [
-            {
-              "id": 12,
-              "name": "view_content",
-              "description": "Permission to view content",
-              "code": "VIEW_CONTENT_ADMIN",
-              "status": false,
-              "parent_id": 11
-            },
-            {
-              "id": 13,
-              "name": "Reportes",
-              "description": "permiso de modulo",
-              "code": "Report",
-              "status": false,
-              "parent_id": 11,
-              "children": [
-                {
-                  "id": 29,
-                  "name": "view_content",
-                  "description": "Permission to view content",
-                  "code": "VIEW_CONTENT_rep",
-                  "status": false,
-                  "parent_id": 14
-                },
-                {
-                  "id": 30,
-                  "name": "create_content",
-                  "description": "acamission to create content",
-                  "code": "CREATE_CONTENT_rep",
-                  "status": false,
-                  "parent_id": 14
-                },
-                {
-                  "id": 31,
-                  "name": "edit_content",
-                  "description": "acamission to edit content",
-                  "code": "EDIT_CONTENT_rep",
-                  "status": false,
-                  "parent_id": 14
-                },
-                {
-                  "id": 32,
-                  "name": "delete_content",
-                  "description": "acamission to delete content",
-                  "code": "DELETE_CONTENT_rep",
-                  "status": true,
-                  "parent_id": 14
-                }
-              ]
-            },
-            {
-              "id": 14,
-              "name": "Registro y control",
-              "description": "permiso de modulo",
-              "code": "regycontrol",
-              "status": false,
-              "parent_id": 11,
-              "children": [
-                {
-                  "id": 33,
-                  "name": "view_content",
-                  "description": "Permission to view content",
-                  "code": "VIEW_CONTENT_rep",
-                  "status": false,
-                  "parent_id": 14
-                },
-                {
-                  "id": 34,
-                  "name": "create_content",
-                  "description": "acamission to create content",
-                  "code": "CREATE_CONTENT_rep",
-                  "status": false,
-                  "parent_id": 14
-                },
-                {
-                  "id": 35,
-                  "name": "edit_content",
-                  "description": "acamission to edit content",
-                  "code": "EDIT_CONTENT_rep",
-                  "status": false,
-                  "parent_id": 14
-                },
-                {
-                  "id": 36,
-                  "name": "delete_content",
-                  "description": "acamission to delete content",
-                  "code": "DELETE_CONTENT_rep",
-                  "status": false,
-                  "parent_id": 14
-                }
-              ]
-            },
-            {
-              "id": 15,
-              "name": "Plan de compras",
-              "description": "permiso de modulo",
-              "code": "plancom",
-              "status": false,
-              "children": [],
-              "parent_id": 11
-            },
-            {
-              "id": 26,
-              "name": "Cierres",
-              "description": "permiso de modulo",
-              "code": "CIERRES",
-              "status": false,
-              "children": [],
-              "parent_id": 11
-            },
-            {
-              "id": 27,
-              "name": "movimientos",
-              "description": "permiso de modulo",
-              "code": "MOV",
-              "status": false,
-              "children": [],
-              "parent_id": 11
-            },
-            {
-              "id": 28,
-              "name": "tablas básicas",
-              "description": "permiso de modulo",
-              "code": "tab_basc",
-              "status": false,
-              "children": [],
-              "parent_id": 11
-            }
-          ]
-        },
-        {
-          "id": 16,
-          "name": "personal",
-          "description": "persona",
-          "status": false,
-          "code": "personal",
-          "parent_id": 1,
-          "children": [
-            {
-              "id": 17,
-              "name": "view_content",
-              "description": "Permission to view content",
-              "code": "VIEW_CONTENT_PER",
-              "status": false,
-              "parent_id": 16
-            },
-            {
-              "id": 18,
-              "name": "create_content",
-              "description": "Permission to create content",
-              "code": "CREATE_CONTENT_PER",
-              "status": false,
-              "parent_id": 16
-            },
-            {
-              "id": 19,
-              "name": "edit_content",
-              "description": "Permission to edit content",
-              "code": "EDIT_CONTENT_PER",
-              "status": false,
-              "parent_id": 16
-            },
-            {
-              "id": 20,
-              "name": "delete_content",
-              "description": "Permission to delete content",
-              "code": "DELETE_CONTENT_PER",
-              "status": true,
-              "parent_id": 16
-            }
-          ]
-        },
-        {
-          "id": 21,
-          "name": "academico",
-          "description": "persona",
-          "status": false,
-          "code": "academico",
-          "parent_id": 1,
-          "children": [
-            {
-              "id": 22,
-              "name": "view_content",
-              "description": "Permission to view content",
-              "code": "VIEW_CONTENT_aca",
-              "status": false,
-              "parent_id": 21
-            },
-            {
-              "id": 23,
-              "name": "create_content",
-              "description": "acamission to create content",
-              "code": "CREATE_CONTENT_aca",
-              "status": false,
-              "parent_id": 21
-            },
-            {
-              "id": 24,
-              "name": "edit_content",
-              "description": "acamission to edit content",
-              "code": "EDIT_CONTENT_aca",
-              "status": false,
-              "parent_id": 21
-            },
-            {
-              "id": 25,
-              "name": "delete_content",
-              "description": "acamission to delete content",
-              "code": "DELETE_CONTENT_aca",
-              "status": true,
-              "parent_id": 21
-            }
-          ]
+          "parent_id": null
         }
-      ]
-    }
-  ]
+      },
+      {
+        "id": 11,
+        "name": "Administrativo",
+        "description": "administrativo",
+        "status": false,
+        "code": "administrativo",
+        "parent_id": 1,
+        "parent": {
+          "id": 1,
+          "name": "home",
+          "description": "Permission to access home",
+          "code": "HOME",
+          "status": false,
+          "parent_id": null
+        },
+        "children": [
+          {
+            "id": 12,
+            "name": "view_content",
+            "description": "Permission to view content",
+            "code": "VIEW_CONTENT_ADMIN",
+            "status": false,
+            "parent_id": 11,
+            "parent": {
+              "id": 11,
+              "name": "Administrativo",
+              "description": "administrativo",
+              "status": false,
+              "code": "administrativo",
+              "parent_id": 1
+            }
+          },
+          {
+            "id": 13,
+            "name": "Reportes",
+            "description": "permiso de modulo",
+            "code": "Report",
+            "status": false,
+            "parent_id": 11,
+            "children": [
+              {
+                "id": 29,
+                "name": "view_content",
+                "description": "Permission to view content",
+                "code": "VIEW_CONTENT_rep",
+                "status": false,
+                "parent_id": 13,
+                "parent": {
+                  "id": 13,
+                  "name": "Reportes",
+                  "description": "permiso de modulo",
+                  "code": "Report",
+                  "status": false,
+                  "parent_id": 11
+                }
+              },
+              {
+                "id": 30,
+                "name": "create_content",
+                "description": "acamission to create content",
+                "code": "CREATE_CONTENT_rep",
+                "status": false,
+                "parent_id": 13,
+                "parent": {
+                  "id": 13,
+                  "name": "Reportes",
+                  "description": "permiso de modulo",
+                  "code": "Report",
+                  "status": false,
+                  "parent_id": 11
+                }
+              },
+              {
+                "id": 31,
+                "name": "edit_content",
+                "description": "acamission to edit content",
+                "code": "EDIT_CONTENT_rep",
+                "status": false,
+                "parent_id": 13,
+                "parent": {
+                  "id": 13,
+                  "name": "Reportes",
+                  "description": "permiso de modulo",
+                  "code": "Report",
+                  "status": false,
+                  "parent_id": 11
+                }
+              },
+              {
+                "id": 32,
+                "name": "delete_content",
+                "description": "acamission to delete content",
+                "code": "DELETE_CONTENT_rep",
+                "status": true,
+                "parent_id": 13,
+                "parent": {
+                  "id": 13,
+                  "name": "Reportes",
+                  "description": "permiso de modulo",
+                  "code": "Report",
+                  "status": false,
+                  "parent_id": 11
+                }
+              }
+            ]
+          },
+          {
+            "id": 14,
+            "name": "Registro y control",
+            "description": "permiso de modulo",
+            "code": "regycontrol",
+            "status": false,
+            "parent_id": 11,
+            "parent": {
+              "id": 11,
+              "name": "Administrativo",
+              "description": "administrativo",
+              "status": false,
+              "code": "administrativo",
+              "parent_id": 1
+            },
+            "children": [
+              {
+                "id": 33,
+                "name": "view_content",
+                "description": "Permission to view content",
+                "code": "VIEW_CONTENT_rep",
+                "status": false,
+                "parent_id": 14,
+                "parent": {
+                  "id": 14,
+                  "name": "Registro y control",
+                  "description": "permiso de modulo",
+                  "code": "regycontrol",
+                  "status": false,
+                  "parent_id": 11
+                }
+              },
+              {
+                "id": 34,
+                "name": "create_content",
+                "description": "acamission to create content",
+                "code": "CREATE_CONTENT_rep",
+                "status": false,
+                "parent_id": 14,
+                "parent": {
+                  "id": 14,
+                  "name": "Registro y control",
+                  "description": "permiso de modulo",
+                  "code": "regycontrol",
+                  "status": false,
+                  "parent_id": 11
+                }
+              },
+              {
+                "id": 35,
+                "name": "edit_content",
+                "description": "acamission to edit content",
+                "code": "EDIT_CONTENT_rep",
+                "status": false,
+                "parent_id": 14,
+                "parent": {
+                  "id": 14,
+                  "name": "Registro y control",
+                  "description": "permiso de modulo",
+                  "code": "regycontrol",
+                  "status": false,
+                  "parent_id": 11
+                }
+              },
+              {
+                "id": 36,
+                "name": "delete_content",
+                "description": "acamission to delete content",
+                "code": "DELETE_CONTENT_rep",
+                "status": false,
+                "parent_id": 14,
+                "parent": {
+                  "id": 14,
+                  "name": "Registro y control",
+                  "description": "permiso de modulo",
+                  "code": "regycontrol",
+                  "status": false,
+                  "parent_id": 11
+                }
+              }
+            ]
+          },
+          {
+            "id": 15,
+            "name": "Plan de compras",
+            "description": "permiso de modulo",
+            "code": "plancom",
+            "status": false,
+            "children": [],
+            "parent_id": 11
+          },
+          {
+            "id": 26,
+            "name": "Cierres",
+            "description": "permiso de modulo",
+            "code": "CIERRES",
+            "status": false,
+            "children": [],
+            "parent_id": 11
+          },
+          {
+            "id": 27,
+            "name": "movimientos",
+            "description": "permiso de modulo",
+            "code": "MOV",
+            "status": false,
+            "children": [],
+            "parent_id": 11
+          },
+          {
+            "id": 28,
+            "name": "tablas básicas",
+            "description": "permiso de modulo",
+            "code": "tab_basc",
+            "status": false,
+            "children": [],
+            "parent_id": 11
+          }
+        ]
+      },
+      {
+        "id": 16,
+        "name": "personal",
+        "description": "persona",
+        "status": false,
+        "code": "personal",
+        "parent_id": 1,
+        "children": [
+          {
+            "id": 17,
+            "name": "view_content",
+            "description": "Permission to view content",
+            "code": "VIEW_CONTENT_PER",
+            "status": false,
+            "parent_id": 16
+          },
+          {
+            "id": 18,
+            "name": "create_content",
+            "description": "Permission to create content",
+            "code": "CREATE_CONTENT_PER",
+            "status": false,
+            "parent_id": 16
+          },
+          {
+            "id": 19,
+            "name": "edit_content",
+            "description": "Permission to edit content",
+            "code": "EDIT_CONTENT_PER",
+            "status": false,
+            "parent_id": 16
+          },
+          {
+            "id": 20,
+            "name": "delete_content",
+            "description": "Permission to delete content",
+            "code": "DELETE_CONTENT_PER",
+            "status": true,
+            "parent_id": 16
+          }
+        ]
+      },
+      {
+        "id": 21,
+        "name": "academico",
+        "description": "persona",
+        "status": false,
+        "code": "academico",
+        "parent_id": 1,
+        "children": [
+          {
+            "id": 22,
+            "name": "view_content",
+            "description": "Permission to view content",
+            "code": "VIEW_CONTENT_aca",
+            "status": false,
+            "parent_id": 21
+          },
+          {
+            "id": 23,
+            "name": "create_content",
+            "description": "acamission to create content",
+            "code": "CREATE_CONTENT_aca",
+            "status": false,
+            "parent_id": 21
+          },
+          {
+            "id": 24,
+            "name": "edit_content",
+            "description": "acamission to edit content",
+            "code": "EDIT_CONTENT_aca",
+            "status": false,
+            "parent_id": 21
+          },
+          {
+            "id": 25,
+            "name": "delete_content",
+            "description": "acamission to delete content",
+            "code": "DELETE_CONTENT_aca",
+            "status": true,
+            "parent_id": 21
+          }
+        ]
+      }
+    ]
+  }
+]

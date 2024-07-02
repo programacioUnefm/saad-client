@@ -5,16 +5,17 @@ import store from "./app/store";
 import { Provider } from "react-redux";
 import { RouterApp } from "./router/RouterApp.jsx";
 import { BrowserRouter } from "react-router-dom";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "./components/theme-provider";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <Provider store={store}>
-        <BrowserRouter>
+        {/* <BrowserRouter  basename={"build"}> */}
+        <BrowserRouter >
           <RouterApp />
         </BrowserRouter>
       </Provider>
     </ThemeProvider>
-  </React.StrictMode>
+  // {/* </React.StrictMode> */}
 );

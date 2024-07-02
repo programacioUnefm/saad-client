@@ -8,20 +8,20 @@ import { PresupuestoPage } from "../app/administrativo/presupuesto/PresupuestoPa
 import { DashboardPage } from "../app/dasboard/DashboardPage";
 import { ProtectedRoutes } from "./ProtectedRoutes";
 import { useDispatch, useSelector } from "react-redux";
-import { ModeToggle } from "@/components/ui/mode-toggle";
+import { ModeToggle } from "../components/ui/mode-toggle";
 
-import { RegistroControl } from "@/app/administrativo/compras/components/RegistroControl";
-import { Administrativo } from "@/app/administrativo/Administrativo";
-import { Movimientos } from "@/app/administrativo/compras/components/Movimientos";
-import { Cierres } from "@/app/administrativo/compras/components/Cierres";
-import { Reportes } from "@/app/administrativo/compras/components/Reportes";
-import { TablasBasicas } from "@/app/administrativo/compras/components/TablasBasicas";
-import { PlanCompras } from "@/app/administrativo/compras/components/PlanCompras";
+import { RegistroControl } from "../app/administrativo/compras/components/RegistroControl";
+import { Administrativo } from "../app/administrativo/Administrativo";
+import { Movimientos } from "../app/administrativo/compras/components/Movimientos";
+import { Cierres } from "../app/administrativo/compras/components/Cierres";
+import { Reportes } from "../app/administrativo/compras/components/Reportes";
+import { TablasBasicas } from "../app/administrativo/compras/components/TablasBasicas";
+import { PlanCompras } from "../app/administrativo/compras/components/PlanCompras";
 
-import { UsersListPage } from "@/app/users/UsersListPage";
-import { layoutChanged, themeChange } from "@/features/ui/UiSlice";
-import { VerifyUser } from "@/features/auth/LoginThunk";
-import { login } from "@/features/auth/AuthSlice";
+import { UsersListPage } from "../app/users/UsersListPage";
+import { layoutChanged, themeChange } from "../features/ui/UiSlice";
+import { VerifyUser } from "../features/auth/LoginThunk";
+import { login } from "../features/auth/AuthSlice";
 
 export const RouterApp = () => {
   let theme = localStorage.getItem("vite-ui-theme");

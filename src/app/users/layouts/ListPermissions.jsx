@@ -12,7 +12,7 @@ export const ListPermissions = ({ permission, setAction, tabState }) => {
         {permission.parent_id == null ? (
           <Chip text="N/A" />
         ) : (
-          <Chip text={permission.parent_id} />
+          <Chip text={permission.parent.name} />
         )}
       </TableCell>
       <TableCell>

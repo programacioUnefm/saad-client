@@ -1,16 +1,16 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "../../../components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "../../../components/ui/dialog";
 import { RolesForm } from "./RolesForm";
 
 export const AddRoles = ({ addRoleDialog, setAddRoleDialog }) => {
   return (
     <Dialog open={addRoleDialog}>
-      <Button className="uppercase" variant="outline" onClick={() => setAddRoleDialog(true)}>
+      <Button variant="outline" size="md" onClick={() => setAddRoleDialog(true)}>
         Agregar rol
       </Button>
       <DialogContent>

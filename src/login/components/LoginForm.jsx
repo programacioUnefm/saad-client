@@ -1,12 +1,12 @@
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "../../components/ui/input";
+import { Button } from "../../components/ui/button";
+import { Checkbox } from "../../components/ui/checkbox";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { LoginApp } from "@/features/auth/LoginThunk";
+import { LoginApp } from "../../features/auth/LoginThunk";
 import { useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "../../components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
 
 export const LoginForm = ({ setloginState }) => {
@@ -32,19 +32,20 @@ export const LoginForm = ({ setloginState }) => {
         navigate("/inicio");
         setload(false);
         break;
-      case 400:
-        toast({
-          variant: "destructive",
-          title: "Usuario o contraseña invalida",
-        });
-        setload(false);
-        break;
+
       case "ERR_NETWORK":
         toast({
           variant: "destructive",
           title: "Tenemos problemas",
           description:
             "Estamos tratando de solucionar lo más pronto posible, si el problema persiste por favor llamar a servicio técnico",
+        });
+        setload(false);
+        break;
+      case "ERR_BAD_REQUEST":
+        toast({
+          variant: "destructive",
+          title: "Usuario o contraseña invalida",
         });
         setload(false);
         break;
@@ -75,10 +76,10 @@ export const LoginForm = ({ setloginState }) => {
       <div className="mt-8 w-full flex justify-center align-middle text-center">
         <Button disabled={load} className="w-full uppercase" type="submit">
           {load && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
-          {load ? "Enviando..." : "Registrarme ahora"}
+          {load ? "Enviando..." : "Iniciar sesión"}
         </Button>
       </div>
-      <div className="flex mt-8">
+      {/* <div className="flex mt-8">
         <div className="flex items-center space-x-2 w-2/5">
           <Checkbox id="recuerdame" />
           <label htmlFor="recuerdame">Recuerdame</label>
@@ -91,7 +92,7 @@ export const LoginForm = ({ setloginState }) => {
             Olvidé mi contraseña
           </span>
         </div>
-      </div>
+      </div> */}
     </form>
   );
 };
