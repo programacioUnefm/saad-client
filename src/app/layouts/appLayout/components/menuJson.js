@@ -235,7 +235,7 @@ export const navbarMenu = [
                 icon: "ChevronRight",
               },
               {
-                title: "Cargos directivos",
+                title: "Directivos",
                 path: "/personal/expediente/cargos-directivos",
                 icon: "ChevronRight",
               },
