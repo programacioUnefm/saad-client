@@ -40,8 +40,13 @@ export const ListRoles = ({ tabState, setAction, rol }) => {
         )}
       </TableCell>
       <TableCell className="text-center"><Chip text={rol.code} /></TableCell>
-      <TableCell className="grid grid-cols-3 max-w-[300px] gap-2" >
-        <ButtonsActions tabState={tabState} setAction={setAction} arrayItem={rol} />
+      
+      <TableCell className="flex gap-2 justify-end min-w-[100px] max-w-[300px]">
+        <ButtonsActions
+          setAction={setAction}
+          arrayItem={rol}
+          tabState={tabState}
+        />
       </TableCell>
     </TableRow>
   );

@@ -12,6 +12,10 @@ export const ui = createSlice({
       url: "",
       result: [],
     },
+    menuState:{
+      route:"",
+      arrayRoute:[]
+    },
     dialog: {
       title: "",
       message: "",

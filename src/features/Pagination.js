@@ -10,7 +10,7 @@ export const paginationAdminUserPrivileges = (url, tabState) => {
           case "users":
             dispatch(usersRegister(data));
             break;
-          case "role":
+          case "roles":
             dispatch(roleRegister(data));
             break;
           case "permissions":
