@@ -6,7 +6,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { RolesForm } from "../../components/RolesForm";
+import { RolesForm } from "../../forms/RolesForm";
 
 
 

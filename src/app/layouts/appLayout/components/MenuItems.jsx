@@ -49,7 +49,7 @@ export const MenuItems = ({ item }) => {
       {item.subMenu ? (
         <AccordionItem value={item.title} disabled={!permissionCheck(item.permission)}>
           <AccordionTrigger
-            className={!permissionCheck(item.permission) ? "hidden" :"uppercase font-bold text-sm text-accent-foreground/80 hover:text-accent-foreground"}
+            className={!permissionCheck(item.permission) ? "uppercase font-bold text-sm" :"uppercase font-bold text-sm text-accent-foreground/80 hover:text-accent-foreground"}
           >
             <div className="flex gap-2 text-[10px]">
               {item.icon != undefined && <Icon name={item.icon} size={18} />}

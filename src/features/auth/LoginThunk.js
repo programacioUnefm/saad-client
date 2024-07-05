@@ -80,7 +80,7 @@ export const LogOutApp = () => {
       localStorage.removeItem("token_access");
       dispatch(login({ Authstatus: false, name: "", role: [], token: "" }));
     } catch (error) {
-      console.log(error);
+      
     }
   };
 };

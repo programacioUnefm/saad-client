@@ -11,7 +11,7 @@ import { TableHeaderRoles } from "../layouts/TableHeaderRoles";
 import { ListRoles } from "../layouts/ListRoles";
 import { SkeletonGrid } from "@/components/Skeletons/SkeletonGrid";
 import { SkeletonList } from "@/components/Skeletons/SkeletonList";
-import { ConfirmDelete } from "../components/ConfirmDelete";
+import { ConfirmDelete } from "../forms/ConfirmDelete";
 
 export const RolesTab = ({ roles, tabState }) => {
   const { layout, filters } = useSelector((state) => state.ui);

@@ -8,11 +8,11 @@ import { SkeletonGrid } from "@/components/Skeletons/SkeletonGrid";
 import { SkeletonList } from "@/components/Skeletons/SkeletonList";
 
 import { RoleAssign } from "../components/RoleAssign";
-import { EditUser } from "../components/EditUser";
+import { EditUser } from "../forms/EditUser";
 import { deleteUser, userRoleAssign } from "@/features/usuarios/UsersThunks";
 import { useToast } from "@/components/ui/use-toast";
 import { TableHeaderUsers } from "../layouts/TableHeaderUsers";
-import { ConfirmDelete } from "../components/ConfirmDelete";
+import { ConfirmDelete } from "../forms/ConfirmDelete";
 
 export const UsersTabs = ({ users, tabState }) => {
   const { layout, filters } = useSelector((state) => state.ui);

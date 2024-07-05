@@ -18,6 +18,22 @@ export const GetUsersList = () => {
   };
 };
 
+
+export const editUserAsync = (data) => {
+  return async (dispatch) => {
+    try {
+      const resp = await saadApi.put(`admin/users/${data.id}`, data);
+      if (resp.data.responseCode == 200) {
+        dispatch(GetUsersList());
+        return resp.data.responseCode;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+
 export const deleteUser = (id) => {
   return async (dispatch) => {
     try {

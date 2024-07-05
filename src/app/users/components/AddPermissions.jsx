@@ -5,7 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../../../components/ui/dialog";
-import { PermissionsForm } from "./PermissionsForm";
+import { PermissionsForm } from "../forms/PermissionsForm";
 
 
 export const AddPermissions = ({ addPermissionsDialog, setPermissionsDialog }) => {

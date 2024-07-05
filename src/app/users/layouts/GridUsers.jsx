@@ -41,7 +41,7 @@ export const GridUsers = ({ user, setAction, tabState }) => {
           </div>
         </CardContent>
 
-        <CardFooter className="grid grid-cols-3 gap-2 max-w-[300px]">
+        <CardFooter className="grid grid-cols-3 gap-2">
           <ButtonsActions setAction={setAction} arrayItem={user} tabState={tabState} />
         </CardFooter>
       </Card>

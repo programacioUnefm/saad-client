@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { TooltipPermission } from "./components/TooltipPermission";
-import { AddPermisionCard } from "./components/AddPermisionCard";
+import { AddPermisionCard } from "../forms/AddPermisionCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Chip } from "@/components/ui/chip";
 
@@ -69,16 +69,19 @@ export const PermissionsTab = ({ permissions, tabState }) => {
   };
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-8">
         <div className="flex">
           <AddPermisionCard parent={parent} setparent={setparent} />
         </div>
-        <ScrollArea className="h-[62vh] border-2 border-dashed p-4 rounded-md bg-white dark:bg-accent/20 flex justify-center">
+        <div className="text-center  xl:col-span-2">
+        <h2 className="text-xl uppercase font-bold text-muted-foreground/90 mb-5">Arbol de permisos</h2>
+        <ScrollArea className="h-[58vh] w-full border-2 border-dashed p-4 rounded-md bg-white dark:bg-accent/20 flex justify-center">
           {dataSort != null &&
             dataSort.map((parent) => (
               <TreeNode key={parent.id} data={parent} />
             ))}
         </ScrollArea>
+        </div>
       </div>
     </>
   );

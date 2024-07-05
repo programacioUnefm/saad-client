@@ -43,8 +43,8 @@ export const TooltipPermission = ({
       ) : (
         <Popover>
           <PopoverTrigger>
-            <div className="tooltip">
-              <div className="ml-4 flex items-center uppercase">
+            <div className="tooltip text-left">
+              <div className="ml-4 flex items-center uppercase xl:text-[13px]">
                 {tooltip}
               </div>
               <span className="tooltiptext">
