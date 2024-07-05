@@ -1,11 +1,12 @@
 import { TableCell, TableRow } from "@/components/ui/table";
-import { ButtonsActions } from "../components/tabs/components/ButtonsActions";
+
 import { Chip } from "@/components/ui/chip";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { ButtonsActions } from "../tabs/components/ButtonsActions";
 
 export const ListUsers = ({ user, setAction, tabState }) => {
   return (

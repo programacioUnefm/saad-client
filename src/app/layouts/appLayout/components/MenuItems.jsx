@@ -5,22 +5,38 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { NavLink } from "react-router-dom";
-
 import { icons } from "lucide-react";
+import { useSelector } from "react-redux";
 
 export const MenuItems = ({ item }) => {
-  const classDefault = "hover:bg-accent/50 p-3 rounded-md w-full mb-0.5 uppercase font-bold text-[10px] cursor-pointer dark:text-accent-foreground/80  hover:text-accent-foreground flex items-center gap-2 "
+  const { permissions } = useSelector((state) => state.auth);
+  const classDefault =
+    "p-3 rounded-md w-full mb-0.5 uppercase font-bold text-[10px] cursor-pointer flex items-center gap-2 ";
   const Icon = ({ name, color, size }) => {
     const LucideIcon = icons[name];
     return <LucideIcon color={color} size={size} />;
   };
 
+  const permissionCheck = (permission) => {
+    if(permission != undefined){
+      return permission.every((element) => permissions.includes(element));
+    }
+    return false
+  }
+
+
   const SingleItem = ({ element }) => {
+    
     return (
-      <NavLink to={item.path}>
-        {({ isActive, isPending, isTransitioning }) => (
+      <NavLink to={item.path} style={!permissionCheck(item.permission)? {pointerEvents: "none"}: {}} >
+        {({ isActive }) => (
           <div
-            className={isActive ? `${classDefault} bg-primary/80 text-white hover:bg-primary` : classDefault}>
+            className={
+              isActive
+                ? `${classDefault} bg-primary/80 text-white hover:bg-primary`
+                : !permissionCheck(item.permission)? `${classDefault} text-ring/40`: `${classDefault} dark:text-accent-foreground/80 hover:bg-accent/50 hover:text-accent-foreground `
+            }
+          >
             {item.icon && <Icon name={item.icon} size={18} />}
             {element.title}
           </div>
@@ -31,8 +47,10 @@ export const MenuItems = ({ item }) => {
   return (
     <div>
       {item.subMenu ? (
-        <AccordionItem value={item.title}>
-          <AccordionTrigger className="uppercase font-bold text-sm text-accent-foreground/80 hover:text-accent-foreground">
+        <AccordionItem value={item.title} disabled={!permissionCheck(item.permission)}>
+          <AccordionTrigger
+            className={!permissionCheck(item.permission) ? "hidden" :"uppercase font-bold text-sm text-accent-foreground/80 hover:text-accent-foreground"}
+          >
             <div className="flex gap-2 text-[10px]">
               {item.icon != undefined && <Icon name={item.icon} size={18} />}
               {item.title}

@@ -2,15 +2,16 @@ import { Table, TableBody } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GridRoles } from "../../layouts/GridRoles";
-import { ConfirmDelete } from "../ConfirmDelete";
+import { GridRoles } from "../layouts/GridRoles";
+
 import { deleteRol } from "@/features/usuarios/UsersThunks";
 import { EditRolesDialog } from "./components/EditRolesDialog";
 import { PermissionsAssign } from "./components/PermissionsAcctions/PermissionsAssign";
-import { TableHeaderRoles } from "../../layouts/TableHeaderRoles";
-import { ListRoles } from "../../layouts/ListRoles";
+import { TableHeaderRoles } from "../layouts/TableHeaderRoles";
+import { ListRoles } from "../layouts/ListRoles";
 import { SkeletonGrid } from "@/components/Skeletons/SkeletonGrid";
 import { SkeletonList } from "@/components/Skeletons/SkeletonList";
+import { ConfirmDelete } from "../components/ConfirmDelete";
 
 export const RolesTab = ({ roles, tabState }) => {
   const { layout, filters } = useSelector((state) => state.ui);

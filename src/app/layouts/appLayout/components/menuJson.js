@@ -5,45 +5,63 @@ export const navbarMenu = [
     title: "Inicio",
     path: "/inicio/",
     icon: "Home",
+    permission: ["HOME"],
+    action: "disable",
   },
   {
     title: "Administrativo",
     path: "/administrativo/",
     icon: "List",
+    permission: ["HOME", "HOME_ADMINISTRATIVO"],
+    action: "disable",
     subMenu: [
       {
         title: "Compras",
         path: "/administrativo/compras/registro-control",
+        permission: ["HOME", "ADMINISTRATIVO_COMPRAS"],
+        action: "disable",
         icon: "ShoppingBasket",
         subMenu: [
           {
             title: "Reportes",
             icon: "ChevronRight",
+            permission: ["HOME","ADMINISTRATIVO_COMPRAS" ,"COMPRAS_REPORTES"],
+            action: "disable",
             path: "/administrativo/compras/reportes",
           },
           {
             title: "Registro y control",
             icon: "ChevronRight",
+            permission: ["HOME","ADMINISTRATIVO_COMPRAS" ,"COMPRAS_REG&CNTROL"],
+            action: "disable",
             path: "/administrativo/compras/registro-control",
           },
           {
             title: "Plan de compras",
             icon: "ChevronRight",
+            permission: ["HOME","ADMINISTRATIVO_COMPRAS" ,"COMPRAS_PLAN_COMPRAS"],
+            action: "disable",
             path: "/administrativo/compras/plan-compras",
           },
           {
             title: "Cierres",
             icon: "ChevronRight",
+            permission: ["HOME","ADMINISTRATIVO_COMPRAS" ,"COMPRAS_CIERRES"],
+            action: "disable",
             path: "/administrativo/compras/cierres",
           },
           {
             title: "Movimientos",
             icon: "ChevronRight",
+            permission: ["HOME","ADMINISTRATIVO_COMPRAS" ,"COMPRAS_MOVIMIENTOS"],
+            action: "disable",
             path: "/administrativo/compras/movimientos",
           },
           {
             title: "Tablas básicas",
             icon: "ChevronRight",
+            permission: ["HOME","ADMINISTRATIVO_COMPRAS" ,"COMPRAS_TABLASB"],
+            action: "disable",
             path: "/administrativo/compras/tablas-basicas",
           },
         ],
@@ -51,6 +69,8 @@ export const navbarMenu = [
       {
         title: "Contabilidad",
         path: "/administrativo/compras/movimientos",
+        permission: ["HOME", "ADMINISTRATIVO_CONTABILIDAD"],
+        action: "disable",
         icon: "ListOrdered",
         subMenu: [
           {
@@ -93,6 +113,8 @@ export const navbarMenu = [
       {
         title: "Habilitaduría",
         path: "/administrativo/compras/plan-compras",
+        permission: ["HOME", "ADMINISTRATIVO_HABILITADURIA"],
+        action: "disable",
         icon: "LibraryBig",
         subMenu: [
           {
@@ -115,7 +137,11 @@ export const navbarMenu = [
             icon: "ChevronRight",
             path: "/administrativo/compras/cierres",
           },
-          { title: "Movimientos", icon: "ChevronRight", path: "/administrativo/compras/movimientos" },
+          {
+            title: "Movimientos",
+            icon: "ChevronRight",
+            path: "/administrativo/compras/movimientos",
+          },
           {
             title: "Proveedores",
             icon: "ChevronRight",
@@ -126,28 +152,50 @@ export const navbarMenu = [
       {
         title: "Presupuesto",
         path: "/administrativo/compras/plan-compras",
+        permission: ["HOME", "ADMINISTRATIVO_PRESUPUESTO"],
+        action: "disable",
         icon: "Coins",
         subMenu: [
-          { title: "Reportes", icon: "ChevronRight", path: "/administrativo/compras/reportes" },
+          {
+            title: "Reportes",
+            icon: "ChevronRight",
+            permission: ["HOME", "ADMINISTRATIVO_PRESUPUESTO", "PRESUPUESTO_REPORTES"],
+            action: "disable",
+            path: "/administrativo/compras/reportes",
+          },
           {
             title: "Tablas básicas",
             icon: "ChevronRight",
+            permission: ["HOME", "ADMINISTRATIVO_PRESUPUESTO", "PRESUPUESTO_TABLASB"],
+            action: "disable",
             path: "/administrativo/compras/registro-control",
           },
           {
             title: "Cambios",
             icon: "ChevronRight",
+            permission: ["HOME","ADMINISTRATIVO_PRESUPUESTO" ,"PRESUPUESTO_CAMBIOS"],
+            action: "disable",
             path: "/administrativo/compras/plan-compras",
           },
-          { title: "Cierres", icon: "ChevronRight", path: "/administrativo/compras/cierres" },
+          {
+            title: "Cierres",
+            icon: "ChevronRight",
+            permission: ["HOME", "ADMINISTRATIVO_PRESUPUESTO","PRESUPUESTO_CIERRES"],
+            action: "disable",
+            path: "/administrativo/compras/cierres",
+          },
           {
             title: "Ejecución",
             icon: "ChevronRight",
+            permission: ["HOME","ADMINISTRATIVO_PRESUPUESTO" , "PRESUPUESTO_EJECUCION"],
+            action: "disable",
             path: "/administrativo/compras/tablas-basicas",
           },
           {
             title: "Gráficos",
             icon: "ChevronRight",
+            permission: ["HOME","ADMINISTRATIVO_PRESUPUESTO" ,"PRESUPUESTO", "PRESUPUESTO_GRAFICOS"],
+            action: "disable",
             path: "/administrativo/compras/tablas-basicas",
           },
         ],
@@ -157,6 +205,8 @@ export const navbarMenu = [
   {
     title: "Académico",
     path: "/academico/",
+    permission: ["HOME_ACADEMICO"],
+    action: "disable",
     icon: "GraduationCap",
     subMenu: [
       {
@@ -198,6 +248,8 @@ export const navbarMenu = [
   {
     title: "Personal",
     path: "/academico/",
+    permission: ["HOME_PERSONAL"],
+    action: "disable",
     icon: "Users",
     subMenu: [
       {
@@ -208,7 +260,7 @@ export const navbarMenu = [
           {
             title: "Reg de datos",
             path: "/personal/expediente/registro-datos",
-            subMenu:[
+            subMenu: [
               {
                 title: "Actuación",
                 path: "/personal/expediente/actuacion",
@@ -264,7 +316,7 @@ export const navbarMenu = [
                 path: "/personal/expediente/trabajos-anteriores",
                 icon: "ChevronRight",
               },
-            ]
+            ],
           },
           {
             title: "Tablas básicas",
@@ -293,7 +345,7 @@ export const navbarMenu = [
               {
                 title: "Manual cargos",
                 path: "/personal/expediente/trabajos-anteriores",
-                subMenu:[
+                subMenu: [
                   {
                     title: "Manual",
                     path: "/personal/expediente/trabajos-anteriores",
@@ -309,7 +361,7 @@ export const navbarMenu = [
                     path: "/personal/expediente/trabajos-anteriores",
                     icon: "ChevronRight",
                   },
-                ]
+                ],
               },
               {
                 title: "Motivo de retiro",
@@ -324,12 +376,12 @@ export const navbarMenu = [
               {
                 title: "Tipos de...",
                 path: "/personal/expediente/trabajos-anteriores",
-                subMenu:[
+                subMenu: [
                   {
                     title: "Actuación",
                     path: "/personal/expediente/trabajos-anteriores",
                     icon: "ChevronRight",
-                  },  
+                  },
                   {
                     title: "Adiestra...",
                     path: "/personal/expediente/trabajos-anteriores",
@@ -395,14 +447,14 @@ export const navbarMenu = [
                     path: "/personal/expediente/trabajos-anteriores",
                     icon: "ChevronRight",
                   },
-                ]
+                ],
               },
-            ]
+            ],
           },
           {
             title: "Reportes",
             path: "/personal/expediente/reportes",
-            subMenu:[
+            subMenu: [
               {
                 title: "General",
                 path: "/personal/expediente/reporte-general",
@@ -413,8 +465,8 @@ export const navbarMenu = [
                 path: "/personal/expediente/reporte-indiviual",
                 icon: "ChevronRight",
               },
-            ]
-          }
+            ],
+          },
         ],
       },
       {
@@ -463,6 +515,27 @@ export const navbarMenu = [
             path: "/administrativo/compras/registro-control",
           },
         ],
+      },
+    ],
+  },
+  {
+    title: "Control",
+    path: "/academico/",
+    icon: "Lock",
+    permission: ["HOME", "HOME_CONTROL"],
+    action: "hidden",
+    subMenu: [
+      {
+        title: "Administrar Usuarios",
+        path: "/admin/usuarios",
+        permission: ["HOME_CONTROL", "CONTROL_ADMIN_USERS"],
+        icon: "UserRoundCog",
+      },
+      {
+        title: "Bitacora de sistema",
+        path: "/admin/bitacora",
+        permission: ["HOME_CONTROL", "CONTROL_BITACORA"],
+        icon: "BookOpenText",
       },
     ],
   },

@@ -47,7 +47,6 @@ export const RouterApp = () => {
   }, []);
   return (
     <>
-      <ModeToggle />
       <Routes>
         {/* RUTAS PUBLICAS */}
         <Route path="/login" element={<LoginPage />} />

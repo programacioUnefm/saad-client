@@ -12,7 +12,8 @@ import {
 } from "@radix-ui/react-tooltip";
 
 import { Chip } from "@/components/ui/chip";
-import { ButtonsActions } from "../components/tabs/components/ButtonsActions";
+import { ButtonsActions } from "../tabs/components/ButtonsActions";
+
 
 export const GridRoles = ({ rol, setAction, tabState }) => {
   return (

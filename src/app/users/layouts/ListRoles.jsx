@@ -5,7 +5,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { ButtonsActions } from "../components/tabs/components/ButtonsActions";
+import { ButtonsActions } from "../tabs/components/ButtonsActions";
 
 export const ListRoles = ({ tabState, setAction, rol }) => {
   return (

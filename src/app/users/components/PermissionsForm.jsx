@@ -62,7 +62,7 @@ export const PermissionsForm = ({ setPermissionsDialog, data = undefined }) => {
             {...register("name", {
               required: { value: true, message: "El campo es requerido." },
               minLength: { value: 3, message: "Minimo 3 caracteres." },
-              maxLength: { value: 20, message: "maximo 20 caracteres." },
+              maxLength: { value: 70, message: "maximo 20 caracteres." },
             })}
           />
         </div>
@@ -74,9 +74,10 @@ export const PermissionsForm = ({ setPermissionsDialog, data = undefined }) => {
             {...register("code", {
               required: { value: true, message: "El campo es requerido." },
               minLength: { value: 3, message: "Minimo 3 caracteres." },
-              maxLength: { value: 20, message: "maximo 20 caracteres." },
+              maxLength: { value: 70, message: "maximo 70 caracteres." },
             })}
           />
+          <span>asdasdas</span>
         </div>
       </div>
       <div className="mt-2">
@@ -85,7 +86,7 @@ export const PermissionsForm = ({ setPermissionsDialog, data = undefined }) => {
           id="description"
           {...register("description", {
             required: { value: true, message: "El campo es requerido." },
-            maxLength: { value: 30, message: "maximo 30 caracteres." },
+            maxLength: { value: 80, message: "maximo 30 caracteres." },
           })}
           placeholder="Descripción corta sobre el permiso"
           className="mt-2"

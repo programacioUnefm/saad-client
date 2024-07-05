@@ -1,19 +1,18 @@
 import React, { useState } from "react";
-import { GridUsers } from "../../layouts/GridUsers";
-import { ConfirmDelete } from "../ConfirmDelete";
-import { RoleAssign } from "../RoleAssign";
-import { EditUser } from "../EditUser";
+import { GridUsers } from "../layouts/GridUsers";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteUser,
-  userRoleAssign,
-} from "../../../../features/usuarios/UsersThunks";
-import { useToast } from "../../../../components/ui/use-toast";
-import { ListUsers } from "../../layouts/ListUsers";
-import { Table, TableBody } from "../../../../components/ui/table";
-import { TableHeaderUsers } from "../../layouts/TableHeaderUsers";
-import { SkeletonGrid } from "../../../../components/Skeletons/SkeletonGrid";
-import { SkeletonList } from "../../../../components/Skeletons/SkeletonList";
+import { ListUsers } from "../layouts/ListUsers";
+import { Table, TableBody } from "@/components/ui/table";
+
+import { SkeletonGrid } from "@/components/Skeletons/SkeletonGrid";
+import { SkeletonList } from "@/components/Skeletons/SkeletonList";
+
+import { RoleAssign } from "../components/RoleAssign";
+import { EditUser } from "../components/EditUser";
+import { deleteUser, userRoleAssign } from "@/features/usuarios/UsersThunks";
+import { useToast } from "@/components/ui/use-toast";
+import { TableHeaderUsers } from "../layouts/TableHeaderUsers";
+import { ConfirmDelete } from "../components/ConfirmDelete";
 
 export const UsersTabs = ({ users, tabState }) => {
   const { layout, filters } = useSelector((state) => state.ui);

@@ -10,8 +10,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ButtonsActions } from "../components/tabs/components/ButtonsActions";
-import { RolesChip } from "../components/tabs/components/RolesChip";
+
+import { ButtonsActions } from "../tabs/components/ButtonsActions";
+import { RolesChip } from "../tabs/components/RolesChip";
 
 
 export const GridUsers = ({ user, setAction, tabState }) => {

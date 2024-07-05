@@ -14,7 +14,7 @@ export const Submenu = ({ title = "", path = "" }) => {
   return (
     <>
       <div>
-        <NavLink to={path} className={({ isActive }) => activeClass(isActive)}>{title}</NavLink>
+        {/* <NavLink to={path} className={({ isActive }) => activeClass(isActive)}>{title}</NavLink> */}
       </div>
     </>
   );

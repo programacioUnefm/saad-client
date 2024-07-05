@@ -6,7 +6,6 @@ export const ButtonsActions = ({ setAction, arrayItem, tabState }) => {
   return (
     <>
       <Button
-        disabled={arrayItem.id == 1}
         className="w-full"
         onClick={() =>
           setAction({ dialog: true, action: "edit", arrayItem: arrayItem })
@@ -22,7 +21,6 @@ export const ButtonsActions = ({ setAction, arrayItem, tabState }) => {
       </Button>
       {tabState == "users" || tabState == "roles" ? (
           <Button
-            disabled={arrayItem.id == 1}
             className="w-full"
             onClick={() =>
               setAction({
@@ -41,7 +39,6 @@ export const ButtonsActions = ({ setAction, arrayItem, tabState }) => {
           </Button>
         ): ""}
       <Button
-        disabled={arrayItem.id == 1}
         className="dark:bg-destructive/80 dark:hover:bg-destructive hover:bg-destructive bg-destructive/80 w-full text-white"
         onClick={() =>
           setAction({ dialog: true, action: "delete", arrayItem: arrayItem })

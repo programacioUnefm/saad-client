@@ -9,10 +9,13 @@ import {
 } from "../../../../components/ui/dropdown-menu";
 import { useToast } from "../../../../components/ui/use-toast";
 import { LogOutApp } from "../../../../features/auth/LoginThunk";
-import { CircleUser } from "lucide-react";
+import { CircleUser, Moon, Sun } from "lucide-react";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@radix-ui/react-dropdown-menu";
+import { ModeToggle } from "@/components/ui/mode-toggle";
 
 export const UserIcon = () => {
   const dispatch = useDispatch();
@@ -20,11 +23,11 @@ export const UserIcon = () => {
   const { toast } = useToast();
   const signOut = () => {
     dispatch(LogOutApp());
-    // toast({
-    //   title: `Estás cerrando sesión`,
-    //   description: "Que tengas buen día.",
-    // });
-    // navigate("/login");
+    toast({
+      title: `Estás cerrando sesión`,
+      description: "Que tengas buen día.",
+    });
+    navigate("/login");
   };
 
   return (
@@ -44,9 +47,9 @@ export const UserIcon = () => {
         <DropdownMenuSeparator />
         <DropdownMenuItem>Configuración</DropdownMenuItem>
         <DropdownMenuItem>Mis permisos</DropdownMenuItem>
-        <NavLink to={"/admin/usuarios"}>
-          <DropdownMenuItem>Lista de usuarios</DropdownMenuItem>
-        </NavLink>
+        <div className="mt-2 px-2 mr-2">
+          <ModeToggle />
+        </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={signOut}>Cerrar sesión</DropdownMenuItem>
       </DropdownMenuContent>

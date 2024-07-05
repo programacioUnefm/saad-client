@@ -116,23 +116,7 @@ export const AddPermisionCard = ({ parent, setparent }) => {
                 ) : (
                   <span>Agregar permiso padre</span>
                 )}
-                {/* {fatherPermission ? (
-                  "Agregar permiso padre"
-                ) : parent.add ? (
-                  <span className="flex flex-col ">
-                    Agregar hijo de {parent.data.name}{" "}
-                    <span className="text-sm font-normal">
-                      hijo de: {parent.data.parent.name}
-                    </span>
-                  </span>
-                ) : (
-                  <span className="flex flex-col">
-                    Editar {parent.data.name}{" "}
-                    <span className="text-sm font-normal">
-                      hijo de: {parent.data.parent.name}
-                    </span>
-                  </span>
-                )} */}
+           
               </CardTitle>
             </CardHeader>
             <CardContent className="text-muted-foreground">
@@ -150,7 +134,7 @@ export const AddPermisionCard = ({ parent, setparent }) => {
                       minLength: { value: 3, message: "Minimo 3 caracteres." },
                       maxLength: {
                         value: 20,
-                        message: "maximo 20 caracteres.",
+                        message: "maximo 80 caracteres.",
                       },
                     })}
                   />
@@ -167,8 +151,8 @@ export const AddPermisionCard = ({ parent, setparent }) => {
                       },
                       minLength: { value: 3, message: "Minimo 3 caracteres." },
                       maxLength: {
-                        value: 20,
-                        message: "maximo 20 caracteres.",
+                        value: 60,
+                        message: "maximo 60 caracteres.",
                       },
                     })}
                   />

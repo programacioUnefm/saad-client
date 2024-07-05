@@ -8,11 +8,11 @@ import {
 } from "../../features/usuarios/UsersThunks";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs";
 import { SearchAndFilters } from "../../components/search/SearchAndFilters";
-import { UsersTabs } from "./components/tabs/UsersTabs";
+import { UsersTabs } from "./tabs/UsersTabs";
 import { AddUser } from "./components/AddUser";
-import { RolesTab } from "./components/tabs/RolesTab";
+import { RolesTab } from "./tabs/RolesTab";
 import { AddRoles } from "./components/AddRoles";
-import { PermissionsTab } from "./components/tabs/PermissionsTab";
+import { PermissionsTab } from "./tabs/PermissionsTab";
 import { tabStateChange } from "../../features/usuarios/UsersSlice";
 import { filterUrlChange } from "@/features/ui/UiSlice";
 

@@ -6,7 +6,8 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { RolesForm } from "../../RolesForm";
+import { RolesForm } from "../../components/RolesForm";
+
 
 
 export const EditRolesDialog = ({ addRoleDialog, setAddRoleDialog, data = {} }) => {
