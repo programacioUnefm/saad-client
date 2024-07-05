@@ -51,6 +51,7 @@ export const PermissionsAssign = ({
 
   useEffect(() => {
     if (data.permissions.length > 0) {
+      setactive([]);
       data.permissions.forEach((element) => {
         setactive((prev) => [...prev, element.id]);
       });
@@ -65,8 +66,8 @@ export const PermissionsAssign = ({
         <ToggleGroupItem
           className={
             data.children
-              ? "w-[95%] justify-start m-2 bg-primary/20 hover:bg-primary/40 data-[state=on]:bg-primary/80 data-[state=on]:text-white"
-              : "w-[95%] justify-start m-1 hover:bg-primary/40 data-[state=on]:bg-primary/80 data-[state=on]:text-white"
+              ? "w-[95%] justify-start m-2 bg-primary/20 hover:bg-primary/40 data-[state=on]:bg-primary/80 data-[state=on]:text-white uppercase"
+              : "w-[95%] justify-start m-1 hover:bg-primary/40 data-[state=on]:bg-primary/80 data-[state=on]:text-white uppercase"
           }
           value={data.id}
         >
