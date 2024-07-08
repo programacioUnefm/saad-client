@@ -55,7 +55,7 @@ export const PermissionsAssign = ({
       data.permissions.forEach((element) => {
         setactive((prev) => [...prev, element.id]);
       });
-    }else{
+    } else {
       setactive([]);
     }
   }, [data]);
@@ -106,7 +106,9 @@ export const PermissionsAssign = ({
               value={active}
               onValueChange={(e) => parentVerify(e)}
             >
-              <TreeNode data={permissionsFull} />
+              {permissionsFull.map((item) => (
+                <TreeNode key={Math.random()} data={item} />
+              ))}
             </ToggleGroup>
           </div>
         </ScrollArea>
@@ -119,7 +121,9 @@ export const PermissionsAssign = ({
             >
               Cancelar
             </Button>
-            <Button size="md" onClick={() => onAssignHandle()}>Asignar</Button>
+            <Button size="md" onClick={() => onAssignHandle()}>
+              Asignar
+            </Button>
           </div>
         </SheetFooter>
       </SheetContent>

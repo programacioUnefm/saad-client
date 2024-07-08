@@ -600,7 +600,7 @@ export const navbarMenu = [
       {
         title: "Administrar Usuarios",
         path: "/control/usuarios",
-        permission: ["HOME_CONTROL", "CONTROL_USUARIOS"],
+        permission: ["HOME_CONTROL", "CONTROL_ADMIN_USERS"],
         icon: "UserRoundCog",
       },
       {

@@ -16,19 +16,22 @@ import { PermissionsTab } from "./tabs/PermissionsTab";
 import { tabStateChange } from "@/features/usuarios/UsersSlice";
 import { filterUrlChange } from "@/features/ui/UiSlice";
 import { permissionCheck } from "@/features/PermissionCheck";
+import { NoTabSelected } from "./tabs/NoTabSelected";
 
 export const UsersListPage = () => {
   const dispatch = useDispatch();
+  const { users, roles, permissions, tabState:defualtTab } = useSelector((state) => state.usersList);
   useEffect(() => {
     dispatch(GetUsersList());
     dispatch(GetRolesList());
     dispatch(GetPermissionsList());
+    setTabState(defualtTab);
   }, []);
-
-  const { users, roles, permissions } = useSelector((state) => state.usersList);
   const { permissions: permissionList } = useSelector((state) => state.auth);
   const { filters } = useSelector((state) => state.ui);
-  const [tabState, setTabState] = useState("users");
+  
+  const [tabState, setTabState] = useState("");
+
   const [addUserDialog, setaddUserDialog] = useState(false);
   const [addRoleDialog, setAddRoleDialog] = useState(false);
   const tabHandle = (value) => {
@@ -36,7 +39,9 @@ export const UsersListPage = () => {
     dispatch(tabStateChange(value));
     dispatch(filterUrlChange(`admin/${value}/search`));
   };
-
+  
+  
+  
   return (
     <AppLayout
       title={"Funcionalidad de usuarios"}
@@ -51,21 +56,21 @@ export const UsersListPage = () => {
           : null
       }
     >
-      <Tabs defaultValue={tabState} onValueChange={(value) => tabHandle(value)}>
+      <Tabs value={tabState} onValueChange={(value) => tabHandle(value)}>
         <div className="grid grid-cols-2">
           <div>
             <TabsList className="bg-slate-200 dark:bg-accent/50">
-              {permissionCheck(["CONTROL_USUARIOS"],permissionList) && (
+              {permissionCheck(["CONTROL_USUARIOS"], permissionList) && (
                 <TabsTrigger className="uppercase" value="users">
                   Usuarios
                 </TabsTrigger>
               )}
-              {permissionCheck(["CONTROL_ROLES"],permissionList) && (
+              {permissionCheck(["CONTROL_ROLES"], permissionList) && (
                 <TabsTrigger className="uppercase" value="roles">
                   Roles
                 </TabsTrigger>
-               )}
-              {permissionCheck(["CONTROL_PERMISOS"],permissionList) && (
+              )}
+              {permissionCheck(["CONTROL_PERMISOS"], permissionList) && (
                 <TabsTrigger className="uppercase" value="permissions">
                   Permisos
                 </TabsTrigger>
@@ -107,6 +112,9 @@ export const UsersListPage = () => {
         </TabsContent>
         <TabsContent value="permissions">
           <PermissionsTab permissions={permissions} tabState={tabState} />
+        </TabsContent>
+        <TabsContent value="">
+            <NoTabSelected />
         </TabsContent>
       </Tabs>
     </AppLayout>

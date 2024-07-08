@@ -7,7 +7,7 @@ export const UsersSlice = createSlice({
     roles:[],
     permissions:[],
     permissionsFull:[],
-    tabState: "users",
+    tabState: "",
   },
   reducers: {
     usersRegister: (state, {payload}) => {

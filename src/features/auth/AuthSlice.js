@@ -13,9 +13,11 @@ export const Auth = createSlice({
   reducers: {
     login: (state, { payload }) => {
       let permissionsList = [];
-      payload.roles.forEach((element) => {
-        permissionsList.push(...element.permissions);
-      });
+      if(payload.Authstatus){
+        payload.roles.forEach((element) => {
+          permissionsList.push(...element.permissions);
+        });
+      }
       state.Authstatus = payload.Authstatus;
       state.name = payload.name;
       state.roles = payload.roles;

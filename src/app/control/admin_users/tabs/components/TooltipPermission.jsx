@@ -21,6 +21,7 @@ export const TooltipPermission = ({
   action,
 }) => {
   const { permissions } = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
   const { toast } = useToast();
   const [confirm, setconfirm] = useState(false);
@@ -33,6 +34,21 @@ export const TooltipPermission = ({
         description: "El permiso ha sido eliminado",
       });
     }
+  };
+
+  const WithoutAuth = () => {
+    return (
+      <>
+        {!permissionCheck(["PERMISOS_REASIGNAR"], permissions) &&
+          !permissionCheck(["PERMISOS_ELIMINAR"], permissions) &&
+          !permissionCheck(["PERMISOS_AGREGAR"], permissions) &&
+          !permissionCheck(["PERMISOS_EDITAR"], permissions) && (
+            <span className="text-sm">
+              Actualmente solo tienes permisos para "ver lista de permisos"
+            </span>
+          )}
+      </>
+    );
   };
 
   return (
@@ -96,11 +112,9 @@ export const TooltipPermission = ({
                 </span>
               )}
               {permissionCheck(
-                ["CONTROL_PERMISOS"],
+                ["CONTROL_PERMISOS", "PERMISOS_REASIGNAR"],
                 permissions
-              ) && (
-                <ParentReasign data={data} />
-              )}
+              ) && <ParentReasign data={data} />}
               {permissionCheck(
                 ["CONTROL_PERMISOS", "PERMISOS_ELIMINAR"],
                 permissions
@@ -114,6 +128,7 @@ export const TooltipPermission = ({
                   Eliminar permiso
                 </span>
               )}
+              <WithoutAuth />
             </div>
           </PopoverContent>
           <Confirm
