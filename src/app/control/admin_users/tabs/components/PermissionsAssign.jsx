@@ -58,7 +58,7 @@ export const PermissionsAssign = ({
     } else {
       setactive([]);
     }
-  }, [data]);
+  }, [addPermissions]);
 
   const TreeNode = ({ data }) => {
     return (
@@ -70,6 +70,7 @@ export const PermissionsAssign = ({
               : "w-[95%] justify-start m-1 hover:bg-primary/40 data-[state=on]:bg-primary/80 data-[state=on]:text-white uppercase"
           }
           value={data.id}
+          onClick={() => onSelectCheck(data)}
         >
           {data.name}
         </ToggleGroupItem>
@@ -86,9 +87,22 @@ export const PermissionsAssign = ({
       </>
     );
   };
+  let ids = [];
 
-  const parentVerify = (e) => {
-    setactive(e);
+  const onSelectCheck = (e) => {
+    if (active.includes(e.id)) {
+      let activeItems = [...active];
+      ids.push(e.id);
+      if (e.children != undefined) {
+        e.children.forEach((element) => {
+          onSelectCheck(element);
+        });
+      }
+      activeItems = activeItems.filter((elemento) => !ids.includes(elemento));
+      setactive(activeItems);
+    }else{
+      setactive([...active, e.id])
+    }
   };
 
   return (
@@ -104,7 +118,7 @@ export const PermissionsAssign = ({
             <ToggleGroup
               type="multiple"
               value={active}
-              onValueChange={(e) => parentVerify(e)}
+              // onValueChange={(e) => setactive(e)}
             >
               {permissionsFull.map((item) => (
                 <TreeNode key={Math.random()} data={item} />
