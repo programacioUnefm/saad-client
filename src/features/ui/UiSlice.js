@@ -32,7 +32,7 @@ export const ui = createSlice({
       state.layout = payload;
     },
     dialogChange: (state, { payload }) => {
-      state.dialog = payload;
+      state.dialog = payload;  
     },
     filtersChange: (state, { payload }) => {
       state.filters = payload;
@@ -42,11 +42,14 @@ export const ui = createSlice({
     },
     filterUrlChange:(state, {payload}) => {
       state.filters = {...state.filters, url: payload};
+    },
+    routeChange: (state, {payload}) => {
+      state.menuState = payload
     }
   },
 });
 
-export const { themeChange, layoutChanged, dialogChange, filtersChange, resetDialog, filterUrlChange } =
+export const { themeChange, layoutChanged, dialogChange, filtersChange, resetDialog, filterUrlChange, routeChange } =
   ui.actions;
 
 export default ui.reducer;

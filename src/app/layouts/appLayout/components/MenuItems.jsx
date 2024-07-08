@@ -4,12 +4,14 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { icons } from "lucide-react";
 import { useSelector } from "react-redux";
 
-export const MenuItems = ({ item }) => {
+export const MenuItems = ({ item, index , active}) => {
   const { permissions } = useSelector((state) => state.auth);
+  const location = useLocation();
+  const pathSegments = location.pathname.split('/').filter(Boolean);
   const classDefault =
     "p-3 rounded-md w-full mb-0.5 uppercase font-bold text-[10px] cursor-pointer flex items-center gap-2 ";
   const Icon = ({ name, color, size }) => {
@@ -23,17 +25,15 @@ export const MenuItems = ({ item }) => {
     }
     return false
   }
-
-
-  const SingleItem = ({ element }) => {
-    
+  // console.log(pathSegments)
+  const SingleItem = ({ element }) => {    
     return (
       <NavLink to={item.path} style={!permissionCheck(item.permission)? {pointerEvents: "none"}: {}} >
         {({ isActive }) => (
           <div
             className={
               isActive
-                ? `${classDefault} bg-primary/80 text-white hover:bg-primary`
+                ? `${classDefault} bg-accent text-accent-foreground/80 hover:text-accent-foreground`
                 : !permissionCheck(item.permission)? `${classDefault} text-ring/40`: `${classDefault} dark:text-accent-foreground/80 hover:bg-accent/50 hover:text-accent-foreground `
             }
           >
@@ -47,7 +47,7 @@ export const MenuItems = ({ item }) => {
   return (
     <div>
       {item.subMenu ? (
-        <AccordionItem value={item.title} disabled={!permissionCheck(item.permission)}>
+        <AccordionItem value={item.title.toUpperCase()}  disabled={!permissionCheck(item.permission)}>
           <AccordionTrigger
             className={!permissionCheck(item.permission) ? "uppercase font-bold text-sm" :"uppercase font-bold text-sm text-accent-foreground/80 hover:text-accent-foreground"}
           >
@@ -59,7 +59,7 @@ export const MenuItems = ({ item }) => {
           <AccordionContent>
             <div className="ml-4 mt-4 relative">
               <div className="w-1 h-full bg-primary/10 dark:bg-accent/50 absolute -left-2"></div>
-              <Accordion type="single" className="px-2" collapsible>
+              <Accordion type="single" className="px-2" collapsible defaultValue={pathSegments[index] != undefined && pathSegments[index].replace(/-/g, ' ').toUpperCase()}>
                 {item.subMenu.map((submenu) => (
                   <MenuItems key={Math.random()} item={submenu} />
                 ))}

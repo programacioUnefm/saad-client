@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,9 +8,16 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { routeChange } from "@/features/ui/UiSlice";
 export const TitleAndBradCrum = ({ title }) => {
   const ruta = useLocation().pathname;
   const routes = ruta.split("/").filter((segmento) => segmento !== "");
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(routeChange({route:ruta,arrayRoute:routes}))
+  }, [])
+  
   return (
     <>
       <h1 className="text-lg font-semibold md:text-2xl">{title}</h1>

@@ -6,7 +6,7 @@ import { GridRoles } from "../layouts/GridRoles";
 
 import { deleteRol } from "@/features/usuarios/UsersThunks";
 import { EditRolesDialog } from "./components/EditRolesDialog";
-import { PermissionsAssign } from "./components/PermissionsAcctions/PermissionsAssign";
+import { PermissionsAssign } from "./components/PermissionsAssign";
 import { TableHeaderRoles } from "../layouts/TableHeaderRoles";
 import { ListRoles } from "../layouts/ListRoles";
 import { SkeletonGrid } from "@/components/Skeletons/SkeletonGrid";

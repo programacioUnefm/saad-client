@@ -11,13 +11,14 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+import { permissionCheck } from "@/features/PermissionCheck";
 import {
   addPermissionAsync,
   editPermission,
 } from "@/features/usuarios/UsersThunks";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export const AddPermisionCard = ({ parent, setparent }) => {
   const {
@@ -29,6 +30,7 @@ export const AddPermisionCard = ({ parent, setparent }) => {
   } = useForm();
   const { toast } = useToast();
   const [fatherPermission, setfatherPermission] = useState(false);
+  const { permissions } = useSelector((state) => state.auth);
   useEffect(() => {
     reset();
     if (parent && parent.add) {
@@ -163,7 +165,7 @@ export const AddPermisionCard = ({ parent, setparent }) => {
                 <Textarea
                   id="description"
                   {...register("description", {
-                    maxLength: { value: 30, message: "maximo 30 caracteres." },
+                    maxLength: { value: 80, message: "maximo 80 caracteres." },
                   })}
                   placeholder="Descripción corta sobre el permiso"
                   className="mt-2"
@@ -219,12 +221,16 @@ export const AddPermisionCard = ({ parent, setparent }) => {
               <Button
                 variant="outline"
                 className="mt-4"
+                disabled={!permissionCheck(["CONTROL_PERMISOS", "PERMISOS_AGREGAR"],permissions)}
                 size="lg"
                 onClick={() => {
                   setfatherPermission(true);
                 }}
               >
-                Crear Permiso
+                {
+                  permissionCheck(["CONTROL_PERMISOS", "PERMISOS_AGREGAR"],permissions)? "Crear Permiso": "sin acceso"
+                }
+                
               </Button>
             </CardContent>
           </Card>

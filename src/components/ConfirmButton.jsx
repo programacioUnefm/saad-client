@@ -38,7 +38,7 @@ export const ConfirmButton = ({
           <Button
             className="bg-accent hover:bg-accent/50"
             type="button"
-            variant="secondary"
+            variant="outline"
             onClick={() => setDialog(false)}
           >
             Cancelar

@@ -8,7 +8,6 @@ import { PresupuestoPage } from "../app/administrativo/presupuesto/PresupuestoPa
 import { DashboardPage } from "../app/dasboard/DashboardPage";
 import { ProtectedRoutes } from "./ProtectedRoutes";
 import { useDispatch, useSelector } from "react-redux";
-import { ModeToggle } from "../components/ui/mode-toggle";
 
 import { RegistroControl } from "../app/administrativo/compras/components/RegistroControl";
 import { Administrativo } from "../app/administrativo/Administrativo";
@@ -18,10 +17,12 @@ import { Reportes } from "../app/administrativo/compras/components/Reportes";
 import { TablasBasicas } from "../app/administrativo/compras/components/TablasBasicas";
 import { PlanCompras } from "../app/administrativo/compras/components/PlanCompras";
 
-import { UsersListPage } from "../app/users/UsersListPage";
+import { UsersListPage } from "../app/control/admin_users/UsersListPage";
 import { layoutChanged, themeChange } from "../features/ui/UiSlice";
 import { VerifyUser } from "../features/auth/LoginThunk";
 import { login } from "../features/auth/AuthSlice";
+import { LogsPage } from "@/app/control/log/LogsPage";
+import { ActuacionPage } from "@/app/personal/expediente/regDatos/actuacion/ActuacionPage";
 
 export const RouterApp = () => {
   let theme = localStorage.getItem("vite-ui-theme");
@@ -42,7 +43,6 @@ export const RouterApp = () => {
       dispatch(login({Authstatus: false, name: "", role: [], token: "",
       }))
     }
-    
     dispatch(themeChange(theme));
   }, []);
   return (
@@ -55,7 +55,6 @@ export const RouterApp = () => {
         <Route element={<ProtectedRoutes />}>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/inicio" element={<DashboardPage />} />
-          <Route path="/admin/usuarios" element={<UsersListPage />} />
           <Route path="/administrativo" element={<Administrativo />} />
           <Route path="/administrativo/compras" element={<ComprasPage />} />
           <Route
@@ -79,10 +78,14 @@ export const RouterApp = () => {
             path="/administrativo/compras/tablas-basicas"
             element={<TablasBasicas />}
           />
-
           <Route path="/contabilidad" element={<ContabilidadPage />} />
           <Route path="/habilitaduria" element={<HabilitaduriaPage />} />
           <Route path="/presupuesto" element={<PresupuestoPage />} />
+
+          <Route path="/personal/expediente/registro-datos/actuacion" element={<ActuacionPage />} />
+
+          <Route path="/control/usuarios" element={<UsersListPage />} />
+          <Route path="/control/bitacora" element={<LogsPage />} />
         </Route>
       </Routes>
     </>

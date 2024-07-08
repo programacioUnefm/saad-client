@@ -11,23 +11,15 @@ import logo from "/saad-logo.svg";
 import logoReversed from "/saad-reversed.svg";
 import { useSelector } from "react-redux";
 
-import { navbarMenu } from "./menuJson";
 import { MenuItems } from "./MenuItems";
 import { Accordion } from "@/components/ui/accordion";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useEffect, useState } from "react";
+import { useLocation } from 'react-router-dom';
 
-export const Sidebar = () => {
+export const Sidebar = ({ menu }) => {
   const { theme } = useSelector((state) => state.ui);
-  const { permissions } = useSelector((state) => state.auth);
-  const [menu, setmenu] = useState(navbarMenu);
-
-  const permissionCheck = (permission) => {
-    return permission.every((element) => permissions.includes(element));
-  }
-
-
-
+  const location = useLocation();
+  const pathSegments = location.pathname.split('/').filter(Boolean);
   return (
     <div className="hidden border-r dark:bg-background bg-white md:block h-full">
       <div className="flex h-[100vh] max-h-screen flex-col gap-2 relative">
@@ -37,9 +29,9 @@ export const Sidebar = () => {
           </Link>
         </div>
         <ScrollArea className="h-full rounded-md pr-4">
-          <Accordion type="single" className="px-2" collapsible>
-            {menu.map((item) => (
-              <MenuItems key={Math.random()} item={item} />
+          <Accordion type="single" className="px-2" collapsible defaultValue={pathSegments.length > 0 && pathSegments[0].toUpperCase()}>
+            {menu.map((item, index) => (
+              <MenuItems key={Math.random()} item={item} index={index} active={item.title.toUpperCase()}/>
             ))}
           </Accordion>
         </ScrollArea>

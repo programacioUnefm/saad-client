@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 
 import { Toaster } from "../../../components/ui/toaster";
 import { ScrollArea } from "../../../components/ui/scroll-area";
@@ -9,6 +9,7 @@ import { HeaderApp } from "./components/HeaderApp";
 import { Button } from "../../../components/ui/button";
 import { PaginationItems } from "./components/PaginationItems";
 import { useToast } from "@/components/ui/use-toast";
+import { navbarMenu } from "./components/menuJson";
 
 export function AppLayout({
   children,
@@ -29,10 +30,12 @@ export function AppLayout({
         description: dialog.message,
       });
   }, [dialog]);
+  const sidebarComponent = useMemo(() => <Sidebar menu={navbarMenu} />, [navbarMenu]);
+  
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-      <Sidebar />
+      {sidebarComponent }
       <div className="flex flex-col bg-slate-50 dark:bg-background">
         <HeaderApp />
         <main className="flex flex-1 flex-col bg-muted/10 gap-4 p-4 lg:gap-6 lg:p-6">

@@ -106,16 +106,16 @@ export const PermissionsAssign = ({
               value={active}
               onValueChange={(e) => parentVerify(e)}
             >
-              <TreeNode data={permissionsFull[0]} />
+              <TreeNode data={permissionsFull} />
             </ToggleGroup>
           </div>
         </ScrollArea>
         <SheetFooter>
           <div className="mt-2 grid grid-cols-2 gap-4 absolute bottom-10  w-[87%]">
             <Button
-              className="bg-accent hover:bg-accent/50"
               onClick={() => setaddPermissions(false)}
               size="md"
+              variant="outline"
             >
               Cancelar
             </Button>

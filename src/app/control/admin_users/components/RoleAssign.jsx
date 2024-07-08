@@ -1,12 +1,12 @@
-import { Button } from "../../../components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetFooter,
-} from "../../../components/ui/sheet";
-import { ToggleGroup, ToggleGroupItem } from "../../../components/ui/toggle-group";
+} from "@/components/ui/sheet";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 

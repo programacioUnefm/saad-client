@@ -1,10 +1,10 @@
-import { Button } from "../../../components/ui/button";
-import { DialogFooter } from "../../../components/ui/dialog";
-import { Input } from "../../../components/ui/input";
-import { Label } from "../../../components/ui/label";
-import { Textarea } from "../../../components/ui/textarea";
-import { useToast } from "../../../components/ui/use-toast";
-import { addRolAsync, UpdateRolAsync } from "../../../features/usuarios/UsersThunks";
+import { Button } from "@/components/ui/button";
+import { DialogFooter } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
+import { addRolAsync, UpdateRolAsync } from "@/features/usuarios/UsersThunks";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";

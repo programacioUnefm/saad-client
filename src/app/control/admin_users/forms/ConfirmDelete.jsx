@@ -1,4 +1,4 @@
-import { Button } from "../../../components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -6,7 +6,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "../../../components/ui/dialog";
+} from "@/components/ui/dialog";
 export const ConfirmDelete = ({ open, setAction, action, dialogAction, description = "" }) => {
   return (
     <Dialog open={open}>
@@ -21,7 +21,7 @@ export const ConfirmDelete = ({ open, setAction, action, dialogAction, descripti
         </DialogHeader>
         <DialogFooter>
           <Button
-            className="bg-accent hover:bg-accent/50"
+            variant="outline"
             onClick={() => setAction({ dialog: false, action: "" })}
           >
             Cancelar
