@@ -6,7 +6,7 @@ import {
 import { ChevronRight } from "lucide-react";
 import "./tooltip.css";
 import { useDispatch, useSelector } from "react-redux";
-import { deletePermission } from "@/features/usuarios/UsersThunks";
+import { deletePermission } from "@/features/control/usuarios/UsersThunks";
 import { useToast } from "@/components/ui/use-toast";
 import { Confirm } from "@/components/Confirm";
 import { useState } from "react";

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GridRoles } from "../layouts/GridRoles";
 
-import { deleteRol } from "@/features/usuarios/UsersThunks";
+import { deleteRol } from "@/features/control/usuarios/UsersThunks";
 import { EditRolesDialog } from "./components/EditRolesDialog";
 import { PermissionsAssign } from "./components/PermissionsAssign";
 import { TableHeaderRoles } from "../layouts/TableHeaderRoles";

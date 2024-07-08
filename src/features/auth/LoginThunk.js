@@ -1,5 +1,5 @@
 import { saadApi } from "../../api/SaddApp";
-import { GetUsersList } from "../usuarios/UsersThunks";
+import { GetUsersList } from "../control/usuarios/UsersThunks";
 import { login } from "./AuthSlice";
 import { dialogChange } from "../ui/UiSlice";
 

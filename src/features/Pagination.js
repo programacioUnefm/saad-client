@@ -1,5 +1,5 @@
 import { saadApi } from "@/api/SaddApp";
-import { permissionsPagination, roleRegister, usersRegister } from "./usuarios/UsersSlice";
+import { permissionsPagination, roleRegister, usersRegister } from "./control/usuarios/UsersSlice";
 export const paginationAdminUserPrivileges = (url, tabState) => {
   return async (dispatch) => {
     try {

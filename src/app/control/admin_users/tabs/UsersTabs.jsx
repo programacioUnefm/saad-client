@@ -9,7 +9,7 @@ import { SkeletonList } from "@/components/Skeletons/SkeletonList";
 
 import { RoleAssign } from "../components/RoleAssign";
 import { EditUser } from "../forms/EditUser";
-import { deleteUser, userRoleAssign } from "@/features/usuarios/UsersThunks";
+import { deleteUser, userRoleAssign } from "@/features/control/usuarios/UsersThunks";
 import { useToast } from "@/components/ui/use-toast";
 import { TableHeaderUsers } from "../layouts/TableHeaderUsers";
 import { ConfirmDelete } from "../forms/ConfirmDelete";

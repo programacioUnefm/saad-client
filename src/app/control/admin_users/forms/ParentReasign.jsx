@@ -10,7 +10,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { dialogChange } from "@/features/ui/UiSlice";
-import { editPermission } from "@/features/usuarios/UsersThunks";
+import { editPermission } from "@/features/control/usuarios/UsersThunks";
 import { ToggleGroup, ToggleGroupItem } from "@radix-ui/react-toggle-group";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";

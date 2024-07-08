@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ToggleGroup } from "@radix-ui/react-toggle-group";
 import { ToggleGroupItem } from "@/components/ui/toggle-group";
-import { updatePermissionToRole } from "@/features/usuarios/UsersThunks";
+import { updatePermissionToRole } from "@/features/control/usuarios/UsersThunks";
 import { dialogChange } from "@/features/ui/UiSlice";
 
 export const PermissionsAssign = ({

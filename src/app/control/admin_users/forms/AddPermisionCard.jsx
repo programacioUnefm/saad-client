@@ -15,7 +15,7 @@ import { permissionCheck } from "@/features/PermissionCheck";
 import {
   addPermissionAsync,
   editPermission,
-} from "@/features/usuarios/UsersThunks";
+} from "@/features/control/usuarios/UsersThunks";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";

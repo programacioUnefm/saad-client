@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { editUserAsync } from "@/features/usuarios/UsersThunks";
+import { editUserAsync } from "@/features/control/usuarios/UsersThunks";
 import { dialogChange } from "@/features/ui/UiSlice";
 
 export const EditUser = ({ open, setAction, user, dialogAction }) => {

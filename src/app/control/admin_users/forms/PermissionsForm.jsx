@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import {
   addPermissionAsync,
   editPermission,
-} from "../../../features/usuarios/UsersThunks";
+} from "../../../features/control/usuarios/UsersThunks";
 import { useToast } from "../../../components/ui/use-toast";
 import { ParentIdAssign } from "./tabs/components/PermissionsAcctions/ParentIdAssign";
 
