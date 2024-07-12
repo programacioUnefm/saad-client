@@ -50,16 +50,16 @@ export function AppLayout({
             )}
           </div>
           <div className="p-5 dark:bg-background bg-slate-100 rounded-lg border border-dashed shadow-sm h-full">
-            <ScrollArea className="h-[72vh] w-full px-4">{children}</ScrollArea>
+            <ScrollArea className="h-[75vh] w-full px-4 relative">{children}</ScrollArea>
 
-            {pagination &&
+            {/* {pagination &&
               arrayPagination != undefined &&
               arrayPagination != [] && (
                 <PaginationItems
                   numResult={`Mostrando ${arrayPagination.from} a ${arrayPagination.to}`}
                   array={arrayPagination}
                 />
-              )}
+              )} */}
           </div>
         </main>
       </div>

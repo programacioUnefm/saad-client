@@ -4,7 +4,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GridRoles } from "../layouts/GridRoles";
 
-import { deleteRol } from "@/features/control/usuarios/UsersThunks";
+import {
+  deleteRol,
+  paginateRole,
+} from "@/features/control/usuarios/UsersThunks";
 import { EditRolesDialog } from "./components/EditRolesDialog";
 import { PermissionsAssign } from "./components/PermissionsAssign";
 import { TableHeaderRoles } from "../layouts/TableHeaderRoles";
@@ -12,6 +15,7 @@ import { ListRoles } from "../layouts/ListRoles";
 import { SkeletonGrid } from "@/components/Skeletons/SkeletonGrid";
 import { SkeletonList } from "@/components/Skeletons/SkeletonList";
 import { ConfirmDelete } from "../forms/ConfirmDelete";
+import { Button } from "@/components/ui/button";
 
 export const RolesTab = ({ roles, tabState }) => {
   const { layout, filters } = useSelector((state) => state.ui);
@@ -44,6 +48,10 @@ export const RolesTab = ({ roles, tabState }) => {
     dispatch(deleteRol(e.id));
     toastAction(`el rol "${e.name}" fué elminado de la base de datos.`);
   };
+  const itemsPerView = roles.total - roles.current_page * roles.per_page;
+  const paginationRoles = () => {
+    dispatch(paginateRole(roles.next_page_url));
+  };
 
   return (
     <>
@@ -70,7 +78,7 @@ export const RolesTab = ({ roles, tabState }) => {
           </div>
         ) : (
           <div className="w-full">
-            <Table className="bg-background p-2 rounded-sm">
+            <Table className="dark:bg-accent/20 bg-white rounded-md">
               <TableHeaderRoles />
               <TableBody>
                 {filters.status
@@ -99,6 +107,13 @@ export const RolesTab = ({ roles, tabState }) => {
       ) : (
         <SkeletonList />
       )}
+      <div className="flex justify-center mt-4">
+        {!filters.status && itemsPerView > 0 && (
+          <Button variant="outline" onClick={paginationRoles}>
+            Ver más Roles + {itemsPerView}
+          </Button>
+        )}
+      </div>
 
       {action.action == "delete" ? (
         <ConfirmDelete

@@ -4,11 +4,8 @@ import { Button } from "../../components/ui/button";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { RegisterApp } from "../../features/auth/LoginThunk";
-import { useToast } from "../../components/ui/use-toast";
-import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
 
-export const RegisterForm = ({closeDialog}) => {
+export const RegisterForm = ({ closeDialog }) => {
   const {
     register,
     handleSubmit,
@@ -16,26 +13,11 @@ export const RegisterForm = ({closeDialog}) => {
     formState: { errors },
   } = useForm();
   const dispatch = useDispatch();
-  const { toast } = useToast();
-  const navigate = useNavigate();
-  const [load, setload] = useState(false);
-  const [user, setuser] = useState("Freddy Black")
+
   const onSubmit = async (data) => {
     const resp = await dispatch(RegisterApp(data));
-    setload(true);
     if (resp == 200) {
-      // toast({
-      //   title: `Bienvenido ${user}`,
-      //   description: "Estas ahora en el panel de control",
-      // });
-      closeDialog()
-      setload(false);
-    } else {
-      toast({
-        variant: "destructive",
-        title: "Ha ocurrido un error",
-      });
-      setload(false);
+      closeDialog();
     }
   };
 
@@ -142,9 +124,8 @@ export const RegisterForm = ({closeDialog}) => {
           )}
         </div>
       </div>
-      <Button disabled={load} className="w-full mt-8 uppercase h-12" type="submit">
-        {load && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
-        {load ? "Enviando..." : "Registrarme ahora"}
+      <Button className="w-full mt-8 uppercase h-12" type="submit">
+        Registrar usuario
       </Button>
     </form>
   );

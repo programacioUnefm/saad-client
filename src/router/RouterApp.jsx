@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { LoginPage } from "../login/pages/LoginPage";
 import { ComprasPage } from "../app/administrativo/compras/ComprasPage";
 import { ContabilidadPage } from "../app/administrativo/contabilidad/ContabilidadPage";
@@ -23,6 +23,7 @@ import { VerifyUser } from "../features/auth/LoginThunk";
 import { login } from "../features/auth/AuthSlice";
 import { LogsPage } from "@/app/control/log/LogsPage";
 import { ActuacionPage } from "@/app/personal/expediente/regDatos/actuacion/ActuacionPage";
+import { NoAuthPage } from "@/app/unAuth/NoAuthPage";
 
 export const RouterApp = () => {
   let theme = localStorage.getItem("vite-ui-theme");
@@ -50,10 +51,11 @@ export const RouterApp = () => {
       <Routes>
         {/* RUTAS PUBLICAS */}
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/no-autorizado" element={<NoAuthPage />} />
 
         {/* RUTAS PRIVADAS */}
         <Route element={<ProtectedRoutes />}>
-          <Route path="/" element={<DashboardPage />} />
+          <Route path="/"  element={<Navigate to="/inicio" />} />
           <Route path="/inicio" element={<DashboardPage />} />
           <Route path="/administrativo" element={<Administrativo />} />
           <Route path="/administrativo/compras" element={<ComprasPage />} />

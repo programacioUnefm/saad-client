@@ -1,21 +1,37 @@
-
-import * as React from "react"
-import { addDays, format } from "date-fns"
-import { Calendar as CalendarIcon } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import * as React from "react";
+import { addDays, format } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
- 
-export function RageDate() {
+} from "@/components/ui/popover";
+
+export function RageDate({ filters, setfilters }) {
   const [date, setDate] = React.useState({
     from: "",
-    to: ""
-  })
- 
+    to: "",
+  });
+
+  const dateHandle = (e) => {
+    setDate(e);
+    if (e.from != undefined && e.to != undefined) {
+      setfilters({
+        ...filters,
+        start_date: format(e.from, "yyy-LL-dd"),
+        end_date: format(e.to, "yyy-LL-dd"),
+      });
+    }else{
+      setfilters({
+        ...filters,
+        start_date: null,
+        end_date: null,
+      });
+    }
+  };
+
   return (
     <div>
       <Popover>
@@ -29,11 +45,10 @@ export function RageDate() {
             {date?.from ? (
               date.to ? (
                 <>
-                  {format(date.from, "LLL dd")} -{" "}
-                  {format(date.to, "LLL dd")}
+                  {format(date.from, "yyy-LL-dd")} - {format(date.to, "yyy-LL-dd")}
                 </>
               ) : (
-                format(date.from, "LLL dd")
+                format(date.from, "yyy-LL-dd")
               )
             ) : (
               <span className="text-ring">Buscar en rango</span>
@@ -44,11 +59,13 @@ export function RageDate() {
           <Calendar
             mode="range"
             selected={date}
-            onSelect={setDate}
+            onSelect={(e) => {
+              dateHandle(e);
+            }}
             numberOfMonths={1}
           />
         </PopoverContent>
       </Popover>
     </div>
-  )
+  );
 }

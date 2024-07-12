@@ -1,8 +1,9 @@
+import { dialogChange, resetDialog } from "@/features/ui/UiSlice";
 import { saadApi } from "../../../api/SaddApp";
 import { permissionsRegister, roleRegister, usersRegister } from "./UsersSlice";
 
 
-
+//usuarios
 export const GetUsersList = () => {
   return async (dispatch, getState) => {
     const paginationNum = getState().ui.paginationNumber
@@ -49,6 +50,27 @@ export const deleteUser = (id) => {
   };
 };
 
+export const paginateUsers = (url) => {
+  return async (dispatch, getState) => {
+    try {
+      let newData = {}
+      const {data} = getState().usersList.users;
+      let resp = await saadApi.get(url);
+      newData = [...data, ...resp.data.data.data]
+      const newState = {...resp.data.data, data: [...newData]};
+      if (resp.data.responseCode == 200) {
+        dispatch(usersRegister(newState));  
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+
+//usuarios
+
+//roles
 
 export const userRoleAssign = (data) => {
   return async (dispatch) => {
@@ -109,11 +131,40 @@ export const addRolAsync = (data) => {
       }
       return resp.data.responseCode;
     } catch (error) {
+      const errorMessage = error.response.data.errors.code[0];
+      dispatch(dialogChange( {
+        title: "Ups, parece haber un error",
+        message: errorMessage,
+        status: true,
+        duration: 3000,
+        variant: "destructive"
+      }))
+      setTimeout(() => {
+        dispatch(resetDialog());
+      }, 3000);
+    }
+  };
+};
+
+export const paginateRole = (url) => {
+  return async (dispatch, getState) => {
+    try {
+      let newData = {}
+      const {data} = getState().usersList.roles;
+      let resp = await saadApi.get(url);
+      newData = [...data, ...resp.data.data.data]
+      const newState = {...resp.data.data, data: [...newData]};
+      if (resp.data.responseCode == 200) {
+        dispatch(roleRegister(newState));  
+      }
+    } catch (error) {
       console.log(error);
     }
   };
 };
 
+
+//permissions
 
 export const updatePermissionToRole = (data, id) => {
   return async (dispatch) => {

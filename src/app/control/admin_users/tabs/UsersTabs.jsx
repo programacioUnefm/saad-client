@@ -9,10 +9,15 @@ import { SkeletonList } from "@/components/Skeletons/SkeletonList";
 
 import { RoleAssign } from "../components/RoleAssign";
 import { EditUser } from "../forms/EditUser";
-import { deleteUser, userRoleAssign } from "@/features/control/usuarios/UsersThunks";
+import {
+  deleteUser,
+  paginateUsers,
+  userRoleAssign,
+} from "@/features/control/usuarios/UsersThunks";
 import { useToast } from "@/components/ui/use-toast";
 import { TableHeaderUsers } from "../layouts/TableHeaderUsers";
 import { ConfirmDelete } from "../forms/ConfirmDelete";
+import { Button } from "@/components/ui/button";
 
 export const UsersTabs = ({ users, tabState }) => {
   const { layout, filters } = useSelector((state) => state.ui);
@@ -51,6 +56,12 @@ export const UsersTabs = ({ users, tabState }) => {
     }
   };
 
+  const itemsPerView = users.total - users.current_page * users.per_page;
+  
+  const paginationUsers = () => {
+    dispatch(paginateUsers(users.next_page_url));
+  }
+
   return (
     <>
       {users.data != undefined ? (
@@ -78,7 +89,7 @@ export const UsersTabs = ({ users, tabState }) => {
           </div>
         ) : (
           <div className="w-full">
-            <Table className="bg-background p-2 rounded-sm">
+            <Table className="dark:bg-accent/20 bg-white rounded-md">
               <TableHeaderUsers />
               <TableBody>
                 {users.data != undefined &&
@@ -109,6 +120,15 @@ export const UsersTabs = ({ users, tabState }) => {
       ) : (
         <SkeletonList />
       )}
+
+      <div className="flex justify-center mt-4">
+        {!filters.status && itemsPerView > 0 && (
+          <Button variant="outline" onClick={paginationUsers}>
+            Ver más usuarios + {itemsPerView}
+          </Button>
+        )}
+      </div>
+
       {action.action == "delete" ? (
         <ConfirmDelete
           open={action.dialog}

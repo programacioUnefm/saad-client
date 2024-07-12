@@ -3,14 +3,14 @@ import { icons } from "lucide-react";
 export const navbarMenu = [
   {
     title: "Inicio",
-    path: "/inicio/",
+    path: "/inicio",
     icon: "Home",
     permission: ["HOME"],
     action: "disable",
   },
   {
     title: "Administrativo",
-    path: "/administrativo/",
+    path: "/administrativo",
     icon: "List",
     permission: ["HOME", "HOME_ADMINISTRATIVO"],
     action: "disable",
@@ -241,7 +241,7 @@ export const navbarMenu = [
   },
   {
     title: "Académico",
-    path: "/academico/",
+    path: "/academico",
     permission: ["HOME_ACADEMICO"],
     action: "disable",
     icon: "GraduationCap",
@@ -284,14 +284,14 @@ export const navbarMenu = [
   },
   {
     title: "Personal",
-    path: "/academico/",
+    path: "/academico",
     permission: ["HOME_PERSONAL"],
     action: "disable",
     icon: "Users",
     subMenu: [
       {
         title: "Expediente",
-        path: "/personal/expediente/",
+        path: "/personal/expediente",
         permission: ["PERSONAL_EXPEDIENTE"],
         action: "disable",
         icon: "Library",
@@ -592,7 +592,7 @@ export const navbarMenu = [
   },
   {
     title: "Control",
-    path: "/control/",
+    path: "/control",
     icon: "Lock",
     permission: ["HOME", "HOME_CONTROL"],
     action: "hidden",

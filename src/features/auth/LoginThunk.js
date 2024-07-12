@@ -1,7 +1,7 @@
 import { saadApi } from "../../api/SaddApp";
 import { GetUsersList } from "../control/usuarios/UsersThunks";
 import { login } from "./AuthSlice";
-import { dialogChange } from "../ui/UiSlice";
+import { dialogChange, resetDialog } from "../ui/UiSlice";
 
 export const RegisterApp = (data) => {
   return async (dispatch) => {
@@ -10,7 +10,28 @@ export const RegisterApp = (data) => {
       dispatch(GetUsersList());
       return resp.status;
     } catch (error) {
-      console.log(error);
+      // const errorMessage = error.response.data.errors
+      let message = ""
+      if(error.response.data.errors.document_id != undefined){
+        message = error.response.data.errors.document_id[0];
+      }
+      if(error.response.data.errors.email != undefined){
+        if(message != ""){
+          message = message + " \n " + error.response.data.errors.email[0]
+        }else{
+          message = error.response.data.errors.email[0]
+        }
+      }
+      dispatch(dialogChange( {
+        title: "Ups, parece haber un error",
+        message: message,
+        status: true,
+        duration: 3000,
+        variant: "destructive"
+      }))
+      setTimeout(() => {
+        dispatch(resetDialog());
+      }, 3000);
     }
   };
 };

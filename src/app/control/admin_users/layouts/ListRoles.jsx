@@ -10,7 +10,7 @@ import { ButtonsActions } from "../tabs/components/ButtonsActions";
 export const ListRoles = ({ tabState, setAction, rol }) => {
   return (
     <TableRow>
-      <TableCell className="font-bold">{rol.name}</TableCell>
+      <TableCell className="font-bold text-nowrap">{rol.name}</TableCell>
       <TableCell>
         {rol.description != null ? (
           rol.description
