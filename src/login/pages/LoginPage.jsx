@@ -56,7 +56,7 @@ export const LoginPage = () => {
         ) : (
           <PasswordForgot />
         )}
-        <div className="sign-in">
+        {/* <div className="sign-in">
           <div className="content">
             <span>
               {loginState == "register"
@@ -76,7 +76,7 @@ export const LoginPage = () => {
               </span>
             </span>
           </div>
-        </div>
+        </div> */}
       </div>
       <div style={estilo} className="hidden  lg:block">
         <div className="flex flex-col justify-center items-center h-full px-36">
