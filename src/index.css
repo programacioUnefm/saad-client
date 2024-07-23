@@ -1,16 +1,6 @@
-@font-face {
-  font-family: 'Montserrat';
-  src: url('../Montserrat-VariableFont_wght.ttf') format('truetype');;
-  font-weight: normal;
-  font-style: normal;
-}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-*{
-  font-family: 'Montserrat';
-}
 
 @layer base {
   :root {
@@ -45,7 +35,6 @@
   }
 
   .dark {
-    
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
 
@@ -76,10 +65,18 @@
   }
 }
 
-p,span, h1,h2,h3,h4,h5,h6, small{
-  font-family: 'Montserrat';
+p,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+small {
+  font-family: "Montserrat";
 }
-p{
+p {
   line-height: 2rem;
 }
 
@@ -92,81 +89,89 @@ p{
   }
 }
 
-
-.theme-toggle{
+.theme-toggle {
   position: fixed;
   bottom: 20px;
   right: 20px;
   z-index: 10;
 }
 
-
 .fade-in-bottom {
-	-webkit-animation: fade-in-bottom 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-	        animation: fade-in-bottom 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  -webkit-animation: fade-in-bottom 0.2s cubic-bezier(0.39, 0.575, 0.565, 1)
+    both;
+  animation: fade-in-bottom 0.2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 }
 
-.footerAction{
+.footerAction {
   position: absolute;
   bottom: 40px;
   width: 90%;
 }
- @-webkit-keyframes fade-in-bottom {
+@-webkit-keyframes fade-in-bottom {
   0% {
     -webkit-transform: translateY(50px);
-            transform: translateY(50px);
+    transform: translateY(50px);
     opacity: 0;
   }
   100% {
     -webkit-transform: translateY(0);
-            transform: translateY(0);
+    transform: translateY(0);
     opacity: 1;
   }
 }
 @keyframes fade-in-bottom {
   0% {
     -webkit-transform: translateY(50px);
-            transform: translateY(50px);
+    transform: translateY(50px);
     opacity: 0;
   }
   100% {
     -webkit-transform: translateY(0);
-            transform: translateY(0);
+    transform: translateY(0);
     opacity: 1;
   }
 }
 
 .fade-out-bottom {
-	-webkit-animation: fade-out-bottom 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-	        animation: fade-out-bottom 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  -webkit-animation: fade-out-bottom 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    both;
+  animation: fade-out-bottom 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
-
- @-webkit-keyframes fade-out-bottom {
+@-webkit-keyframes fade-out-bottom {
   0% {
     -webkit-transform: translateY(0);
-            transform: translateY(0);
+    transform: translateY(0);
     opacity: 1;
   }
   100% {
     -webkit-transform: translateY(50px);
-            transform: translateY(50px);
+    transform: translateY(50px);
     opacity: 0;
   }
 }
 @keyframes fade-out-bottom {
   0% {
     -webkit-transform: translateY(0);
-            transform: translateY(0);
+    transform: translateY(0);
     opacity: 1;
   }
   100% {
     -webkit-transform: translateY(50px);
-            transform: translateY(50px);
+    transform: translateY(50px);
     opacity: 0;
   }
 }
 
-body{
+body {
   overflow: hidden;
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
 }

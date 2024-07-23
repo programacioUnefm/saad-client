@@ -3,7 +3,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Dot, Lock, Pencil, Plus, Trash } from "lucide-react";
 import "./tooltip.css";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePermission } from "@/features/control/usuarios/UsersThunks";
@@ -66,6 +66,21 @@ export const TooltipPermission = ({
           <PopoverTrigger>
             <div className="tooltip text-left">
               <div className="ml-4 flex items-center uppercase xl:text-[13px]">
+                {/* {!data.children &&
+                  tooltip.toUpperCase() != "AGREGAR" &&
+                  tooltip.toUpperCase() != "EDITAR" &&
+                  tooltip.toUpperCase() != "ELIMINAR" && (
+                    <Dot className="w-15" />
+                  )} */}
+                {!data.children && tooltip.toUpperCase() == "AGREGAR" && (
+                  <Plus className="w-4 mr-1" />
+                )}
+                {!data.children && tooltip.toUpperCase() == "EDITAR" && (
+                  <Pencil className="w-4 mr-1" />
+                )}
+                {!data.children && tooltip.toUpperCase() == "ELIMINAR" && (
+                  <Trash className="w-4 mr-1" />
+                )}
                 {tooltip}
               </div>
               <span className="tooltiptext">

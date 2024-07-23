@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 
 import { Toaster } from "../../../components/ui/toaster";
-import { ScrollArea } from "../../../components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "../../../components/ui/scroll-area";
 import { Sidebar } from "./components/Sidebar";
 import { useSelector } from "react-redux";
 import { TitleAndBradCrum } from "./components/TitleAndBradCrum";
@@ -50,7 +50,10 @@ export function AppLayout({
             )}
           </div>
           <div className="p-5 dark:bg-background bg-slate-100 rounded-lg border border-dashed shadow-sm h-full">
-            <ScrollArea className="h-[75vh] w-full px-4 relative">{children}</ScrollArea>
+            <ScrollArea className="h-[75vh] px-4 relative md:w-[70vw] xl:w-[80vw]">
+              {children}
+              <ScrollBar orientation="horizontal" />
+            </ScrollArea>
 
             {/* {pagination &&
               arrayPagination != undefined &&

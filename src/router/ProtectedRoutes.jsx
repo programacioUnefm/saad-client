@@ -50,7 +50,7 @@ export const ProtectedRoutes = ({ redirectTo = "/login" }) => {
   }
   
   if (result == null) {
-    return <Navigate to={"no-autorizado"} />;
+    // return <Navigate to={"no-autorizado"} />;
     // return <Navigate to={"inicio"} />;
   } else {
     return <Outlet />;

@@ -171,10 +171,10 @@ export const AddPermisionCard = ({ parent, setparent }) => {
                   className="mt-2"
                 />
               </div>
-              <div className="flex items-center space-x-2 mt-4">
+              {/* <div className="flex items-center space-x-2 mt-4">
                 <Switch id="airplane-mode" />
                 <Label htmlFor="airplane-mode">CREAR CRUD</Label>
-              </div>
+              </div> */}
             </CardContent>
             <CardFooter className="flex gap-2">
               <Button

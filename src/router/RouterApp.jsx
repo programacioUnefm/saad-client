@@ -24,6 +24,7 @@ import { login } from "../features/auth/AuthSlice";
 import { LogsPage } from "@/app/control/log/LogsPage";
 import { ActuacionPage } from "@/app/personal/expediente/regDatos/actuacion/ActuacionPage";
 import { NoAuthPage } from "@/app/unAuth/NoAuthPage";
+import { DatosPersonalesPage } from "@/app/personal/expediente/tablasBasicas/datosPersonales/DatosPersonalesPage";
 
 export const RouterApp = () => {
   let theme = localStorage.getItem("vite-ui-theme");
@@ -85,7 +86,7 @@ export const RouterApp = () => {
           <Route path="/presupuesto" element={<PresupuestoPage />} />
 
           <Route path="/personal/expediente/registro-datos/actuacion" element={<ActuacionPage />} />
-
+          <Route path="/personal/tablas-basicas/datos-personales" element={<DatosPersonalesPage />} />
           <Route path="/control/usuarios" element={<UsersListPage />} />
           <Route path="/control/bitacora" element={<LogsPage />} />
         </Route>

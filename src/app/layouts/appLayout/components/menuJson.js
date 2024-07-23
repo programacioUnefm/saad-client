@@ -299,7 +299,7 @@ export const navbarMenu = [
           {
             title: "Registro datos",
             path: "/personal/expediente/registro-datos",
-            desciption:"Registro de datos",
+            desciption: "Registro de datos",
             permission: ["PERSONAL_EXPEDIENTE_REG_DATOS"],
             action: "disable",
             subMenu: [
@@ -341,7 +341,7 @@ export const navbarMenu = [
               {
                 title: "Directivos",
                 path: "/personal/expediente/cargos-directivos",
-                desciption:"Cargos directivo",
+                desciption: "Cargos directivo",
                 permission: ["PERSONAL_EXPEDIENTE_REG_DATOS_DIRECTIVOS"],
                 action: "disable",
                 icon: "ChevronRight",
@@ -376,7 +376,7 @@ export const navbarMenu = [
               },
               {
                 title: "Tabajos ant",
-                desciption:"Trabajos anteriores",
+                desciption: "Trabajos anteriores",
                 path: "/personal/expediente/trabajos-anteriores",
                 permission: ["PERSONAL_EXPEDIENTE_REG_DATOS_TRABAJOS"],
                 action: "disable",
@@ -391,8 +391,10 @@ export const navbarMenu = [
             path: "/personal/expediente/tablas-basicas",
             subMenu: [
               {
-                title: "Datos per",
-                path: "/personal/expediente/trabajos-anteriores",
+                title: "Datos per...",
+                path: "/personal/tablas-basicas/datos-personales",
+                permission: ["EXPEDIENTE_TABLASB_DATOS_PERSONALES"],
+                action: "disable",
                 icon: "ChevronRight",
               },
               {
