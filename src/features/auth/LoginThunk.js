@@ -1,6 +1,6 @@
 import { saadApi } from "../../api/SaddApp";
 import { GetUsersList } from "../control/usuarios/UsersThunks";
-import { login } from "./AuthSlice";
+import { editMyUser, login } from "./AuthSlice";
 import { dialogChange, resetDialog } from "../ui/UiSlice";
 
 export const RegisterApp = (data) => {
@@ -11,28 +11,50 @@ export const RegisterApp = (data) => {
       return resp.status;
     } catch (error) {
       // const errorMessage = error.response.data.errors
-      let message = ""
-      if(error.response.data.errors.document_id != undefined){
+      let message = "";
+      if (error.response.data.errors.document_id != undefined) {
         message = error.response.data.errors.document_id[0];
       }
-      if(error.response.data.errors.email != undefined){
-        if(message != ""){
-          message = message + " \n " + error.response.data.errors.email[0]
-        }else{
-          message = error.response.data.errors.email[0]
+      if (error.response.data.errors.email != undefined) {
+        if (message != "") {
+          message = message + " \n " + error.response.data.errors.email[0];
+        } else {
+          message = error.response.data.errors.email[0];
         }
       }
-      dispatch(dialogChange( {
-        title: "Ups, parece haber un error",
-        message: message,
-        status: true,
-        duration: 3000,
-        variant: "destructive"
-      }))
+      dispatch(
+        dialogChange({
+          title: "Ups, parece haber un error",
+          message: message,
+          status: true,
+          duration: 3000,
+          variant: "destructive",
+        })
+      );
       setTimeout(() => {
         dispatch(resetDialog());
       }, 3000);
     }
+  };
+};
+
+export const editUser = (data) => {
+  return async (dispatch) => {
+    try {
+      const resp = await saadApi.put(`admin/users/${data.id}`, data);
+      dispatch(GetUsersList());
+      dispatch(editMyUser(data));
+      dispatch(
+        dialogChange({
+          title: "Usuario Editado",
+          message: "",
+          status: true,
+          duration: 3000,
+          variant: "",
+        })
+      );
+      return true;
+    } catch (error) {}
   };
 };
 
@@ -63,20 +85,37 @@ export const VerifyUser = () => {
       const { data } = resp.data;
       if (code == 200) {
         const token = localStorage.getItem("token_access");
-        const newState = { name:data.name, id:data.id, document_id:data.document_id, token, roles: data.roles, Authstatus: true };
+        const newState = {
+          name: data.name,
+          id: data.id,
+          document_id: data.document_id,
+          token,
+          email: data.email,
+          last_name: data.last_name,
+          roles: data.roles,
+          Authstatus: true,
+        };
         dispatch(login(newState));
       }
       return { code };
     } catch (error) {
       const message = error.response.data.message;
       if (message == "Unauthenticated.") {
-        dispatch(login({ Authstatus: false, name: "",document_id:"", roles: [], token: "" }));
+        dispatch(
+          login({
+            Authstatus: false,
+            name: "",
+            document_id: "",
+            roles: [],
+            token: "",
+          })
+        );
         dispatch(
           dialogChange({
             message: "Tu sesión ha expirado inicia sesión nuevamente",
             status: true,
             duration: 3000,
-            variant: "destructive"
+            variant: "destructive",
           })
         );
         setTimeout(() => {
@@ -85,7 +124,7 @@ export const VerifyUser = () => {
               message: "",
               status: false,
               duration: 3000,
-              variant: ""
+              variant: "",
             })
           );
         }, 3000);
@@ -100,8 +139,6 @@ export const LogOutApp = () => {
       const resp = await saadApi.get(`auth/logout`);
       localStorage.removeItem("token_access");
       dispatch(login({ Authstatus: false, name: "", role: [], token: "" }));
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 };

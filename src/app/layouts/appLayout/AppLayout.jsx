@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef, cloneElement } from "react";
 
 import { Toaster } from "../../../components/ui/toaster";
 import { ScrollArea, ScrollBar } from "../../../components/ui/scroll-area";
@@ -19,6 +19,8 @@ export function AppLayout({
   pagination = false,
   arrayPagination = undefined,
 }) {
+
+
   const { theme } = useSelector((state) => state.auth);
   const { dialog } = useSelector((state) => state.ui);
   const { toast } = useToast();
@@ -44,8 +46,8 @@ export function AppLayout({
               <TitleAndBradCrum title={title} />
             </div>
             {!!titleButton && (
-              <div className="flex justify-end">
-                <Button onClick={functionButton}>{titleButton}</Button>
+              <div className="flex justify-end items-end pr-12">
+                <Button variant="outline" onClick={functionButton}>{titleButton}</Button>
               </div>
             )}
           </div>

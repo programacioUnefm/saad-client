@@ -19,10 +19,10 @@ export function ModeToggle() {
   };
 
   return (
-    <div className="flex gap-2 mt-2">
-      <Switch value={ThemeState} className="data-[state=checked]:bg-white h-5" onClick={() => themeHandled()} />
+    <div className="flex items-center justify-between gap-2 mt-2">
+      <Switch value={ThemeState} className="" onClick={() => themeHandled()} />
       <Label htmlFor="airplane-mode" className="-mt-1">
-        {theme == "dark" ? <Sun /> : <Moon />}
+        {theme == "dark" ? <Sun size={20} /> : <Moon size={20}/>}
       </Label>
     </div>
     // <div className="theme-toggle">

@@ -1,5 +1,6 @@
 import { AppLayout } from "@/app/layouts/appLayout/AppLayout";
-import React, { useState } from "react";
+import React, { useState, forwardRef, useImperativeHandle } from "react";
+
 import { useSelector } from "react-redux";
 import { dataPerEjemplo } from "./dataper";
 import { SkeletonList } from "@/components/Skeletons/SkeletonList";
@@ -23,6 +24,7 @@ import {
 } from "@/components/ui/tooltip";
 import { HeaderDataTable } from "@/components/DataTable/HeaderDataTable";
 import { DataTable } from "@/components/DataTable/DataTable";
+import { AddPersonalForm } from "./components/AddPersonalForm";
 
 const columns = [
   {
@@ -223,7 +225,7 @@ const columns = [
         { key: "A-", value: "A-" },
         { key: "AB+", value: "AB-" },
         { key: "B+", value: "B-" },
-        { key: "O+", value: "O-" }
+        { key: "O+", value: "O-" },
       ],
     },
     cell: (info) => <div className="text-center">{info.getValue()}</div>,
@@ -245,7 +247,7 @@ const columns = [
         { key: "A-", value: "A-" },
         { key: "AB+", value: "AB-" },
         { key: "B+", value: "B-" },
-        { key: "O+", value: "O-" }
+        { key: "O+", value: "O-" },
       ],
     },
     classname: "text-center",
@@ -300,9 +302,7 @@ const columns = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>ACCIONES</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => {}}>
-                Detalles
-              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => {}}>Detalles</DropdownMenuItem>
               <DropdownMenuItem>Editar</DropdownMenuItem>
               <DropdownMenuItem>Eliminar</DropdownMenuItem>
             </DropdownMenuContent>
@@ -312,7 +312,7 @@ const columns = [
     },
   },
 ];
-export const DatosPersonalesPage = () => {
+export const DatosPersonalesPage = forwardRef((props, ref) => {
   const { layout, filters } = useSelector((state) => state.ui);
   const [filtersTable, setFiltersTable] = useState({
     columnVisibility: {
@@ -347,31 +347,53 @@ export const DatosPersonalesPage = () => {
     },
   });
 
+  const [addButton, setaddButton] = useState({
+    status: false,
+    textButton: "Agregar personal",
+    title: "Personal"
+  });
+
   return (
-    <AppLayout title={"Datos Personales"}>
-      <>
-        <HeaderDataTable
-          placeholder={"personal"}
-          filtersTable={filtersTable}
-          setFiltersTable={setFiltersTable}
-        />
-        {dataPerEjemplo != undefined ? (
-          layout == "grid" ? (
-            "grid"
+    <AppLayout
+      title={addButton.title}
+      titleButton={addButton.textButton}
+      functionButton={() =>
+        setaddButton({
+          status: !addButton.status,
+          textButton: addButton.status ? "Agregar personal" : "Volver atras",
+          title: addButton.status ? "Personal" : "Agregar personal",
+        })
+      }
+    >
+      {addButton.status ? (
+        <div id="addPersonal" className="p-2">
+          <AddPersonalForm />
+        </div>
+      ) : (
+        <div id="personalTable">
+          <HeaderDataTable
+            placeholder={"personal"}
+            filtersTable={filtersTable}
+            setFiltersTable={setFiltersTable}
+          />
+          {dataPerEjemplo != undefined ? (
+            layout == "grid" ? (
+              "grid"
+            ) : (
+              <DataTable
+                columns={columns}
+                data={dataPerEjemplo}
+                filtersTable={filtersTable}
+                setFiltersTable={setFiltersTable}
+              />
+            )
+          ) : layout == "grid" ? (
+            <SkeletonGrid />
           ) : (
-            <DataTable
-              columns={columns}
-              data={dataPerEjemplo}
-              filtersTable={filtersTable}
-              setFiltersTable={setFiltersTable}
-            />
-          )
-        ) : layout == "grid" ? (
-          <SkeletonGrid />
-        ) : (
-          <SkeletonList />
-        )}
-      </>
+            <SkeletonList />
+          )}
+        </div>
+      )}
     </AppLayout>
   );
-};
+});
