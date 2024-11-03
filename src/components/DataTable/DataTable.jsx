@@ -71,7 +71,6 @@ export const DataTable = ({ data, columns, filtersTable, setFiltersTable }) => {
 
   const paginationHandle = (event) => {
     let newPaginationState = { ...filtersTable.pagination };
-    console.log();
     switch (event) {
       case "next":
         newPaginationState.pageIndex = newPaginationState.pageIndex + 1;
@@ -80,7 +79,7 @@ export const DataTable = ({ data, columns, filtersTable, setFiltersTable }) => {
         newPaginationState.pageIndex = newPaginationState.pageIndex - 1;
         break;
       case "last":
-        newPaginationState.pageIndex = (table.getPageCount() - 1);
+        newPaginationState.pageIndex = table.getPageCount() - 1;
         break;
       case "first":
         newPaginationState.pageIndex = 0;
@@ -93,7 +92,7 @@ export const DataTable = ({ data, columns, filtersTable, setFiltersTable }) => {
   };
 
   return (
-    <div className="relative">
+    <div className="pb-12">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -146,7 +145,11 @@ export const DataTable = ({ data, columns, filtersTable, setFiltersTable }) => {
                               </Button>
                             )}
                             <br />
-                            <FiltersDataTable header={header} filtersTable={filtersTable} setFiltersTable={setFiltersTable} />
+                            <FiltersDataTable
+                              header={header}
+                              filtersTable={filtersTable}
+                              setFiltersTable={setFiltersTable}
+                            />
                           </div>
                         )}
                       </div>
@@ -186,49 +189,53 @@ export const DataTable = ({ data, columns, filtersTable, setFiltersTable }) => {
           )}
         </TableBody>
       </Table>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          pagina {table.getState().pagination.pageIndex + 1} de{" "}
-          {table.getPageCount()} -
-          <span className="ml-1 font-bold text-ring">
-            items total {table.getFilteredRowModel().rows.length}
-          </span>
+      {data.length > filtersTable.view && (
+        <div className="absolute w-full -bottom-4 bg-background">
+          <div className="flex items-center justify-end space-x-2 py-4 pr-8">
+            <div className="flex-1 text-sm text-muted-foreground">
+              pagina {table.getState().pagination.pageIndex + 1} de{" "}
+              {table.getPageCount()} -
+              <span className="ml-1 font-bold text-ring">
+                items total {table.getFilteredRowModel().rows.length}
+              </span>
+            </div>
+            <div className="space-x-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => paginationHandle("first")}
+                disabled={!table.getCanPreviousPage()}
+              >
+                <ChevronFirst className="w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => paginationHandle("previous")}
+                disabled={!table.getCanPreviousPage()}
+              >
+                <ChevronLeft className="w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => paginationHandle("next")}
+                disabled={!table.getCanNextPage()}
+              >
+                <ChevronRight className="w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => paginationHandle("last")}
+                disabled={!table.getCanNextPage()}
+              >
+                <ChevronLast className="w-4" />
+              </Button>
+            </div>
+          </div>
         </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => paginationHandle("first")}
-            disabled={!table.getCanPreviousPage()}
-          >
-            <ChevronFirst className="w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => paginationHandle("previous")}
-            disabled={!table.getCanPreviousPage()}
-          >
-            <ChevronLeft className="w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => paginationHandle("next")}
-            disabled={!table.getCanNextPage()}
-          >
-            <ChevronRight className="w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => paginationHandle("last")}
-            disabled={!table.getCanNextPage()}
-          >
-            <ChevronLast className="w-4" />
-          </Button>
-        </div>
-      </div>
+      )}
     </div>
   );
 };

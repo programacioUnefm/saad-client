@@ -6,11 +6,15 @@ import { dialogChange, resetDialog } from "../ui/UiSlice";
 export const RegisterApp = (data) => {
   return async (dispatch) => {
     try {
-      const resp = await saadApi.post(`admin/users/register`, data);
-      dispatch(GetUsersList());
+      const resp = await saadApi.post(`auth/register`, data);
+      let rutaActual = window.location.pathname;
+      if (rutaActual != "/login") {
+        dispatch(GetUsersList());
+      }
       return resp.status;
     } catch (error) {
-      // const errorMessage = error.response.data.errors
+      // console.log(error)
+      const errorMessage = error.response.data.errors;
       let message = "";
       if (error.response.data.errors.document_id != undefined) {
         message = error.response.data.errors.document_id[0];

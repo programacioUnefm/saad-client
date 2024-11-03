@@ -4,6 +4,7 @@ import { Button } from "../../components/ui/button";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { RegisterApp } from "../../features/auth/LoginThunk";
+import { dialogChange } from "@/features/ui/UiSlice";
 
 export const RegisterForm = ({ closeDialog }) => {
   const {
@@ -16,14 +17,27 @@ export const RegisterForm = ({ closeDialog }) => {
 
   const onSubmit = async (data) => {
     const resp = await dispatch(RegisterApp(data));
+    let rutaActual = window.location.pathname;
     if (resp == 200) {
-      closeDialog();
+      if (rutaActual != "/login") {
+        closeDialog();
+      } else {
+        dispatch(
+          dialogChange({
+            title: "Usuario registrado",
+            message:"el usuario ha sido registrado pero necesitarás que un administrador active tu usuario.",
+            status: true,
+            duration: 3000,
+            variant: "",
+          })
+        );
+      }
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mt-4">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-3 gap-4 mb-4">
         <div className="input-group">
           <label htmlFor="name">Nombres</label>
           <Input
@@ -50,7 +64,21 @@ export const RegisterForm = ({ closeDialog }) => {
             Apellidos requerido
           </span>
         </div>
-
+        <div className="input-group">
+          <label htmlFor="last_name">Nombre Usuario</label>
+          <Input
+            type="text"
+            errors={errors.last_name ? "true" : "false"}
+            id="username"
+            placeholder="Ej: Gutierres Garcés"
+            {...register("username", { required: true })}
+          />
+          <span className={errors.last_name ? "text-destructive" : "hidden"}>
+            Usuario requerido
+          </span>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
         <div className="input-group">
           <label htmlFor="document_id">Número de cédula</label>
           <Input

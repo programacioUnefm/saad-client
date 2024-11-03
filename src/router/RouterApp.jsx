@@ -53,10 +53,10 @@ export const RouterApp = () => {
         {/* RUTAS PUBLICAS */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/no-autorizado" element={<NoAuthPage />} />
-
+        <Route path="/"  element={<Navigate to="/inicio" />} />
         {/* RUTAS PRIVADAS */}
         <Route element={<ProtectedRoutes />}>
-          <Route path="/"  element={<Navigate to="/inicio" />} />
+          
           <Route path="/inicio" element={<DashboardPage />} />
           <Route path="/administrativo" element={<Administrativo />} />
           <Route path="/administrativo/compras" element={<ComprasPage />} />

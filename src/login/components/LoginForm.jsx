@@ -55,13 +55,14 @@ export const LoginForm = ({ setloginState }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mt-4">
       <div className="input-group">
-        <label htmlFor="document_id">Número de cédula</label>
+        <label htmlFor="login">Usuario</label>
         <Input
           autoFocus
           type="text"
-          name="document_id"
-          id="document_id"
-          {...register("document_id", { required: true })}
+          name="login"
+          id="login"
+          placeholder="Cédula, correo, nombre de usuario"
+          {...register("login", { required: true })}
         />
       </div>
       <div className="input-group">
@@ -79,20 +80,24 @@ export const LoginForm = ({ setloginState }) => {
           {load ? "Enviando..." : "Iniciar sesión"}
         </Button>
       </div>
-      {/* <div className="flex mt-8">
+      <div className="flex mt-8">
         <div className="flex items-center space-x-2 w-2/5">
-          <Checkbox id="recuerdame" />
-          <label htmlFor="recuerdame">Recuerdame</label>
+        <span
+            onClick={() => setloginState("register")}
+            className="cursor-pointer hover:underline"
+          >
+            Crear nueva cuenta
+          </span>
         </div>
         <div className="flex justify-end w-3/5">
           <span
             onClick={() => setloginState("forgot")}
-            className="text-blue-500 font-semibold hover:text-blue-300 cursor-pointer"
+            className="text-blue-500 font-semibold hover:text-blue-300 cursor-pointer hover:underline"
           >
             Olvidé mi contraseña
           </span>
         </div>
-      </div> */}
+      </div>
     </form>
   );
 };

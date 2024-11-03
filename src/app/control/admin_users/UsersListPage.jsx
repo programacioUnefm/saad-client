@@ -94,10 +94,10 @@ export const UsersListPage = () => {
         </div>
         <TabsContent value="users">
           <div className="sticky top-0 bg-slate-100 dark:bg-background z-10	px-1">
-            <SearchAndFilters
+            {/* <SearchAndFilters
               route={"admin/users/search/"}
               placeholder={"usuarios"}
-            />
+            /> */}
           </div>
           <UsersTabs users={users} tabState={tabState} />
         </TabsContent>

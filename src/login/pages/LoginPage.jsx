@@ -11,6 +11,7 @@ import { RegisterForm } from "../components/RegisterForm";
 import { PasswordForgot } from "../components/PasswordForgot";
 import { Toaster } from "../../components/ui/toaster";
 import { useToast } from "../../components/ui/use-toast";
+import { Button } from "@/components/ui/button";
 
 export const LoginPage = () => {
   const { theme, dialog } = useSelector((state) => state.ui);
@@ -47,14 +48,55 @@ export const LoginPage = () => {
             className="logo"
             src={theme == "dark" ? reversed : logo}
             alt="sadd-logo"
+            onClick={() => setloginState("login")}
           />
         </div>
         {loginState == "login" ? (
           <LoginForm setloginState={setloginState} />
         ) : loginState == "register" ? (
-          <RegisterForm />
+          <>
+            <RegisterForm />
+            <div className="flex mt-8">
+              <div className="flex items-center space-x-2 w-2/5">
+                <span
+                  onClick={() => setloginState("login")}
+                  className="cursor-pointer hover:underline"
+                >
+                  Iniciar de sesión
+                </span>
+              </div>
+              <div className="flex justify-end w-3/5">
+                <span
+                  onClick={() => setloginState("forgot")}
+                  className="text-blue-500 font-semibold hover:text-blue-300 cursor-pointer hover:underline"
+                >
+                  Olvidé mi contraseña
+                </span>
+              </div>
+            </div>
+          </>
         ) : (
-          <PasswordForgot />
+          <>
+            <PasswordForgot />
+            <div className="flex mt-8">
+              <div className="flex items-center space-x-2 w-2/5">
+                <span
+                  onClick={() => setloginState("login")}
+                  className="cursor-pointer hover:underline"
+                >
+                  Iniciar de sesión
+                </span>
+              </div>
+              <div className="flex justify-end w-3/5">
+                <span
+                  onClick={() => setloginState("register")}
+                  className="cursor-pointer hover:underline"
+                >
+                  Crear nueva cuenta
+                </span>
+              </div>
+            </div>
+          </>
         )}
         {/* <div className="sign-in">
           <div className="content">

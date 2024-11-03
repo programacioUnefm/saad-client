@@ -31,11 +31,11 @@ export const ButtonsActions = ({ setAction, arrayItem, tabState }) => {
       {tabState == "users" || tabState == "roles" ? (
         <Button
           className="w-full"
-          disabled={
-            tabState == "users"
-              ? !permissionCheck(["CONTROL_USUARIOS", "USUARIOS_ASIGNAR_ROLES"],permissions)
-              : !permissionCheck(["CONTROL_ROLES", "ROLES_ASIGNAR_PERMISOS"],permissions)
-          }
+          // disabled={
+          //   tabState == "users"
+          //     ? !permissionCheck(["CONTROL_USUARIOS", "USUARIOS_ASIGNAR_ROLES"],permissions)
+          //     : !permissionCheck(["CONTROL_ROLES", "ROLES_ASIGNAR_PERMISOS"],permissions)
+          // }
           onClick={() =>
             setAction({
               dialog: true,
