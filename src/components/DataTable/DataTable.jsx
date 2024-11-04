@@ -176,13 +176,13 @@ export const DataTable = ({ data, columns, filtersTable, setFiltersTable }) => {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-[48vh]">
-                <div className="flex justify-center items-center flex-col w-full">
+              <TableCell colSpan={columns.length} className="h-[65vh]">
+                <div className="flex justify-center items-center flex-col w-full text-center">
                   <SearchX className="mb-4 text-ring " size={50} />
                   <span className="text-xl font-bold uppercase text-ring">
                     No hay resultados
                   </span>
-                  <p>Lo que estás intentando buscar no existe</p>
+                  <p className="mt-4">Lo que estás intentando buscar no existe<br /> o no tienes privilegios para verlo.</p>
                 </div>
               </TableCell>
             </TableRow>

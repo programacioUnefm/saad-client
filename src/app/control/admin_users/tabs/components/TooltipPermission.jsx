@@ -20,7 +20,7 @@ export const TooltipPermission = ({
   permission = "",
   action,
 }) => {
-  const { permissions } = useSelector((state) => state.auth);
+  const { permissions, roleList } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const { toast } = useToast();
@@ -39,10 +39,10 @@ export const TooltipPermission = ({
   const WithoutAuth = () => {
     return (
       <>
-        {!permissionCheck(["PERMISOS_REASIGNAR"], permissions) &&
-          !permissionCheck(["PERMISOS_ELIMINAR"], permissions) &&
-          !permissionCheck(["PERMISOS_AGREGAR"], permissions) &&
-          !permissionCheck(["PERMISOS_EDITAR"], permissions) && (
+        {!permissionCheck(["PERMISOS_REASIGNAR"], permissions, roleList) &&
+          !permissionCheck(["PERMISOS_ELIMINAR"], permissions, roleList) &&
+          !permissionCheck(["PERMISOS_AGREGAR"], permissions, roleList) &&
+          !permissionCheck(["PERMISOS_EDITAR"], permissions, roleList) && (
             <span className="text-sm">
               Actualmente solo tienes permisos para "ver lista de permisos"
             </span>
@@ -102,7 +102,7 @@ export const TooltipPermission = ({
             <div className="flex flex-wrap gap-1 justify-center mt-2">
               {permissionCheck(
                 ["CONTROL_PERMISOS", "PERMISOS_AGREGAR"],
-                permissions
+                permissions, roleList
               ) && (
                 <span
                   className="truncate text-foreground/70 text-[10px] border-2 bg-muted-foreground/20 hover:bg-accent p-1 uppercase rounded-md cursor-pointer"
@@ -115,7 +115,7 @@ export const TooltipPermission = ({
               )}
               {permissionCheck(
                 ["CONTROL_PERMISOS", "PERMISOS_EDITAR"],
-                permissions
+                permissions, roleList
               ) && (
                 <span
                   className="truncate  text-foreground/70 text-[10px] border-2 bg-muted-foreground/20 hover:bg-accent p-1 uppercase rounded-md cursor-pointer"
@@ -128,11 +128,11 @@ export const TooltipPermission = ({
               )}
               {permissionCheck(
                 ["CONTROL_PERMISOS", "PERMISOS_REASIGNAR"],
-                permissions
+                permissions, roleList
               ) && <ParentReasign data={data} />}
               {permissionCheck(
                 ["CONTROL_PERMISOS", "PERMISOS_ELIMINAR"],
-                permissions
+                permissions, roleList
               ) && (
                 <span
                   className="truncate text-white text-foreground/70 text-[10px]  hover:bg-destructive/80 p-1 uppercase rounded-md bg-destructive cursor-pointer"

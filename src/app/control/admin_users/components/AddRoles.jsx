@@ -10,10 +10,10 @@ import { useSelector } from "react-redux";
 import { permissionCheck } from "@/features/PermissionCheck";
 
 export const AddRoles = ({ addRoleDialog, setAddRoleDialog }) => {
-  const { permissions } = useSelector((state) => state.auth);
+  const { permissions, roleList } = useSelector((state) => state.auth);
   return (
     <Dialog open={addRoleDialog}>
-      {permissionCheck(["USUARIOS_AGREGAR"],permissions) && (
+      {permissionCheck(["USUARIOS_AGREGAR"],permissions, roleList) && (
       <Button variant="outline" size="md" onClick={() => setAddRoleDialog(true)}>
         Agregar rol
       </Button>

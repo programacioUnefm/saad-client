@@ -6,6 +6,7 @@ import { dialogChange, resetDialog } from "@/features/ui/UiSlice.js";
 
 export const ProtectedRoutes = ({ redirectTo = "/login" }) => {
   const auth = useSelector((state) => state.auth);
+  
   const currentRoute = useLocation().pathname;
   const dispatch = useDispatch();
   const buscarRuta = (objeto, rutaActual) => {
@@ -31,7 +32,7 @@ export const ProtectedRoutes = ({ redirectTo = "/login" }) => {
   }
   let result = null;
   if (route != null) {
-    result = permissionCheck(route.permission, permissionsList);
+    result = permissionCheck(route.permission, permissionsList, auth.roleList);
   }
   if (!auth.Authstatus) {
     dispatch(

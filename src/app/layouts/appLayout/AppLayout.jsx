@@ -37,7 +37,7 @@ export function AppLayout({
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-      {sidebarComponent }
+      { sidebarComponent }
       <div className="flex flex-col bg-slate-50 dark:bg-background">
         <HeaderApp />
         <main className="flex flex-1 flex-col bg-muted/10 gap-4 p-4 lg:gap-6 lg:p-6">

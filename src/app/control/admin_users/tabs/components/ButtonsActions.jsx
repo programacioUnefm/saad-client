@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 export const ButtonsActions = ({ setAction, arrayItem, tabState }) => {
   // permissionCheck
-  const { permissions } = useSelector((state) => state.auth);
+  const { permissions, roleList } = useSelector((state) => state.auth);
 
   return (
     <>
@@ -13,8 +13,8 @@ export const ButtonsActions = ({ setAction, arrayItem, tabState }) => {
         className="w-full"
         disabled={
           tabState == "users"
-            ? !permissionCheck(["CONTROL_USUARIOS", "USUARIOS_EDITAR"],permissions)
-            : !permissionCheck(["CONTROL_ROLES", "ROLES_EDITAR"], permissions)
+            ? !permissionCheck(["CONTROL_USUARIOS", "USUARIOS_EDITAR"],permissions, roleList)
+            : !permissionCheck(["CONTROL_ROLES", "ROLES_EDITAR"], permissions, roleList)
         }
         onClick={() =>
           setAction({ dialog: true, action: "edit", arrayItem: arrayItem })
@@ -58,8 +58,8 @@ export const ButtonsActions = ({ setAction, arrayItem, tabState }) => {
         className="dark:bg-destructive/80 dark:hover:bg-destructive hover:bg-destructive bg-destructive/80 w-full text-white"
         disabled={
           tabState == "users"
-            ? !permissionCheck(["CONTROL_USUARIOS", "USUARIOS_ELIMINAR"],permissions)
-            : !permissionCheck(["CONTROL_ROLES", "ROLES_ELIMINAR"], permissions)
+            ? !permissionCheck(["CONTROL_USUARIOS", "USUARIOS_ELIMINAR"],permissions, roleList)
+            : !permissionCheck(["CONTROL_ROLES", "ROLES_ELIMINAR"], permissions, roleList)
         }
         onClick={() =>
           setAction({ dialog: true, action: "delete", arrayItem: arrayItem })

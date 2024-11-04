@@ -30,7 +30,7 @@ export const AddPermisionCard = ({ parent, setparent }) => {
   } = useForm();
   const { toast } = useToast();
   const [fatherPermission, setfatherPermission] = useState(false);
-  const { permissions } = useSelector((state) => state.auth);
+  const { permissions, roleList } = useSelector((state) => state.auth);
   useEffect(() => {
     reset();
     if (parent && parent.add) {
@@ -221,14 +221,14 @@ export const AddPermisionCard = ({ parent, setparent }) => {
               <Button
                 variant="outline"
                 className="mt-4"
-                disabled={!permissionCheck(["CONTROL_PERMISOS", "PERMISOS_AGREGAR"],permissions)}
+                disabled={!permissionCheck(["CONTROL_PERMISOS", "PERMISOS_AGREGAR"],permissions, roleList)}
                 size="lg"
                 onClick={() => {
                   setfatherPermission(true);
                 }}
               >
                 {
-                  permissionCheck(["CONTROL_PERMISOS", "PERMISOS_AGREGAR"],permissions)? "Crear Permiso": "sin acceso"
+                  permissionCheck(["CONTROL_PERMISOS", "PERMISOS_AGREGAR"],permissions, roleList)? "Crear Permiso": "sin acceso"
                 }
                 
               </Button>

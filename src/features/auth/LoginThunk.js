@@ -103,7 +103,41 @@ export const VerifyUser = () => {
       }
       return { code };
     } catch (error) {
+      
       const message = error.response.data.message;
+      const Unauthorized = error.response.data.error;
+      if (Unauthorized == "Unauthorized") {
+        dispatch(
+          login({
+            Authstatus: false,
+            name: "",
+            document_id: "",
+            roles: [],
+            token: "",
+          })
+        );
+        dispatch(
+          dialogChange({
+            message: "Al parecer no posees autorización para entrar.",
+            status: true,
+            duration: 3000,
+            variant: "destructive",
+          })
+        );
+
+        setTimeout(() => {
+          dispatch(
+            dialogChange({
+              message: "",
+              status: false,
+              duration: 3000,
+              variant: "",
+            })
+          );
+        }, 3000);
+      }
+
+      
       if (message == "Unauthenticated.") {
         dispatch(
           login({

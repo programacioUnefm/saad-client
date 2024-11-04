@@ -22,12 +22,13 @@ export const UsersListPage = () => {
   const dispatch = useDispatch();
   const { users, roles, permissions, tabState:defualtTab } = useSelector((state) => state.usersList);
   useEffect(() => {
-    dispatch(GetUsersList());
-    dispatch(GetRolesList());
-    dispatch(GetPermissionsList());
+    permissionCheck(["USUARIOS_LISTAR"], permissionList, roleList) && dispatch(GetUsersList());
+    permissionCheck(["ROLES_LISTAR"], permissionList, roleList) && dispatch(GetRolesList());
+    permissionCheck(["PERMISOS_LISTAR"], permissionList, roleList) && dispatch(GetPermissionsList());
     setTabState(defualtTab);
   }, []);
-  const { permissions: permissionList } = useSelector((state) => state.auth);
+  const { permissions: permissionList, roleList } = useSelector((state) => state.auth);
+
   const { filters } = useSelector((state) => state.ui);
   
   const [tabState, setTabState] = useState("");
@@ -39,8 +40,7 @@ export const UsersListPage = () => {
     dispatch(tabStateChange(value));
     dispatch(filterUrlChange(`admin/${value}/search`));
   };
-  
-  
+
   
   return (
     <AppLayout
@@ -56,21 +56,23 @@ export const UsersListPage = () => {
           : null
       }
     >
+
+      
       <Tabs value={tabState} onValueChange={(value) => tabHandle(value)}>
         <div className="grid grid-cols-2">
           <div>
             <TabsList className="bg-slate-200 dark:bg-accent/50">
-              {permissionCheck(["CONTROL_USUARIOS"], permissionList) && (
+              {permissionCheck(["CONTROL_USUARIOS"], permissionList, roleList) && (
                 <TabsTrigger className="uppercase" value="users">
                   Usuarios
                 </TabsTrigger>
               )}
-              {permissionCheck(["CONTROL_ROLES"], permissionList) && (
+              {permissionCheck(["CONTROL_ROLES"], permissionList, roleList) && (
                 <TabsTrigger className="uppercase" value="roles">
                   Roles
                 </TabsTrigger>
               )}
-              {permissionCheck(["CONTROL_PERMISOS"], permissionList) && (
+              {permissionCheck(["CONTROL_PERMISOS"], permissionList, roleList) && (
                 <TabsTrigger className="uppercase" value="permissions">
                   Permisos
                 </TabsTrigger>

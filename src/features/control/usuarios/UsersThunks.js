@@ -9,12 +9,14 @@ export const GetUsersList = () => {
     const paginationNum = getState().ui.paginationNumber
     try {
       const resp = await saadApi.get(`admin/users`);
+      
       if (resp.data.responseCode == 200) {
         // const { data } = resp.data;
         dispatch(usersRegister(resp.data));
       }
     } catch (error) {
-      console.log(error);
+      
+      dispatch(usersRegister({data:[]}));
     }
   };
 };

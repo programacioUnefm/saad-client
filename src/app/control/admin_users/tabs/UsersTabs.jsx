@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RoleAssign } from "../components/RoleAssign";
 import { EditUser } from "../forms/EditUser";
 import { Badge } from "@/components/ui/badge";
-import { Switch } from "@/components/ui/switch"
+import { Switch } from "@/components/ui/switch";
 
 import {
   deleteUser,
@@ -23,6 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
+import { permissionCheck } from "@/features/PermissionCheck";
 
 export const UsersTabs = ({ users, tabState }) => {
   // const { layout, filters } = useSelector((state) => state.ui);
@@ -31,9 +32,15 @@ export const UsersTabs = ({ users, tabState }) => {
     action: "",
     arrayItem: {},
   });
+  const [isAdmin, setisAdmin] = useState(false);
+  const [usersPermissions, setUsersPermissions] = useState({
+    add: false,
+    edit: false,
+    assing: false,
+    delete: false,
+  });
   const dispatch = useDispatch();
   const { toast } = useToast();
-
   const toastAction = (description = "") => {
     toast({
       title: "Operación realizada",
@@ -41,6 +48,7 @@ export const UsersTabs = ({ users, tabState }) => {
     });
   };
 
+  
   const roleAssign = async (e) => {
     const { user, rolActive } = e;
     const newState = { userId: user.id, roles: { roles: rolActive } };
@@ -58,21 +66,55 @@ export const UsersTabs = ({ users, tabState }) => {
   };
 
   const statusChange = async (e, item) => {
-    const data = {"id": item.id, "activo": !item.activo};
+    const data = { id: item.id, activo: !item.activo };
     const resp = await dispatch(editUserAsync(data));
-    if(resp == 200){
-      toastAction(`El usuario "${item.username}" ha sido ${item.activo? "inhabilitado, ahora no podrá iniciar sesión": "activado, ahora podrá iniciar sesión"}.`);
+    if (resp == 200) {
+      toastAction(
+        `El usuario "${item.username}" ha sido ${
+          item.activo
+            ? "inhabilitado, ahora no podrá iniciar sesión"
+            : "activado, ahora podrá iniciar sesión"
+        }.`
+      );
     }
-  }
+  };
 
   const auth = useSelector((state) => state.auth);
   useEffect(() => {
-    const resp = auth.roles.some(obj => obj.code === "ADMIN");
-    console.log(resp)
-      
-  }, [])
-  
-  
+    const resp = auth.roles.some((obj) => obj.code === "ADMIN");
+    resp && setisAdmin(true);
+    let permissions = {};
+    auth.roles.forEach((element) => {
+      permissions = {
+        add: element.permissions.includes("USUARIOS_AGREGAR"),
+        edit: element.permissions.includes("USUARIOS_EDITAR"),
+        assing: false,
+        delete: element.permissions.includes("USUARIOS_ELIMINAR"),
+      };
+    });
+    // console.log(permissions)
+  }, []);
+
+  const checkAsign = (e) => {
+    if (
+      permissionCheck(
+        ["CONTROL_USUARIOS", "ROLES_LISTAR"],
+        auth.permissions,
+        auth.roleList
+      )
+    ) {
+      setAction({
+        dialog: true,
+        action: "assign",
+        arrayItem: e,
+      });
+    }else{
+      toast({
+        title: "Error de privilegios",
+        description: "tu usuario puede reasignar roles, sin embargo no posee permisos para ver la lista de roles, contacta a un administrador para que lo resuelva.",
+      });
+    }
+  };
 
   const columns = [
     {
@@ -126,7 +168,14 @@ export const UsersTabs = ({ users, tabState }) => {
       header: "ESTATUS",
       accessorKey: "activo",
       classname: "text-center",
-      cell: (info) => <div className="text-center"><Switch checked={info.getValue()}  onCheckedChange={(e) => statusChange(e, info.row.original)} /></div>,
+      cell: (info) => (
+        <div className="text-center">
+          <Switch
+            checked={info.getValue()}
+            onCheckedChange={(e) => statusChange(e, info.row.original)}
+          />
+        </div>
+      ),
     },
 
     {
@@ -174,17 +223,25 @@ export const UsersTabs = ({ users, tabState }) => {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>ACCIONES</DropdownMenuLabel>
                 <DropdownMenuItem
-                  onClick={() => {
-                    setAction({
-                      dialog: true,
-                      action: "assign",
-                      arrayItem: row.original,
-                    });
-                  }}
+                  disabled={
+                    !permissionCheck(
+                      ["CONTROL_USUARIOS", "USUARIO_ROLES"],
+                      auth.permissions,
+                      auth.roleList
+                    )
+                  }
+                  onClick={() => checkAsign(row.original)}
                 >
                   Cambiar roles
                 </DropdownMenuItem>
                 <DropdownMenuItem
+                  disabled={
+                    !permissionCheck(
+                      ["CONTROL_USUARIOS", "USUARIOS_EDITAR"],
+                      auth.permissions,
+                      auth.roleList
+                    )
+                  }
                   onClick={() => {
                     setAction({
                       dialog: true,
@@ -196,7 +253,13 @@ export const UsersTabs = ({ users, tabState }) => {
                   Editar usuario
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                disabled={true}
+                  disabled={
+                    !permissionCheck(
+                      ["CONTROL_USUARIOS", "USUARIOS_ELIMINAR"],
+                      auth.permissions,
+                      auth.roleList
+                    )
+                  }
                   onClick={() => {
                     setAction({
                       dialog: true,
@@ -237,13 +300,14 @@ export const UsersTabs = ({ users, tabState }) => {
 
   return (
     <>
-      <br />
-      <DataTable
-        columns={columns}
-        data={users.data}
-        filtersTable={filtersTable}
-        setFiltersTable={setFiltersTable}
-      />
+      <div className="mt-4">
+        <DataTable
+          columns={columns}
+          data={users.data != undefined ? users.data : []}
+          filtersTable={filtersTable}
+          setFiltersTable={setFiltersTable}
+        />
+      </div>
       {action.action == "delete" ? (
         <ConfirmDelete
           open={action.dialog}

@@ -13,19 +13,21 @@ export const AddUser = ({ addUserDialog, setaddUserDialog }) => {
   const closeDialogHandle = () => {
     setaddUserDialog(false);
   };
-  const { permissions } = useSelector((state) => state.auth);
+  const { permissions, roleList } = useSelector((state) => state.auth);
   return (
     <Dialog open={addUserDialog}>
-      {permissionCheck(["CONTROL_USUARIOS", "USUARIOS_AGREGAR"],permissions) && (
-        <Button
-          variant="outline"
-          className="fade-in-5 transition-all"
-          size="md"
-          onClick={() => setaddUserDialog(true)}
-        >
-          Agregar usuario
-        </Button>
-      )}
+      <Button
+        variant="outline"
+        className="fade-in-5 transition-all"
+        size="md"
+        disabled={!permissionCheck(["CONTROL_USUARIOS", "USUARIOS_AGREGAR"],permissions, roleList)}
+        onClick={() => setaddUserDialog(true)}
+      >
+        {
+          permissionCheck(["CONTROL_USUARIOS", "USUARIOS_AGREGAR"],permissions, roleList) ? "Agregar usuario" : "Deshabilitado"
+        }
+        
+      </Button>
 
       <DialogContent>
         <DialogHeader>
