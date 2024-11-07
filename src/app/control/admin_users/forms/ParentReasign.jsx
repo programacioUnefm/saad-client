@@ -8,6 +8,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
+  SheetDescription
 } from "@/components/ui/sheet";
 import { dialogChange } from "@/features/ui/UiSlice";
 import { editPermission } from "@/features/control/usuarios/UsersThunks";
@@ -93,6 +94,7 @@ export function ParentReasign({ data }) {
             <span className="uppercase font-bold">"{data.name}"</span>
           </SheetTitle>
         </SheetHeader>
+        <SheetDescription></SheetDescription>
         <ScrollArea className="h-[88%] pr-4">
           <div className="mt-4">
             <ToggleGroup

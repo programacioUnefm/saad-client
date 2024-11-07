@@ -127,6 +127,7 @@ export const UsersTabs = ({ users, tabState }) => {
       },
     },
     {
+      id:"cédula",
       header: "CÉDULA",
       accessorKey: "document_id",
       classname: "text-center",
@@ -135,6 +136,7 @@ export const UsersTabs = ({ users, tabState }) => {
       ),
     },
     {
+      id:"nombre usuario",
       header: "USUARIO",
       accessorKey: "username",
       enableSorting: false,
@@ -142,6 +144,7 @@ export const UsersTabs = ({ users, tabState }) => {
       cell: (info) => <div className="text-center">{info.getValue()}</div>,
     },
     {
+      id:"nombres",
       header: "NOMBRES",
       accessorKey: "name",
       enableSorting: false,
@@ -149,6 +152,7 @@ export const UsersTabs = ({ users, tabState }) => {
       cell: (info) => <div className="">{info.getValue()}</div>,
     },
     {
+      id:"apellidos",
       header: "APELLIDOS",
       enableSorting: false,
       accessorKey: "last_name",
@@ -207,7 +211,6 @@ export const UsersTabs = ({ users, tabState }) => {
       id: "acciones",
       header: "ACCIONES",
       enableSorting: false,
-      accessorKey: "acciones",
       classname: "text-center",
       enableFiltering: false,
       cell: ({ row }) => {
@@ -280,21 +283,23 @@ export const UsersTabs = ({ users, tabState }) => {
 
   const [filtersTable, setFiltersTable] = useState({
     columnVisibility: {
-      id: true,
-      name: true,
-      username: true,
-      last_name: true,
-      document_id: true,
-      email: true,
-      acciones: true,
+      "id": true,
+      "cédula": true,
+      "nombre usuario": true,
+      "nombres": true,
+      "apellidos": true,
+      "email": true,
+      "activo": true,
+      "roles": true,
+      "acciones": true,
     },
-    filters: [],
+    filters: "",
     sorting: [],
     columnFilters: [],
-    view: 10,
+    view: 20,
     pagination: {
       pageIndex: 0,
-      pageSize: 10,
+      pageSize: 20,
     },
   });
 

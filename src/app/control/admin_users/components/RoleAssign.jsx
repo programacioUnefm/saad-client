@@ -5,6 +5,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetFooter,
+  SheetDescription
 } from "@/components/ui/sheet";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useState } from "react";
@@ -42,6 +43,7 @@ export const RoleAssign = ({ open, setAction, user, dialogAction }) => {
             </ToggleGroup>
           </div>
         </SheetHeader>
+        <SheetDescription></SheetDescription>
         <SheetFooter className="footerAction">
           <div className="flex w-full gap-2 mt-4">
             <Button

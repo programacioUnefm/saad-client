@@ -6,6 +6,7 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
+  SheetDescription
 } from "@/components/ui/sheet";
 import { useDispatch, useSelector } from "react-redux";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -113,6 +114,7 @@ export const PermissionsAssign = ({
             permisos para <span className="truncate">"{data.name}"</span>
           </SheetTitle>
         </SheetHeader>
+        <SheetDescription></SheetDescription>
         <ScrollArea className="h-[88%] pr-4">
           <div className="mt-4">
             <ToggleGroup

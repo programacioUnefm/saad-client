@@ -5,6 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  DialogDescription
 } from "@/components/ui/dialog";
 import { permissionCheck } from "@/features/PermissionCheck";
 import { RegisterForm } from "@/login/components/RegisterForm";
@@ -33,6 +34,7 @@ export const AddUser = ({ addUserDialog, setaddUserDialog }) => {
         <DialogHeader>
           <DialogTitle className="mb-4">Crear nuevo usuario</DialogTitle>
         </DialogHeader>
+        <DialogDescription></DialogDescription>
         <RegisterForm closeDialog={closeDialogHandle} />
         <DialogFooter>
           <Button

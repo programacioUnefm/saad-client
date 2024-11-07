@@ -4,6 +4,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription
 } from "@/components/ui/dialog";
 import { RolesForm } from "../forms/RolesForm";
 import { useSelector } from "react-redux";
@@ -24,6 +25,7 @@ export const AddRoles = ({ addRoleDialog, setAddRoleDialog }) => {
             Agregar nuevo rol
           </DialogTitle>
         </DialogHeader>
+        <DialogDescription></DialogDescription>
         <RolesForm setAddRoleDialog={setAddRoleDialog} />
       </DialogContent>
     </Dialog>

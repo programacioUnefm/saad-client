@@ -5,6 +5,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogDescription
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -63,7 +64,7 @@ export const EditUser = ({ open, setAction, user, dialogAction }) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>
             <DialogTitle className="mb-8">{`Editando el usuario "${user.name}"`}</DialogTitle>
-
+            <DialogDescription></DialogDescription>
             <div className="grid grid-cols-2 gap-4">
               <div className="">
                 <Label htmlFor="name">Nombres</Label>

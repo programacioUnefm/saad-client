@@ -96,10 +96,11 @@ export const GetRolesList = () => {
   return async (dispatch, getState) => {
     try {
       const paginationNum = getState().ui.paginationNumber
-      const resp = await saadApi.get(`admin/roles/results/${paginationNum}`);
+      const resp = await saadApi.get(`admin/roles`);
       if (resp.data.responseCode == 200) {
-        const { data } = resp.data;
-        dispatch(roleRegister(data));  
+        // const { data } = resp.data;
+        
+        dispatch(roleRegister(resp.data));  
       }
     } catch (error) {
       console.log(error);

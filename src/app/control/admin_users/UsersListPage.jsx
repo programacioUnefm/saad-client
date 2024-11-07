@@ -104,12 +104,12 @@ export const UsersListPage = () => {
           <UsersTabs users={users} tabState={tabState} />
         </TabsContent>
         <TabsContent value="roles">
-          <div className="sticky top-0 bg-slate-100 dark:bg-background z-10	px-1">
+          {/* <div className="sticky top-0 bg-slate-100 dark:bg-background z-10	px-1">
             <SearchAndFilters
               route={"admin/roles/search/"}
               placeholder={"roles"}
             />
-          </div>
+          </div> */}
           <RolesTab roles={roles} tabState={tabState} />
         </TabsContent>
         <TabsContent value="permissions">
