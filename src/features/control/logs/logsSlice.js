@@ -4,11 +4,11 @@ import { createSlice } from '@reduxjs/toolkit'
 export const LogsSlice = createSlice({
   name: 'Logs',
   initialState: {
-    list: []
+    logs: []
   },
   reducers: {
     getListLogs: (state, {payload}) => {
-      state.list = payload;
+      state.logs = payload;
     },
   }
 })

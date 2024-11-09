@@ -58,7 +58,12 @@ export const editUser = (data) => {
         })
       );
       return true;
-    } catch (error) {}
+    } catch (error) {
+      
+      if(codeError == 401){
+        dispatch(LogOutApp());
+      }
+    }
   };
 };
 
@@ -76,6 +81,10 @@ export const LoginApp = (data) => {
       }
     } catch (error) {
       const { code } = error;
+      
+      if(codeError == 401){
+        dispatch(LogOutApp());
+      }
       return { code };
     }
   };
@@ -105,37 +114,12 @@ export const VerifyUser = () => {
     } catch (error) {
       
       const message = error.response.data.message;
-      const Unauthorized = error.response.data.error;
-      if (Unauthorized == "Unauthorized") {
-        dispatch(
-          login({
-            Authstatus: false,
-            name: "",
-            document_id: "",
-            roles: [],
-            token: "",
-          })
-        );
-        dispatch(
-          dialogChange({
-            message: "Al parecer no posees autorización para entrar.",
-            status: true,
-            duration: 3000,
-            variant: "destructive",
-          })
-        );
+      const codeError = error.response.status;
 
-        setTimeout(() => {
-          dispatch(
-            dialogChange({
-              message: "",
-              status: false,
-              duration: 3000,
-              variant: "",
-            })
-          );
-        }, 3000);
+      if(codeError == 401){
+        dispatch(LogOutApp());
       }
+  
 
       
       if (message == "Unauthenticated.") {
@@ -172,10 +156,12 @@ export const VerifyUser = () => {
 };
 
 export const LogOutApp = () => {
+  localStorage.removeItem("token_access");
+  const appUrl = import.meta.env.VITE_APP_URL;
+  window.location.href = `${appUrl}/login`;
   return async (dispatch) => {
     try {
       const resp = await saadApi.get(`auth/logout`);
-      localStorage.removeItem("token_access");
       dispatch(login({ Authstatus: false, name: "", role: [], token: "" }));
     } catch (error) {}
   };

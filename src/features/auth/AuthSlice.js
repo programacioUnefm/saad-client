@@ -22,6 +22,9 @@ export const Auth = createSlice({
         payload.roles.forEach((element) => {
           roleList.push(element.code);
           permissionsList.push(...element.permissions);
+          if(element.code == "ADMIN"){
+            permissionsList = ["*"];
+          }
         });
       }
       state.id = payload.id;

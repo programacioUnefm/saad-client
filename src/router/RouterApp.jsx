@@ -23,8 +23,9 @@ import { VerifyUser } from "../features/auth/LoginThunk";
 import { login } from "../features/auth/AuthSlice";
 import { LogsPage } from "@/app/control/log/LogsPage";
 import { ActuacionPage } from "@/app/personal/expediente/regDatos/actuacion/ActuacionPage";
-import { NoAuthPage } from "@/app/unAuth/NoAuthPage";
+import { NoAuthPage } from "@/app/layouts/unAuth/NoAuthPage";
 import { DatosPersonalesPage } from "@/app/personal/expediente/tablasBasicas/datosPersonales/DatosPersonalesPage";
+
 
 export const RouterApp = () => {
   let theme = localStorage.getItem("vite-ui-theme");
@@ -47,12 +48,14 @@ export const RouterApp = () => {
     }
     dispatch(themeChange(theme));
   }, []);
+
   return (
     <>
       <Routes>
         {/* RUTAS PUBLICAS */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/no-autorizado" element={<NoAuthPage />} />
+        
         <Route path="/"  element={<Navigate to="/inicio" />} />
         {/* RUTAS PRIVADAS */}
         <Route element={<ProtectedRoutes />}>

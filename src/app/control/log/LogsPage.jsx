@@ -1,75 +1,146 @@
 import { AppLayout } from "@/app/layouts/appLayout/AppLayout";
-import { getLogsList, paginateLogs } from "@/features/control/logs/LogsThunks";
-import React, { useEffect } from "react";
+import { DataTable } from "@/components/DataTable/DataTable";
+import { getLogsList } from "@/features/control/logs/LogsThunks";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { HeaderLogs } from "./components/HeaderLogs";
-import { SkeletonList } from "@/components/Skeletons/SkeletonList";
-import { SkeletonGrid } from "@/components/Skeletons/SkeletonGrid";
-import { GridLogs } from "./layouts/GridLogs";
-import { ButtonPagination } from "@/components/ButtonPagination";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
-import { ListLogs } from "./layouts/ListLogs";
+import { formatDistance, subDays } from "date-fns";
+import { es } from "date-fns/locale";
+import { Badge } from "@/components/ui/badge";
 
 export const LogsPage = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getLogsList());
   }, []);
-  const { list } = useSelector((state) => state.logs);
-  const { layout } = useSelector((state) => state.ui);
+  const { logs } = useSelector((state) => state.logs);
 
-  const paginationHandle = () => {
-    dispatch(paginateLogs(list.next_page_url));
-  };
+  const columns = [
+    {
+      header: "ID",
+      accessorKey: "id",
+      classname: "text-center w-[100px]",
+      cell: (info) => <div className="text-center">{info.getValue()}</div>,
+      meta: {
+        filterVariant: "range",
+      },
+    },
+    {
+      id: "usuario",
+      header: "USUARIO",
+      accessorKey: "username",
+      classname: "text-center",
+      cell: (info) => (
+        <div className="text-center font-bold uppercase">{info.getValue()}</div>
+      ),
+    },
+    {
+      id: "id usuario",
+      header: "ID USUARIO",
+      accessorKey: "user_id",
+      enableSorting: false,
+      classname: "text-center",
+      cell: (info) => <div className="text-center">{info.getValue()}</div>,
+    },
+    {
+      id: "modulo",
+      header: "MODULO",
+      accessorKey: "modulo",
+      enableSorting: false,
+      classname: "text-center",
+      cell: (info) => (
+        <Badge className="bg-accent text-center text-foreground hover:text-white text-[10px] uppercase">{info.getValue()}</Badge>
+      ),
+    },
+    {
+      id: "ip",
+      header: "IP",
+      enableSorting: false,
+      accessorKey: "ip_address",
+      classname: "text-center w-5",
+      cell: (info) => (
+        <Badge className="bg-accent  text-foreground hover:text-white text-[10px] uppercase">{info.getValue()}</Badge>
+      ),
+    },
+
+    {
+      header: "ACCIÓN",
+      accessorKey: "action",
+      enableSorting: false,
+      classname: "text-center",
+      cell: (info) => (<div className="text-center"><Badge className="dark:bg-foreground text-accent text-center">{info.getValue()}</Badge></div>),
+    },
+
+    {
+      id: "detalles",
+      header: "DETALLES",
+      accessorKey: "details",
+      enableSorting: false,
+      classname: "text-center",
+      cell: (info) => (
+        // <p className="text-[13px] line-clamp-1">{info.getValue()}</p>
+        <div className="tooltip">
+          <Badge className="line-clamp-1 text-center" variant={"outline"}>
+          {info.getValue()}
+          </Badge>
+          <span className="tooltiptext">
+          {info.getValue()}
+          </span>
+        </div>
+      ),
+    },
+
+    {
+      id: "fecha",
+      header: "FECHA",
+      accessorKey: "created_at",
+      classname: "text-center",
+      cell: (info) => (
+        <div className="tooltip">
+          <Badge className="max-w-[120px] min-w-[50px] line-clamp-1 text-center" variant={"outline"}>
+            {formatDistance(subDays(new Date(), 0), info.getValue(), {
+              addSuffix: true,
+              locale: es,
+            })}
+          </Badge>
+          <span className="tooltiptext">
+            {formatDistance(subDays(new Date(), 0), info.getValue(), {
+              addSuffix: true,
+              locale: es,
+            })}
+          </span>
+        </div>
+      ),
+    },
+  ];
+
+  const [filtersTable, setFiltersTable] = useState({
+    columnVisibility: {
+      id: false,
+      usuario: true,
+      "id usuario": false,
+      modulo: true,
+      ip: true,
+      acción: true,
+      detalles: true,
+      fecha: true,
+    },
+    filters: "",
+    sorting: [],
+    columnFilters: [],
+    view: 20,
+    pagination: {
+      pageIndex: 0,
+      pageSize: 20,
+    },
+  });
+
   return (
     <AppLayout title={"Bitacora de sistema"}>
-      <HeaderLogs />
-      {list.data != undefined ? (
-        layout == "list" ? (
-          
-            <Table className="dark:bg-accent/20 bg-white mt-4">
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[150px]">Cédula</TableHead>
-                  <TableHead className="w-[150px]">Nombre</TableHead>
-                  <TableHead className="text-center">Detalle</TableHead>
-                  <TableHead className="text-center">Acción</TableHead>
-                  <TableHead className="text-center">Fecha</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {list.data.map((item) => (
-                  <ListLogs item={item} key={item.id}/>
-                ))}
-              </TableBody>
-            </Table>
-          
-        ) : (
-          <div className="grid grid-cols-4 gap-4">
-            {list.data.map((item) => (
-              <GridLogs key={item.id} item={item} />
-            ))}
-          </div>
-        )
-      ) : layout == "list" ? (
-        <SkeletonList />
-      ) : (
-        <SkeletonGrid />
-      )}
-      <ButtonPagination
-        placeholder="registros"
-        filters={false}
-        data={list}
-        action={paginationHandle}
+      <DataTable
+        columns={columns}
+        data={logs}
+        filtersTable={filtersTable}
+        setFiltersTable={setFiltersTable}
       />
     </AppLayout>
   );

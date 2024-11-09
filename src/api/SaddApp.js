@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 export const saadApi = axios.create({
   baseURL: "http://127.0.0.1:8000/api/",
   headers: {
@@ -9,10 +8,33 @@ export const saadApi = axios.create({
   },
 });
 
-saadApi.interceptors.request.use( config => {
+saadApi.interceptors.request.use((config) => {
   config.headers = {
     ...config.headers,
     Authorization: `Bearer ${localStorage.getItem("token_access")}`,
-  }
+  };
   return config;
-})
+});
+
+// Interceptor de respuesta
+saadApi.interceptors.response.use(
+  (response) => {
+    console.log(response)
+    return response;
+    
+  },
+  (error) => {
+    // Manejo de errores
+
+    // TODO: diferenciar los tipos de errores dentro de este interceptor
+    const codeError = error.response.status;
+    console.log(codeError)
+    if (codeError == 401) {
+      localStorage.removeItem("token_access");
+      const appUrl = import.meta.env.VITE_APP_URL;
+      window.location.href = `${appUrl}/login`;
+    }
+
+    return Promise.reject(error);
+  }
+);

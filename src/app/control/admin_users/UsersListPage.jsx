@@ -21,13 +21,14 @@ import { NoTabSelected } from "./tabs/NoTabSelected";
 export const UsersListPage = () => {
   const dispatch = useDispatch();
   const { users, roles, permissions, tabState:defualtTab } = useSelector((state) => state.usersList);
+  const { permissions: permissionList } = useSelector((state) => state.auth);
+
   useEffect(() => {
-    permissionCheck(["USUARIOS_LISTAR"], permissionList, roleList) && dispatch(GetUsersList());
-    permissionCheck(["ROLES_LISTAR"], permissionList, roleList) && dispatch(GetRolesList());
-    permissionCheck(["PERMISOS_LISTAR"], permissionList, roleList) && dispatch(GetPermissionsList());
+    permissionCheck(["USUARIOS_LISTAR"], permissionList) && dispatch(GetUsersList());
+    permissionCheck(["ROLES_LISTAR"], permissionList) && dispatch(GetRolesList());
+    permissionCheck(["PERMISOS_LISTAR"], permissionList) && dispatch(GetPermissionsList());
     setTabState(defualtTab);
-  }, []);
-  const { permissions: permissionList, roleList } = useSelector((state) => state.auth);
+  }, [permissionList]);
 
   const { filters } = useSelector((state) => state.ui);
   
@@ -62,17 +63,17 @@ export const UsersListPage = () => {
         <div className="grid grid-cols-2">
           <div>
             <TabsList className="bg-slate-200 dark:bg-accent/50">
-              {permissionCheck(["CONTROL_USUARIOS"], permissionList, roleList) && (
+              {permissionCheck(["CONTROL_USUARIOS"], permissionList) && (
                 <TabsTrigger className="uppercase" value="users">
                   Usuarios
                 </TabsTrigger>
               )}
-              {permissionCheck(["CONTROL_ROLES"], permissionList, roleList) && (
+              {permissionCheck(["CONTROL_ROLES"], permissionList) && (
                 <TabsTrigger className="uppercase" value="roles">
                   Roles
                 </TabsTrigger>
               )}
-              {permissionCheck(["CONTROL_PERMISOS"], permissionList, roleList) && (
+              {permissionCheck(["CONTROL_PERMISOS"], permissionList) && (
                 <TabsTrigger className="uppercase" value="permissions">
                   Permisos
                 </TabsTrigger>

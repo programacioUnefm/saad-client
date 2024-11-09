@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppLayout } from '../layouts/appLayout/AppLayout'
+import { AppLayout } from '../appLayout/AppLayout'
 import { MonitorX, OctagonX } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Link, Navigate } from 'react-router-dom'

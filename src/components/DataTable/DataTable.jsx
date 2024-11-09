@@ -68,6 +68,8 @@ export const DataTable = ({ data, columns, filtersTable, setFiltersTable }) => {
     
   });
 
+  
+
   //funcion para organizar los items de forma ascendentes o descendentes
   const sortingHandle = (e) => {
     if (filtersTable.sorting.length == 0) {
