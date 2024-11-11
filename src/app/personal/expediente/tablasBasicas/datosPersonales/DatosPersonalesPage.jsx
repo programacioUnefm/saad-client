@@ -1,7 +1,7 @@
 import { AppLayout } from "@/app/layouts/appLayout/AppLayout";
-import React, { useState, forwardRef, useImperativeHandle } from "react";
+import React, { useState, forwardRef, useImperativeHandle, useEffect } from "react";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { dataPerEjemplo } from "./dataper";
 import { SkeletonList } from "@/components/Skeletons/SkeletonList";
 import { SkeletonGrid } from "@/components/Skeletons/SkeletonGrid";
@@ -25,6 +25,7 @@ import {
 import { HeaderDataTable } from "@/components/DataTable/HeaderDataTable";
 import { DataTable } from "@/components/DataTable/DataTable";
 import { AddPersonalForm } from "./components/AddPersonalForm";
+import { getContryState, getCountry, getMunicipality, getParishes } from "@/features/personal/expediente/tablasBasicas/datosPersonales/DatosPerThunk";
 
 const columns = [
   {
@@ -312,7 +313,8 @@ const columns = [
     },
   },
 ];
-export const DatosPersonalesPage = forwardRef((props, ref) => {
+
+export const DatosPersonalesPage = () => {
   const { layout, filters } = useSelector((state) => state.ui);
   const [filtersTable, setFiltersTable] = useState({
     columnVisibility: {
@@ -347,11 +349,23 @@ export const DatosPersonalesPage = forwardRef((props, ref) => {
     },
   });
 
+
+
   const [addButton, setaddButton] = useState({
     status: false,
     textButton: "Agregar personal",
     title: "Personal"
   });
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCountry());
+    dispatch(getContryState());
+    dispatch(getMunicipality());
+    dispatch(getParishes());
+  }, [])
+  
 
   return (
     <AppLayout
@@ -370,30 +384,31 @@ export const DatosPersonalesPage = forwardRef((props, ref) => {
           <AddPersonalForm />
         </div>
       ) : (
-        <div id="personalTable">
-          <HeaderDataTable
-            placeholder={"personal"}
-            filtersTable={filtersTable}
-            setFiltersTable={setFiltersTable}
-          />
-          {dataPerEjemplo != undefined ? (
-            layout == "grid" ? (
-              "grid"
-            ) : (
-              <DataTable
-                columns={columns}
-                data={dataPerEjemplo}
-                filtersTable={filtersTable}
-                setFiltersTable={setFiltersTable}
-              />
-            )
-          ) : layout == "grid" ? (
-            <SkeletonGrid />
-          ) : (
-            <SkeletonList />
-          )}
-        </div>
+        <span>qweqw</span>
+        // <div id="personalTable">
+        //   <HeaderDataTable
+        //     placeholder={"personal"}
+        //     filtersTable={filtersTable}
+        //     setFiltersTable={setFiltersTable}
+        //   />
+        //   {dataPerEjemplo != undefined ? (
+        //     layout == "grid" ? (
+        //       "grid"
+        //     ) : (
+        //       <DataTable
+        //         columns={columns}
+        //         data={dataPerEjemplo}
+        //         filtersTable={filtersTable}
+        //         setFiltersTable={setFiltersTable}
+        //       />
+        //     )
+        //   ) : layout == "grid" ? (
+        //     <SkeletonGrid />
+        //   ) : (
+        //     <SkeletonList />
+        //   )}
+        // </div>
       )}
     </AppLayout>
   );
-});
+};

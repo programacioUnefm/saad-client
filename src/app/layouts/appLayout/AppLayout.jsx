@@ -51,8 +51,8 @@ export function AppLayout({
               </div>
             )}
           </div>
-          <div className="p-5 dark:bg-background bg-slate-100 rounded-lg border border-dashed shadow-sm h-full">
-            <ScrollArea className="h-[75vh] px-4 relative md:w-[70vw] xl:w-[80vw]">
+          <div className="p-5 dark:bg-background bg-slate-100 rounded-lg border border-dashed shadow-sm h-full lg:w-[74.5vw] xl:w-full">
+            <ScrollArea className="h-[75vh] px-4 relative">
               {children}
               <ScrollBar orientation="horizontal" />
             </ScrollArea>

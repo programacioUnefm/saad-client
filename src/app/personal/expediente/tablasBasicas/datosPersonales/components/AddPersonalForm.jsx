@@ -18,8 +18,24 @@ import {
   paises,
   estados,
 } from "@/features/validations/PersonalSchema";
-import { ComboBox } from "./ComboBox";
-import { Bone, Glasses, GraduationCap, HardHat, HardHatIcon, Users } from "lucide-react";
+import { ComboBox } from "./comboBox/ComboBox";
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+import {
+  Bone,
+  Glasses,
+  GraduationCap,
+  HardHat,
+  HardHatIcon,
+  Users,
+} from "lucide-react";
+import { useSelector } from "react-redux";
 
 export const AddPersonalForm = () => {
   const {
@@ -31,7 +47,8 @@ export const AddPersonalForm = () => {
     resolver: zodResolver(personalSchema),
   });
   const onSubmit = (data) => {};
-
+  const {paises, municipios, estados, parroquias} = useSelector((state) => state.personal.expediente.tablasBasicas.datosPer);
+    
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <section id="datos-basicos">
@@ -142,45 +159,45 @@ export const AddPersonalForm = () => {
           </div>
           <div>
             <ComboBox
-              list={paises}
+              list={paises.data}
               title="país"
               label="País de orígen"
-              defaultValue="Venezuela"
+              defaultValue={"Venezuela"}
             />
           </div>
         </div>
         <div className="grid grid-cols-4 mt-2 gap-4">
           <div>
-            <ComboBox
+            {/* <ComboBox
               list={estados}
               title="estado"
               label="Estado"
               defaultValue="Selecciona un estado"
-            />
+            /> */}
           </div>
           <div>
-            <ComboBox
+            {/* <ComboBox
               list={estados}
               title="municipio"
               label="Municipio"
               defaultValue="Selecciona un municipio"
-            />
+            /> */}
           </div>
           <div>
-            <ComboBox
+            {/* <ComboBox
               list={estados}
               title="Ciudad"
               label="Ciudad"
               defaultValue="Selecciona una ciudad"
-            />
+            /> */}
           </div>
           <div>
-            <ComboBox
+            {/* <ComboBox
               list={estados}
               title="Parroquia"
               label="Parroquia"
               defaultValue="Selecciona una parroquia"
-            />
+            /> */}
           </div>
         </div>
       </section>
@@ -191,7 +208,16 @@ export const AddPersonalForm = () => {
         </div>
         <div className="grid grid-cols-6 gap-4">
           <div>
-            <label>Fecha nacimiento</label>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <label className="line-clamp-1">Fecha nacimiento</label>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Fecha de nacimiento</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             <Input type="date" {...register("fecha_nacimiento")} />
           </div>
           <div>
@@ -211,7 +237,17 @@ export const AddPersonalForm = () => {
           </div>
 
           <div>
-            <label>Estado civil</label>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <label className="line-clamp-1">Estado civil</label>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Estado civil</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
             <Select>
               <SelectTrigger {...register("estado_civil")}>
                 <SelectValue placeholder="Estado civil" />
@@ -254,7 +290,17 @@ export const AddPersonalForm = () => {
             </div>
           </div>
           <div>
-            <label>Tipo de sangre</label>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <label className="line-clamp-1">Tipo de sangre</label>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Tipo de sangre</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
             <Select>
               <SelectTrigger {...register("estado_civil")}>
                 <SelectValue placeholder="Selecciona uno" />
@@ -276,25 +322,25 @@ export const AddPersonalForm = () => {
         </div>
         <div className="grid grid-cols-4 gap-4">
           <Button variant="outline" className="h-[50px]">
-            <GraduationCap className="mr-2" /> 
-            Agregar nivel profesional
+            <GraduationCap className="mr-2" />
+            nivel profesional
           </Button>
           <Button variant="outline" className="h-[50px]">
-            <Users  className="mr-2" />
-            Agregar Carga familiar
+            <Users className="mr-2" />
+            Carga familiar
           </Button>
           <Button variant="outline" className="h-[50px]">
-            <HardHatIcon  className="mr-2" />
-            Seleccionar tipo de personal
+            <HardHatIcon className="mr-2" />
+            Tipo personal
           </Button>
           <Button variant="outline" className="h-[50px]">
-            <Glasses  className="mr-2" />
+            <Glasses className="mr-2" />
             Discapacidad
           </Button>
         </div>
       </section>
       <div className="flex mt-8">
-        <Button type="submit">Registrar personal</Button>
+        <Button type="submit" variant="primary">Registrar personal</Button>
       </div>
     </form>
   );

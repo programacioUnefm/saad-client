@@ -19,16 +19,13 @@ saadApi.interceptors.request.use((config) => {
 // Interceptor de respuesta
 saadApi.interceptors.response.use(
   (response) => {
-    console.log(response)
     return response;
-    
   },
   (error) => {
     // Manejo de errores
-
     // TODO: diferenciar los tipos de errores dentro de este interceptor
     const codeError = error.response.status;
-    console.log(codeError)
+    
     if (codeError == 401) {
       localStorage.removeItem("token_access");
       const appUrl = import.meta.env.VITE_APP_URL;
