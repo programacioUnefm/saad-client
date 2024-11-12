@@ -26,7 +26,6 @@ import { MoreHorizontal } from "lucide-react";
 import { permissionCheck } from "@/features/PermissionCheck";
 
 export const UsersTabs = ({ users, tabState }) => {
-  // const { layout, filters } = useSelector((state) => state.ui);
   const [action, setAction] = useState({
     dialog: false,
     action: "",
@@ -66,12 +65,12 @@ export const UsersTabs = ({ users, tabState }) => {
   };
 
   const statusChange = async (e, item) => {
-    const data = { id: item.id, activo: !item.activo };
+    const data = { id: item.id, status: !item.status };
     const resp = await dispatch(editUserAsync(data));
     if (resp == 200) {
       toastAction(
         `El usuario "${item.username}" ha sido ${
-          item.activo
+          item.status
             ? "inhabilitado, ahora no podrá iniciar sesión"
             : "activado, ahora podrá iniciar sesión"
         }.`
@@ -170,7 +169,7 @@ export const UsersTabs = ({ users, tabState }) => {
 
     {
       header: "ESTATUS",
-      accessorKey: "activo",
+      accessorKey: "status",
       classname: "text-center",
       cell: (info) => (
         <div className="text-center">
