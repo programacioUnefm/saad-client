@@ -59,8 +59,7 @@ export const editUser = (data) => {
       );
       return true;
     } catch (error) {
-      
-      if(codeError == 401){
+      if (codeError == 401) {
         dispatch(LogOutApp());
       }
     }
@@ -77,15 +76,12 @@ export const LoginApp = (data) => {
         const { data } = resp.data;
         localStorage.setItem("token_access", data.token);
         dispatch(login({ ...data, Authstatus: true }));
-        return { user, code };
+        return code;
       }
     } catch (error) {
-      const { code } = error;
-      
-      if(codeError == 401){
-        dispatch(LogOutApp());
-      }
-      return { code };
+      const codeError = error.response.status;
+      // dispatch(LogOutApp());
+      return codeError;
     }
   };
 };
@@ -112,16 +108,13 @@ export const VerifyUser = () => {
       }
       return { code };
     } catch (error) {
-      
       const message = error.response.data.message;
       const codeError = error.response.status;
 
-      if(codeError == 401){
+      if (codeError == 401) {
         dispatch(LogOutApp());
       }
-  
 
-      
       if (message == "Unauthenticated.") {
         dispatch(
           login({

@@ -23,17 +23,17 @@ export const LoginForm = ({ setloginState }) => {
   const onSubmit = async (data) => {
     setload(true);
     const resp = await dispatch(LoginApp(data));
-    switch (resp.code) {
+    switch (resp) {
       case 200:
         toast({
-          title: `Bienvenido de nuevo ${resp.user.name}`,
+          title: `Bienvenido de nuevo.`,
           description: "Comencemos a trabaja.",
         });
         navigate("/inicio");
         setload(false);
         break;
 
-      case "ERR_NETWORK":
+      case 404:
         toast({
           variant: "destructive",
           title: "Tenemos problemas",
@@ -42,7 +42,7 @@ export const LoginForm = ({ setloginState }) => {
         });
         setload(false);
         break;
-      case "ERR_BAD_REQUEST":
+      case 422:
         toast({
           variant: "destructive",
           title: "Usuario o contraseña invalida",

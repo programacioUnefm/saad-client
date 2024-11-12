@@ -2,18 +2,10 @@ import { Table, TableBody } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GridRoles } from "../layouts/GridRoles";
 
-import {
-  deleteRol,
-  paginateRole,
-} from "@/features/control/usuarios/UsersThunks";
+import {deleteRol,} from "@/features/control/usuarios/UsersThunks";
 import { EditRolesDialog } from "./components/EditRolesDialog";
 import { PermissionsAssign } from "./components/PermissionsAssign";
-import { TableHeaderRoles } from "../layouts/TableHeaderRoles";
-import { ListRoles } from "../layouts/ListRoles";
-import { SkeletonGrid } from "@/components/Skeletons/SkeletonGrid";
-import { SkeletonList } from "@/components/Skeletons/SkeletonList";
 import { ConfirmDelete } from "../forms/ConfirmDelete";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -21,8 +13,10 @@ import { DataTable } from "@/components/DataTable/DataTable";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { DropdownMenuItem, DropdownMenuLabel } from "@/components/ui/dropdown-menu";
+import { permissionCheck } from "@/features/PermissionCheck";
 
 export const RolesTab = ({ roles, tabState }) => {
+  const auth = useSelector((state) => state.auth);
   const [action, setAction] = useState({
     dialog: false,
     action: "",
@@ -106,53 +100,59 @@ export const RolesTab = ({ roles, tabState }) => {
                   <MoreHorizontal className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" className="bg-background">
                 <DropdownMenuLabel>ACCIONES</DropdownMenuLabel>
                 <DropdownMenuItem
-                  // disabled={
-                  //   !permissionCheck(
-                  //     ["CONTROL_USUARIOS", "USUARIO_ROLES"],
-                  //     auth.permissions,
-                  //     auth.roleList
-                  //   )
-                  // }
-                  // onClick={() => checkAsign(row.original)}
+                  disabled={
+                    !permissionCheck(
+                      ["CONTROL_ROLES", "ROLES_PERMISOS"],
+                      auth.permissions,
+                      auth.roleList
+                    )
+                  }
+                  onClick={() => {
+                    setAction({
+                      dialog: true,
+                      action: "assign",
+                      arrayItem: row.original,
+                    });
+                  }}
                 >
-                  Cambiar roles
+                  Establecer permisos
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  // disabled={
-                  //   !permissionCheck(
-                  //     ["CONTROL_USUARIOS", "USUARIOS_EDITAR"],
-                  //     auth.permissions,
-                  //     auth.roleList
-                  //   )
-                  // }
-                  // onClick={() => {
-                  //   setAction({
-                  //     dialog: true,
-                  //     action: "edit",
-                  //     arrayItem: row.original,
-                  //   });
-                  // }}
+                  disabled={
+                    !permissionCheck(
+                      ["CONTROL_ROLES", "ROLES_EDITAR"],
+                      auth.permissions,
+                      auth.roleList
+                    )
+                  }
+                  onClick={() => {
+                    setAction({
+                      dialog: true,
+                      action: "edit",
+                      arrayItem: row.original,
+                    });
+                  }}
                 >
                   Editar usuario
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  // disabled={
-                  //   !permissionCheck(
-                  //     ["CONTROL_USUARIOS", "USUARIOS_ELIMINAR"],
-                  //     auth.permissions,
-                  //     auth.roleList
-                  //   )
-                  // }
-                  // onClick={() => {
-                  //   setAction({
-                  //     dialog: true,
-                  //     action: "delete",
-                  //     arrayItem: row.original,
-                  //   });
-                  // }}
+                  disabled={
+                    !permissionCheck(
+                      ["CONTROL_ROLES", "ROLES_ELIMINAR"],
+                      auth.permissions,
+                      auth.roleList
+                    )
+                  }
+                  onClick={() => {
+                    setAction({
+                      dialog: true,
+                      action: "delete",
+                      arrayItem: row.original,
+                    });
+                  }}
                 >
                   Eliminar usuario
                 </DropdownMenuItem>
@@ -191,65 +191,6 @@ export const RolesTab = ({ roles, tabState }) => {
       filtersTable={filtersTable}
       setFiltersTable={setFiltersTable}
     />
-      {/* {roles.data != undefined ? (
-        layout == "grid" ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4">
-            {filters.status
-              ? filters.result.data.data.map((search) => (
-                  <GridRoles
-                    key={search.id}
-                    rol={search}
-                    setAction={setAction}
-                    tabState={tabState}
-                  />
-                ))
-              : roles.data.map((rol) => (
-                  <GridRoles
-                    key={rol.id}
-                    rol={rol}
-                    setAction={setAction}
-                    tabState={tabState}
-                  />
-                ))}
-          </div>
-        ) : (
-          <div className="w-full">
-            <Table className="dark:bg-accent/20 bg-white rounded-md">
-              <TableHeaderRoles />
-              <TableBody>
-                {filters.status
-                  ? filters.result.data.data.map((search) => (
-                      <ListRoles
-                        rol={search}
-                        key={Math.random()}
-                        tabState={tabState}
-                        setAction={setAction}
-                      />
-                    ))
-                  : roles.data.map((rol) => (
-                      <ListRoles
-                        rol={rol}
-                        key={Math.random()}
-                        tabState={tabState}
-                        setAction={setAction}
-                      />
-                    ))}
-              </TableBody>
-            </Table>
-          </div>
-        )
-      ) : layout == "grid" ? (
-        <SkeletonGrid />
-      ) : (
-        <SkeletonList />
-      )}
-      <div className="flex justify-center mt-4">
-        {!filters.status && itemsPerView > 0 && (
-          <Button variant="outline" onClick={paginationRoles}>
-            Ver más Roles + {itemsPerView}
-          </Button>
-        )}
-      </div> */}
 
       {action.action == "delete" ? (
         <ConfirmDelete
