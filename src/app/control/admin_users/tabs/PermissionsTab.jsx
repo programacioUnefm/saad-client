@@ -79,6 +79,7 @@ export const PermissionsTab = ({ permissions, tabState }) => {
           {dataSort != null &&
             dataSort.map((parent) => (
               <TreeNode key={parent.id} data={parent} />
+              //este tree node es el que contiene la anidación de el recorrido de cada uno de los permisos
             ))}
         </ScrollArea>
         </div>

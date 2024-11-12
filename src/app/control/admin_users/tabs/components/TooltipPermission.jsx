@@ -3,7 +3,16 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { ChevronRight, Dot, Lock, Pencil, Plus, Trash } from "lucide-react";
+import {
+  ChevronRight,
+  Dot,
+  List,
+  Lock,
+  Pencil,
+  Plus,
+  RefreshCcw,
+  Trash,
+} from "lucide-react";
 import "./tooltip.css";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePermission } from "@/features/control/usuarios/UsersThunks";
@@ -72,6 +81,13 @@ export const TooltipPermission = ({
                   tooltip.toUpperCase() != "ELIMINAR" && (
                     <Dot className="w-15" />
                   )} */}
+                {!data.children && tooltip.toUpperCase() == "LISTAR" && (
+                  <List className="w-4 mr-1" />
+                )}
+
+                {!data.children && tooltip.toUpperCase() == "ASIGNAR" && (
+                  <RefreshCcw className="w-4 mr-1" />
+                )}
                 {!data.children && tooltip.toUpperCase() == "AGREGAR" && (
                   <Plus className="w-4 mr-1" />
                 )}
@@ -102,7 +118,8 @@ export const TooltipPermission = ({
             <div className="flex flex-wrap gap-1 justify-center mt-2">
               {permissionCheck(
                 ["CONTROL_PERMISOS", "PERMISOS_AGREGAR"],
-                permissions, roleList
+                permissions,
+                roleList
               ) && (
                 <span
                   className="truncate text-foreground/70 text-[10px] border-2 bg-muted-foreground/20 hover:bg-accent p-1 uppercase rounded-md cursor-pointer"
@@ -115,7 +132,8 @@ export const TooltipPermission = ({
               )}
               {permissionCheck(
                 ["CONTROL_PERMISOS", "PERMISOS_EDITAR"],
-                permissions, roleList
+                permissions,
+                roleList
               ) && (
                 <span
                   className="truncate  text-foreground/70 text-[10px] border-2 bg-muted-foreground/20 hover:bg-accent p-1 uppercase rounded-md cursor-pointer"
@@ -128,11 +146,13 @@ export const TooltipPermission = ({
               )}
               {permissionCheck(
                 ["CONTROL_PERMISOS", "PERMISOS_REASIGNAR"],
-                permissions, roleList
+                permissions,
+                roleList
               ) && <ParentReasign data={data} />}
               {permissionCheck(
                 ["CONTROL_PERMISOS", "PERMISOS_ELIMINAR"],
-                permissions, roleList
+                permissions,
+                roleList
               ) && (
                 <span
                   className="truncate text-white text-foreground/70 text-[10px]  hover:bg-destructive/80 p-1 uppercase rounded-md bg-destructive cursor-pointer"
