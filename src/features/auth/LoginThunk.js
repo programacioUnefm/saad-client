@@ -108,42 +108,45 @@ export const VerifyUser = () => {
       }
       return { code };
     } catch (error) {
-      const message = error.response.data.message;
-      const codeError = error.response.status;
 
-      if (codeError == 401) {
-        dispatch(LogOutApp());
-      }
+      //TODO: ver como resolver esto
+      console.log(error)
+      // const message = error.response.data.message;
+      // const codeError = error.response.status;
 
-      if (message == "Unauthenticated.") {
-        dispatch(
-          login({
-            Authstatus: false,
-            name: "",
-            document_id: "",
-            roles: [],
-            token: "",
-          })
-        );
-        dispatch(
-          dialogChange({
-            message: "Tu sesión ha expirado inicia sesión nuevamente",
-            status: true,
-            duration: 3000,
-            variant: "destructive",
-          })
-        );
-        setTimeout(() => {
-          dispatch(
-            dialogChange({
-              message: "",
-              status: false,
-              duration: 3000,
-              variant: "",
-            })
-          );
-        }, 3000);
-      }
+      // if (codeError == 401) {
+      //   dispatch(LogOutApp());
+      // }
+
+      // if (message == "Unauthenticated.") {
+      //   dispatch(
+      //     login({
+      //       Authstatus: false,
+      //       name: "",
+      //       document_id: "",
+      //       roles: [],
+      //       token: "",
+      //     })
+      //   );
+      //   dispatch(
+      //     dialogChange({
+      //       message: "Tu sesión ha expirado inicia sesión nuevamente",
+      //       status: true,
+      //       duration: 3000,
+      //       variant: "destructive",
+      //     })
+      //   );
+      //   setTimeout(() => {
+      //     dispatch(
+      //       dialogChange({
+      //         message: "",
+      //         status: false,
+      //         duration: 3000,
+      //         variant: "",
+      //       })
+      //     );
+      //   }, 3000);
+      // }
     }
   };
 };

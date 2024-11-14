@@ -25,7 +25,6 @@ saadApi.interceptors.response.use(
     // Manejo de errores
     // TODO: diferenciar los tipos de errores dentro de este interceptor
     const codeError = error.response.status;
-    
     if (codeError == 401) {
       localStorage.removeItem("token_access");
       const appUrl = import.meta.env.VITE_APP_URL;

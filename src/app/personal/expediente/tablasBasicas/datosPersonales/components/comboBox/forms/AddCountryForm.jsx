@@ -15,8 +15,6 @@ export const AddCountryForm = ({ setdialogStatus, data = {} }) => {
     data != null? dispatch(editCountry(dataForm)): dispatch(AddCountry(dataForm));
     setdialogStatus(false);
   };
-  
-console.log(data)
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>

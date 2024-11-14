@@ -1,5 +1,10 @@
 import { AppLayout } from "@/app/layouts/appLayout/AppLayout";
-import React, { useState, forwardRef, useImperativeHandle, useEffect } from "react";
+import React, {
+  useState,
+  forwardRef,
+  useImperativeHandle,
+  useEffect,
+} from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { dataPerEjemplo } from "./dataper";
@@ -25,7 +30,12 @@ import {
 import { HeaderDataTable } from "@/components/DataTable/HeaderDataTable";
 import { DataTable } from "@/components/DataTable/DataTable";
 import { AddPersonalForm } from "./components/AddPersonalForm";
-import { getContryState, getCountry, getMunicipality, getParishes } from "@/features/personal/expediente/tablasBasicas/datosPersonales/DatosPerThunk";
+import {
+  getContryState,
+  getCountry,
+  getMunicipality,
+  getParishes,
+} from "@/features/personal/expediente/tablasBasicas/datosPersonales/DatosPerThunk";
 
 const columns = [
   {
@@ -314,6 +324,32 @@ const columns = [
   },
 ];
 
+const data = {
+  documento: "V",
+  cedula: "",
+  email1: "",
+  email2: "",
+  nombre1: "",
+  nombre2: "",
+  apellido1: "",
+  apellido2: "",
+  pais: {
+    id: 1,
+    nombre: "Venezuela",
+  },
+  estado: {},
+  municipio: {},
+  parroquia: {},
+  direccion: "",
+  telefono1: "",
+  telefono2: "",
+  fecha_nacimiento: "",
+  sexo: "",
+  estado_civil: "S",
+  peso: "",
+  altura: "",
+};
+
 export const DatosPersonalesPage = () => {
   const { layout, filters } = useSelector((state) => state.ui);
   const [filtersTable, setFiltersTable] = useState({
@@ -349,12 +385,10 @@ export const DatosPersonalesPage = () => {
     },
   });
 
-
-
   const [addButton, setaddButton] = useState({
     status: false,
     textButton: "Agregar personal",
-    title: "Personal"
+    title: "Personal",
   });
 
   const dispatch = useDispatch();
@@ -364,8 +398,7 @@ export const DatosPersonalesPage = () => {
     dispatch(getContryState());
     dispatch(getMunicipality());
     dispatch(getParishes());
-  }, [])
-  
+  }, []);
 
   return (
     <AppLayout
@@ -381,7 +414,7 @@ export const DatosPersonalesPage = () => {
     >
       {addButton.status ? (
         <div id="addPersonal" className="p-2">
-          <AddPersonalForm />
+          <AddPersonalForm data={data} />
         </div>
       ) : (
         <span>qweqw</span>

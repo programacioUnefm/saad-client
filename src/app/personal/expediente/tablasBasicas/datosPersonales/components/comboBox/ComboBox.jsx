@@ -13,33 +13,30 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { AddListComboBox } from "./AddListComboBox";
-
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "@/components/ui/context-menu";
 import { useDispatch } from "react-redux";
-import { deleteCountry } from "@/features/personal/expediente/tablasBasicas/datosPersonales/DatosPerThunk";
 import { useEffect, useState } from "react";
+import { Pencil } from "lucide-react";
 
 //el combobox recibe esos parametros para poder funcionar
 export const ComboBox = ({
   list = [],
   title = "",
   label = "",
-  defaultValue = null,
+  keyLabel = null,
+  addOption = false,
+  setValue,
+  disabled,
+  value,
 }) => {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(defaultValue);
-  const [realValue, setrealValue] = useState(defaultValue);
   const [dialogStatus, setdialogStatus] = useState(false);
   const [data, setdata] = useState(null);
   const dispatch = useDispatch();
   const editHandled = (item) => {
     setdata(item);
     setdialogStatus(true);
+    // console.log(item)
+    // setValue("pais", item)
   };
 
   return (
@@ -53,53 +50,60 @@ export const ComboBox = ({
             aria-expanded={open}
             size="sm"
             className="justify-between mt-2 bg-accent/50"
+            disabled={disabled}
           >
-            {value == "" ? `Buscar ${title}` : value}
+            {value.nombre == "" ? `Buscar ${title}` : value.nombre}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
           <Command>
             <CommandInput placeholder={`Buscar ${title}...`} className="h-9" />
             <CommandList>
-              <CommandEmpty>No se encontraron resultados.</CommandEmpty>
+              <CommandEmpty>No se encontraron resultados...</CommandEmpty>
               <CommandGroup value={value}>
                 {/* comando para agregar un nuevo item a la lista */}
-                <CommandItem
-                  className="font-bold text-primary hover:text-primary/10 uppercase"
-                  onSelect={() => {
-                    setdialogStatus(true);
-                    setdata(null);
-                  }}
-                >
-                  AGREGAR {title}
-                </CommandItem>
+                {addOption && (
+                  <CommandItem
+                    className="font-bold text-primary hover:text-primary/10 uppercase"
+                    onSelect={() => {
+                      setdialogStatus(true);
+                      setdata(null);
+                    }}
+                  >
+                    AGREGAR {title}
+                  </CommandItem>
+                )}
                 {/* comando para agregar un nuevo item a la lista */}
-
                 {list.map((item) => (
                   <CommandItem
-                  key={item.id}
+                    className="flex justify-between"
+                    key={Math.random()}
                     onSelect={() => {
-                      setValue(item.pais);
+                      setValue(keyLabel ? keyLabel : title, item);
                       setOpen(false);
                     }}
                   >
-                    {item.pais}
-                    <Button
-                      disabled={item.id == 1}
-                      onClick={() => {
-                        editHandled(item);
-                      }}
-                    >
-                      EDITAR
-                    </Button>
-                    <Button
+                    
+                    {item.nombre}
+                    {/* {addOption && (
+                      <Button
+                        disabled={item.id == 1}
+                        variant="outline"
+                        onClick={() => {
+                          editHandled(item);
+                        }}
+                      >
+                        <Pencil size={10} />
+                      </Button>
+                    )} */}
+                    {/* <Button
                       disabled={item.id == 1}
                       onClick={() => {
                         dispatch(deleteCountry(item.id));
                       }}
                     >
                       ELIMINAR
-                    </Button>
+                    </Button> */}
                   </CommandItem>
                 ))}
               </CommandGroup>

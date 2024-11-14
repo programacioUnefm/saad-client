@@ -36,29 +36,98 @@ import {
   Users,
 } from "lucide-react";
 import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { object } from "zod";
+import { TipoPersonalDialog } from "./TipoPersonalDialog";
 
-export const AddPersonalForm = () => {
+export const AddPersonalForm = ({ data }) => {
   const {
     register,
     handleSubmit,
     control,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm({
+    defaultValues: data,
     resolver: zodResolver(personalSchema),
   });
+
   const onSubmit = (data) => {};
-  const {paises, municipios, estados, parroquias} = useSelector((state) => state.personal.expediente.tablasBasicas.datosPer);
-    
+  const { paises, municipios, estados, parroquias } = useSelector(
+    (state) => state.personal.expediente.tablasBasicas.datosPer
+  );
+  const [municipiosFiltered, setMunicipiosFiltered] = useState([]);
+  const [parroquisFiltered, setParroquisFiltered] = useState([]);
+  const [dialogStatus, setDialogStatus] = useState({
+    dialog: false,
+    action: null,
+    title: ""
+  });
+
+  //funcion que filtra la lista para devolver la lista filtrada según su padre_id
+  const filterSomething = (list, parentItem) => {
+    return list.data.filter((municipio) =>
+      Object.keys(municipio).some(
+        (key) => key.includes("_id") && municipio[key] === parentItem.id
+      )
+    );
+  };
+
+  // este useEffect hace que se filtren los municipios según el estado seleccionado
+  useEffect(() => {
+    if (estados.data != undefined && municipios.data != undefined) {
+      setValue("municipio", "");
+
+      if (
+        watch().estado != undefined &&
+        watch().estado != null &&
+        watch().estado != ""
+      ) {
+        const filter = filterSomething(municipios, watch().estado);
+        setMunicipiosFiltered(filter);
+      }
+    }
+
+    setParroquisFiltered([]);
+    setValue("parroquia", "");
+  }, [watch().estado, estados.data, municipios.data]);
+
+  // este useEffect hace que se filtren las parroquias segun los municipios seleccionados
+  useEffect(() => {
+    if (
+      municipios.data != undefined &&
+      parroquias.data != undefined &&
+      watch().municipio != ""
+    ) {
+      setValue("parroquia", "");
+      if (watch().municipio != undefined && watch().municipio != "") {
+        setParroquisFiltered(filterSomething(parroquias, watch().municipio));
+      }
+    }
+  }, [municipios.data, parroquias.data, watch().municipio]);
+
+  // borrar todos los cambios si se cambia de pais
+  useEffect(() => {
+    if (watch().pais.id != 1) {
+      setParroquisFiltered([]);
+      setMunicipiosFiltered([]);
+      setValue("estado", "");
+      setValue("municipio", "");
+      setValue("parroquia", "");
+    }
+  }, [watch().pais]);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <section id="datos-basicos">
         <div className="text-center uppercase font-bold mb-2">
           Datos básicos
         </div>
-        <div className="grid grid-cols-8 gap-4">
-          <div className="col-span-1">
+        <div className="grid md:grid-cols-3 xl:grid-cols-5 gap-4">
+          <div className="">
             <label>Documento</label>
-            <Select defaultValue="V">
+            <Select defaultValue={watch().documento}>
               <SelectTrigger {...register("documento")}>
                 <SelectValue placeholder="Tipo documento" />
               </SelectTrigger>
@@ -72,7 +141,7 @@ export const AddPersonalForm = () => {
             </Select>
           </div>
 
-          <div className="col-span-2">
+          <div className="">
             <label>Cédula</label>
             <Input
               type="number"
@@ -81,7 +150,7 @@ export const AddPersonalForm = () => {
               {...register("cedula")}
             />
           </div>
-          <div className="col-span-1">
+          <div className="">
             <label>RIF</label>
             <Input
               type="number"
@@ -91,7 +160,7 @@ export const AddPersonalForm = () => {
             />
           </div>
 
-          <div className="col-span-2">
+          <div className="md:col-span-1">
             <label>Email 1</label>
             <Input
               type="email"
@@ -100,7 +169,7 @@ export const AddPersonalForm = () => {
               {...register("email1")}
             />
           </div>
-          <div className="col-span-2">
+          <div className="md:col-span-2 xl:col-span-1">
             <label>Email 2</label>
             <Input
               type="email"
@@ -116,7 +185,7 @@ export const AddPersonalForm = () => {
         <div className="text-center uppercase font-bold mb-4 mt-4">
           Nombre completo
         </div>
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
           <div>
             <label>Primer Nombre</label>
             <Input placeholder="Ej: Jhon" {...register("nombre1")} />
@@ -137,11 +206,12 @@ export const AddPersonalForm = () => {
           </div>
         </div>
       </section>
+
       <section id="contacto">
         <div className="text-center uppercase font-bold mb-4 mt-4">
           Datos de contacto
         </div>
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
           <div>
             <label>Dirección</label>
             <Input
@@ -159,54 +229,57 @@ export const AddPersonalForm = () => {
           </div>
           <div>
             <ComboBox
-              list={paises.data}
-              title="país"
-              label="País de orígen"
-              defaultValue={"Venezuela"}
+              list={paises.data} // lista a recorrer dentro del combobox
+              title="país" // titulo que se muestra en el combobox
+              keyLabel="pais" // keyLabel es el nombre dentro del formulario
+              label="País residencia" // label lo que se muestra en el label
+              setValue={setValue} // setValue se utiliza para darle el valor
+              value={watch().pais} // value es el valor pordefecto si es que tiene uno
             />
           </div>
         </div>
-        <div className="grid grid-cols-4 mt-2 gap-4">
-          <div>
-            {/* <ComboBox
-              list={estados}
-              title="estado"
-              label="Estado"
-              defaultValue="Selecciona un estado"
-            /> */}
+        {watch().pais.nombre === "Venezuela" && ( // esta condiciona sirve para hacer que aparezca o desaparezca los estados municipios y parroquias si no es venezuela
+          <div className="grid grid-cols-3 mt-2 gap-4">
+            <div>
+              <ComboBox
+                list={estados.data}
+                title="estado"
+                label="Estado"
+                setValue={setValue}
+                value={watch().estado}
+                disabled={false}
+              />
+            </div>
+            <div>
+              <ComboBox
+                list={municipiosFiltered}
+                title="municipio"
+                label="Municipio"
+                setValue={setValue}
+                value={watch().municipio}
+                // disabled={watch().estado == {} || watch().estado == "" ? true : false}
+              />
+            </div>
+
+            <div>
+              <ComboBox
+                list={parroquisFiltered}
+                title="parroquia"
+                label="Parroquias"
+                setValue={setValue}
+                value={watch().parroquia}
+                // disabled={watch().municipio == {} || watch().municipio == "" ? true : false}
+              />
+            </div>
           </div>
-          <div>
-            {/* <ComboBox
-              list={estados}
-              title="municipio"
-              label="Municipio"
-              defaultValue="Selecciona un municipio"
-            /> */}
-          </div>
-          <div>
-            {/* <ComboBox
-              list={estados}
-              title="Ciudad"
-              label="Ciudad"
-              defaultValue="Selecciona una ciudad"
-            /> */}
-          </div>
-          <div>
-            {/* <ComboBox
-              list={estados}
-              title="Parroquia"
-              label="Parroquia"
-              defaultValue="Selecciona una parroquia"
-            /> */}
-          </div>
-        </div>
+        )}
       </section>
 
       <section id="datos-personales" className="pt-4 ">
         <div className="text-center uppercase font-bold mb-4 mt-4">
           Datos personales
         </div>
-        <div className="grid grid-cols-6 gap-4">
+        <div className="grid md:grid-cols-3 xl:grid-cols-6 gap-4">
           <div>
             <TooltipProvider>
               <Tooltip>
@@ -248,7 +321,7 @@ export const AddPersonalForm = () => {
               </Tooltip>
             </TooltipProvider>
 
-            <Select>
+            <Select defaultValue={watch().estado_civil}>
               <SelectTrigger {...register("estado_civil")}>
                 <SelectValue placeholder="Estado civil" />
               </SelectTrigger>
@@ -316,31 +389,38 @@ export const AddPersonalForm = () => {
           </div>
         </div>
       </section>
-      <section id="" className="mt-8">
+
+      <section id="tipo-personal" className="mt-8">
         <div className="text-center uppercase font-bold mb-4 mt-4">
           Tipo de personal
         </div>
-        <div className="grid grid-cols-4 gap-4">
-          <Button variant="outline" className="h-[50px]">
+        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
+          <Button type="button" variant="outline" className="h-[50px]" onClick={() => {setDialogStatus({dialog:true, action: "nivelProfesional", title: "Establecer nivel profesional"})}}>
             <GraduationCap className="mr-2" />
             nivel profesional
           </Button>
-          <Button variant="outline" className="h-[50px]">
+          <Button type="button" variant="outline" className="h-[50px]" onClick={() => {setDialogStatus({dialog:true, action: "cargaFamiliar", title: "Configurar carga familiar"})}}>
             <Users className="mr-2" />
             Carga familiar
           </Button>
-          <Button variant="outline" className="h-[50px]">
+          <Button type="button" variant="outline" className="h-[50px]" onClick={() => {setDialogStatus({dialog:true, action: "tipoPersonal", title: "Establecer tipo de personal"})}}>
             <HardHatIcon className="mr-2" />
             Tipo personal
           </Button>
-          <Button variant="outline" className="h-[50px]">
+          <Button type="button" variant="outline" className="h-[50px]" onClick={() => {setDialogStatus({dialog:true, action: "discapacidad", title: "Justificar discapacidades"})}}>
             <Glasses className="mr-2" />
             Discapacidad
           </Button>
         </div>
       </section>
+
+      {/* componente que muestra el modal de tipo de personal */}
+      <TipoPersonalDialog dialogStatus={dialogStatus} setDialogStatus={setDialogStatus} />
+
       <div className="flex mt-8">
-        <Button type="submit" variant="primary">Registrar personal</Button>
+        <Button type="submit" variant="primary">
+          Registrar personal
+        </Button>
       </div>
     </form>
   );
