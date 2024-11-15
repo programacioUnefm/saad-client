@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"; 
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -15,413 +15,269 @@ import {
   sangre,
   estadoCivil,
   sexo,
-  paises,
-  estados,
+  tipoPer,
+  idiomas
 } from "@/features/validations/PersonalSchema";
 import { ComboBox } from "./comboBox/ComboBox";
-
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
-import {
-  Bone,
-  Glasses,
-  GraduationCap,
-  HardHat,
-  HardHatIcon,
-  Users,
-} from "lucide-react";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { object } from "zod";
-import { TipoPersonalDialog } from "./TipoPersonalDialog";
+import { IdiomasInput } from "./IdiomasInput";
+
+// Input Component for easy reuse
+const FormInput = ({ label, register, name, type = "text", placeholder, error }) => (
+  <div>
+    <label>{label}</label>
+    <Input
+      type={type}
+      placeholder={placeholder}
+      className={error ? "border-red-500" : ""}
+      {...register(name)}
+    />
+    {error && <span className="text-red-500 text-xs">{error.message}</span>}
+  </div>
+);
+
+// select para poder reutilizar con estructura compleja
+const FormSelect = ({ label, options, register, name, defaultValue, setValue, error }) => (
+  
+  <div>
+    <label>{label}</label>
+    <Select defaultValue={defaultValue} onValueChange={(e) => setValue(name, e)} >
+      <SelectTrigger {...register(name)} className={error ? "border-red-500" : ""}>
+        <SelectValue placeholder={`Seleccionar ${label}`} />
+      </SelectTrigger>
+      <SelectContent>
+        {options.map((option) => (
+          <SelectItem key={option.value} value={option.value}>
+            {option.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+    {error && <span className="text-red-500 text-xs">{error.message}</span>}
+  </div>
+);
+
+
 
 export const AddPersonalForm = ({ data }) => {
   const {
     register,
     handleSubmit,
-    control,
-    watch,
     setValue,
     formState: { errors },
+    watch,
+    getValues,
   } = useForm({
     defaultValues: data,
     resolver: zodResolver(personalSchema),
   });
 
-  const onSubmit = (data) => {};
   const { paises, municipios, estados, parroquias } = useSelector(
     (state) => state.personal.expediente.tablasBasicas.datosPer
   );
+
   const [municipiosFiltered, setMunicipiosFiltered] = useState([]);
   const [parroquisFiltered, setParroquisFiltered] = useState([]);
-  const [dialogStatus, setDialogStatus] = useState({
-    dialog: false,
-    action: null,
-    title: ""
-  });
 
-  //funcion que filtra la lista para devolver la lista filtrada según su padre_id
-  const filterSomething = (list, parentItem) => {
-    return list.data.filter((municipio) =>
-      Object.keys(municipio).some(
-        (key) => key.includes("_id") && municipio[key] === parentItem.id
-      )
-    );
-  };
+  const { pais, estado, municipio, parroquia } = watch();
 
-  // este useEffect hace que se filtren los municipios según el estado seleccionado
+
+  // Filter municipios based on the selected estado
   useEffect(() => {
-    if (estados.data != undefined && municipios.data != undefined) {
-      setValue("municipio", "");
-
-      if (
-        watch().estado != undefined &&
-        watch().estado != null &&
-        watch().estado != ""
-      ) {
-        const filter = filterSomething(municipios, watch().estado);
-        setMunicipiosFiltered(filter);
-      }
+    if (estado && municipios.data) {
+      const filteredMunicipios = municipios.data.filter(
+        (m) => m.estado_id === estado.id
+      );
+      setMunicipiosFiltered(filteredMunicipios);
+      setValue("municipio", {}); // Reset municipio when estado changes
+      setParroquisFiltered([]); // Reset parroquia when municipio changes
     }
+  }, [estado, municipios.data, setValue]);
 
-    setParroquisFiltered([]);
-    setValue("parroquia", "");
-  }, [watch().estado, estados.data, municipios.data]);
-
-  // este useEffect hace que se filtren las parroquias segun los municipios seleccionados
+  // Filter parroquias based on selected municipio
   useEffect(() => {
-    if (
-      municipios.data != undefined &&
-      parroquias.data != undefined &&
-      watch().municipio != ""
-    ) {
-      setValue("parroquia", "");
-      if (watch().municipio != undefined && watch().municipio != "") {
-        setParroquisFiltered(filterSomething(parroquias, watch().municipio));
-      }
+    if (municipio && parroquias.data) {
+      const filteredParroquias = parroquias.data.filter(
+        (p) => p.municipio_id === municipio.id
+      );
+      setParroquisFiltered(filteredParroquias);
     }
-  }, [municipios.data, parroquias.data, watch().municipio]);
+  }, [municipio, parroquias.data]);
 
-  // borrar todos los cambios si se cambia de pais
+  // Reset form values when pais changes (if not Venezuela)
   useEffect(() => {
-    if (watch().pais.id != 1) {
-      setParroquisFiltered([]);
+    if (pais.id !== 1) { // assuming pais.id === 1 is Venezuela
       setMunicipiosFiltered([]);
+      setParroquisFiltered([]);
       setValue("estado", "");
       setValue("municipio", "");
       setValue("parroquia", "");
     }
-  }, [watch().pais]);
+  }, [pais, setValue]);
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
+  console.log(errors)
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      {/* Datos Básicos */}
       <section id="datos-basicos">
-        <div className="text-center uppercase font-bold mb-2">
-          Datos básicos
-        </div>
-        <div className="grid md:grid-cols-3 xl:grid-cols-5 gap-4">
-          <div className="">
-            <label>Documento</label>
-            <Select defaultValue={watch().documento}>
-              <SelectTrigger {...register("documento")}>
-                <SelectValue placeholder="Tipo documento" />
-              </SelectTrigger>
-              <SelectContent>
-                {documento.map((doc) => (
-                  <SelectItem key={doc.value} value={doc.value}>
-                    {doc.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="">
-            <label>Cédula</label>
-            <Input
-              type="number"
-              placeholder="Ej: 22602765"
-              errors={errors.cedula != undefined ? "true" : "false"}
-              {...register("cedula")}
-            />
-          </div>
-          <div className="">
-            <label>RIF</label>
-            <Input
-              type="number"
-              placeholder="Ej: 22602765-4"
-              errors={errors.cedula != undefined ? "true" : "false"}
-              {...register("cedula")}
-            />
-          </div>
-
-          <div className="md:col-span-1">
-            <label>Email 1</label>
-            <Input
-              type="email"
-              placeholder="Ej: jhon_doe@gmail.com"
-              errors={errors.email1 != undefined ? "true" : "false"}
-              {...register("email1")}
-            />
-          </div>
-          <div className="md:col-span-2 xl:col-span-1">
-            <label>Email 2</label>
-            <Input
-              type="email"
-              placeholder="Ej: jhon_doe2@gmail.com"
-              errors={errors.email2 != undefined ? "true" : "false"}
-              {...register("email2")}
-            />
-          </div>
+        <div className="text-center uppercase font-bold mb-2">Datos básicos</div>
+        <div className="grid md:grid-cols-3 xl:grid-cols-6 gap-4">
+          <FormSelect
+            label="Documento"
+            options={documento}
+            register={register}
+            name="documento"
+            defaultValue={data.documento}
+            setValue={setValue}
+            error={errors.documento}
+          />
+          <FormInput
+            label="Cédula"
+            register={register}
+            name="cedula"
+            type="number"
+            placeholder="Ej: 22602765"
+            error={errors.cedula}
+          />
+          <FormInput
+            label="RIF"
+            register={register}
+            name="rif"
+            type="number"
+            placeholder="Ej: 22602765-4"
+            error={errors.rif}
+          />
+          <FormInput
+            label="Email personal"
+            register={register}
+            name="email1"
+            type="email"
+            placeholder="Ej: jhon_doe@gmail.com"
+            error={errors.email1}
+          />
+          <FormInput
+            label="Email institucional"
+            register={register}
+            name="email2"
+            type="email"
+            placeholder="Ej: jhon_doe2@gmail.com"
+            error={errors.email2}
+          />
+          <FormSelect
+            label="Tipo personal"
+            options={tipoPer}
+            register={register}
+            name="nivel_profesional_id"
+            defaultValue={data.nivel_profesional_id}
+            setValue={setValue}
+            error={errors.nivel_profesional_id}
+          />
         </div>
       </section>
 
+      {/* Nombre Completo */}
       <section id="nombre-completo">
-        <div className="text-center uppercase font-bold mb-4 mt-4">
-          Nombre completo
-        </div>
+        <div className="text-center uppercase font-bold mb-4 mt-4">Nombre completo</div>
         <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
-          <div>
-            <label>Primer Nombre</label>
-            <Input placeholder="Ej: Jhon" {...register("nombre1")} />
-          </div>
-
-          <div>
-            <label>Segundo Nombre</label>
-            <Input placeholder="Ej: Doe" {...register("nombre2")} />
-          </div>
-
-          <div>
-            <label>Primer Apellido</label>
-            <Input placeholder="Ej: Gonzáles" {...register("apellido1")} />
-          </div>
-          <div>
-            <label>Segundo Apellido</label>
-            <Input placeholder="Ej: Cárdenas" {...register("apellido2")} />
-          </div>
+          <FormInput label="Primer Nombre" register={register} name="nombre1" type="text" placeholder="Ej: Jhon" error={errors.nombre1} />
+          <FormInput label="Segundo Nombre" register={register} name="nombre2" placeholder="Ej: Doe" error={errors.nombre2} />
+          <FormInput label="Primer Apellido" register={register} name="apellido1" placeholder="Ej: Gonzáles" error={errors.apellido1} />
+          <FormInput label="Segundo Apellido" register={register} name="apellido2" placeholder="Ej: Cárdenas" error={errors.apellido2} />
         </div>
       </section>
 
+      {/* Datos de Contacto */}
       <section id="contacto">
-        <div className="text-center uppercase font-bold mb-4 mt-4">
-          Datos de contacto
-        </div>
+        <div className="text-center uppercase font-bold mb-4 mt-4">Datos de contacto</div>
         <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
-          <div>
-            <label>Dirección</label>
-            <Input
-              placeholder="Ej: Av. Josefa camejo"
-              {...register("direccion")}
-            ></Input>
-          </div>
-          <div>
-            <label>Teléfono</label>
-            <Input placeholder="Ej: 04123688594" {...register("telefono1")} />
-          </div>
-          <div>
-            <label>Teléfono 2</label>
-            <Input placeholder="Ej: 04123688594" {...register("telefono2")} />
-          </div>
-          <div>
-            <ComboBox
-              list={paises.data} // lista a recorrer dentro del combobox
-              title="país" // titulo que se muestra en el combobox
-              keyLabel="pais" // keyLabel es el nombre dentro del formulario
-              label="País residencia" // label lo que se muestra en el label
-              setValue={setValue} // setValue se utiliza para darle el valor
-              value={watch().pais} // value es el valor pordefecto si es que tiene uno
-            />
-          </div>
+          <FormInput label="Dirección" register={register} name="direccion" placeholder="Ej: Av. Josefa camejo" error={errors.direccion} />
+          <FormInput label="Teléfono" register={register} name="telefono1" placeholder="Ej: 04123688594" error={errors.telefono1}/>
+          <FormInput label="Teléfono 2" register={register} name="telefono2" placeholder="Ej: 04123688594" error={errors.telefono2} />
+          <ComboBox list={paises.data} title="país" keyLabel="pais" label="País residencia" setValue={setValue} value={pais} error={errors.pais}/>
         </div>
-        {watch().pais.nombre === "Venezuela" && ( // esta condiciona sirve para hacer que aparezca o desaparezca los estados municipios y parroquias si no es venezuela
-          <div className="grid grid-cols-3 mt-2 gap-4">
-            <div>
-              <ComboBox
-                list={estados.data}
-                title="estado"
-                label="Estado"
-                setValue={setValue}
-                value={watch().estado}
-                disabled={false}
-              />
-            </div>
-            <div>
-              <ComboBox
-                list={municipiosFiltered}
-                title="municipio"
-                label="Municipio"
-                setValue={setValue}
-                value={watch().municipio}
-                // disabled={watch().estado == {} || watch().estado == "" ? true : false}
-              />
-            </div>
 
-            <div>
-              <ComboBox
-                list={parroquisFiltered}
-                title="parroquia"
-                label="Parroquias"
-                setValue={setValue}
-                value={watch().parroquia}
-                // disabled={watch().municipio == {} || watch().municipio == "" ? true : false}
-              />
-            </div>
+        {/* Mostrar campos específicos si el país es Venezuela */}
+        {pais.nombre === "Venezuela" && (
+          <div className="grid grid-cols-3 mt-2 gap-4">
+            <ComboBox list={estados.data} title="estado" label="Estado" setValue={setValue} value={estado} error={errors.estado}/>
+            <ComboBox list={municipiosFiltered} title="municipio" label="Municipio" setValue={setValue} value={municipio} error={errors.municipio} />
+            <ComboBox list={parroquisFiltered} title="parroquia" label="Parroquias" setValue={setValue} value={parroquia} error={errors.parroquia}/>
           </div>
         )}
       </section>
 
-      <section id="datos-personales" className="pt-4 ">
-        <div className="text-center uppercase font-bold mb-4 mt-4">
-          Datos personales
-        </div>
-        <div className="grid md:grid-cols-3 xl:grid-cols-6 gap-4">
+      {/* Datos Personales */}
+      <section id="datos-personales" className="pt-4">
+        <div className="text-center uppercase font-bold mb-4 mt-4">Datos personales</div>
+        <div className="grid grid-cols-4 gap-4">
           <div>
-            <TooltipProvider>
+            {/* <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <label className="line-clamp-1">Fecha nacimiento</label>
+                  <label>Fecha nacimiento</label>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Fecha de nacimiento</p>
                 </TooltipContent>
               </Tooltip>
-            </TooltipProvider>
-            <Input type="date" {...register("fecha_nacimiento")} />
+            </TooltipProvider> */}
+            
+            <FormInput label="Fecha de nacimiento" register={register} name="fecha_nacimiento" type="date" placeholder="" error={errors.fecha_nacimiento} />
           </div>
+          <FormSelect label="Sexo" options={sexo} register={register} name="sexo" defaultValue={data.sexo} setValue={setValue} error={errors.sexo}/>
+          <FormSelect label="Estado civil" options={estadoCivil} register={register} name="estado_civil" defaultValue={data.estado_civil} setValue={setValue} error={errors.estado_civil} />
           <div>
-            <label>Sexo</label>
-            <Select>
-              <SelectTrigger {...register("sexo")}>
-                <SelectValue placeholder="Seleccionar sexo" />
+            <label>Tipo de sangre</label>
+            <Select defaultValue={data.sangre} onValueChange={(e) => setValue("sangre", e)}>
+              <SelectTrigger {...register("sangre")} className={errors?.sangre && "border-red-500"}>
+                <SelectValue placeholder="selecciona un tipo" />
               </SelectTrigger>
               <SelectContent>
-                {sexo.map((sexo) => (
-                  <SelectItem key={sexo.value} value={sexo.value}>
-                    {sexo.label}
-                  </SelectItem>
+                {sangre.map((option, index) => (
+                <SelectItem key={index} value={option}>
+                  {option}
+                </SelectItem>
                 ))}
               </SelectContent>
             </Select>
+            
+            {errors?.sangre && <span className="text-red-500 text-xs">{errors.sangre.message}</span>}
           </div>
 
+        </div>
+        <div className="grid grid-cols-3 gap-4 mt-2">
           <div>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <label className="line-clamp-1">Estado civil</label>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Estado civil</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-
-            <Select defaultValue={watch().estado_civil}>
-              <SelectTrigger {...register("estado_civil")}>
-                <SelectValue placeholder="Estado civil" />
-              </SelectTrigger>
-              <SelectContent>
-                {estadoCivil.map((estadoC) => (
-                  <SelectItem key={estadoC.value} value={estadoC.value}>
-                    {estadoC.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <label>Peso</label>
-            <div className="flex w-full max-w-sm items-center">
-              <Input
-                placeholder="60.50"
-                className="rounded-tr-none rounded-br-none"
-                {...register("peso")}
-                type="number"
-              />
-              <span className="bg-accent/50 p-[8px] rounded-tr-md rounded-br-md font-bold">
-                KG
-              </span>
-            </div>
+            
+            <FormInput label="Peso en KG" register={register} name="peso" type="number" placeholder="60.50" error={errors.peso} />
+            {/* {errors?.peso && <span className="text-red-500 text-xs">{errors.peso.message}</span>} */}
           </div>
           <div>
             <label>Altura</label>
-            <div className="flex w-full max-w-sm items-center">
-              <Input
-                placeholder="1.65"
-                className="rounded-tr-none rounded-br-none"
-                {...register("altura")}
-                type="number"
-              />
-              <span className="bg-accent/50 py-[8px] px-[12px] rounded-tr-md rounded-br-md font-bold">
-                M
-              </span>
+            <div className="flex w-full items-center">
+              <Input placeholder="1.65" className="rounded-tr-none rounded-br-none" {...register("altura")} type="number" />
+              <span className="bg-accent/50 py-[8px] px-[12px] rounded-tr-md rounded-br-md font-bold">M</span>
             </div>
           </div>
           <div>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <label className="line-clamp-1">Tipo de sangre</label>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Tipo de sangre</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-
-            <Select>
-              <SelectTrigger {...register("estado_civil")}>
-                <SelectValue placeholder="Selecciona uno" />
-              </SelectTrigger>
-              <SelectContent>
-                {sangre.map((sangre) => (
-                  <SelectItem key={sangre} value={sangre}>
-                    {sangre}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <IdiomasInput idiomas={idiomas} setValue={setValue}/>
           </div>
         </div>
       </section>
-
-      <section id="tipo-personal" className="mt-8">
-        <div className="text-center uppercase font-bold mb-4 mt-4">
-          Tipo de personal
-        </div>
-        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
-          <Button type="button" variant="outline" className="h-[50px]" onClick={() => {setDialogStatus({dialog:true, action: "nivelProfesional", title: "Establecer nivel profesional"})}}>
-            <GraduationCap className="mr-2" />
-            nivel profesional
-          </Button>
-          <Button type="button" variant="outline" className="h-[50px]" onClick={() => {setDialogStatus({dialog:true, action: "cargaFamiliar", title: "Configurar carga familiar"})}}>
-            <Users className="mr-2" />
-            Carga familiar
-          </Button>
-          <Button type="button" variant="outline" className="h-[50px]" onClick={() => {setDialogStatus({dialog:true, action: "tipoPersonal", title: "Establecer tipo de personal"})}}>
-            <HardHatIcon className="mr-2" />
-            Tipo personal
-          </Button>
-          <Button type="button" variant="outline" className="h-[50px]" onClick={() => {setDialogStatus({dialog:true, action: "discapacidad", title: "Justificar discapacidades"})}}>
-            <Glasses className="mr-2" />
-            Discapacidad
-          </Button>
-        </div>
-      </section>
-
-      {/* componente que muestra el modal de tipo de personal */}
-      <TipoPersonalDialog dialogStatus={dialogStatus} setDialogStatus={setDialogStatus} />
-
-      <div className="flex mt-8">
-        <Button type="submit" variant="primary">
-          Registrar personal
-        </Button>
-      </div>
+{console.log(watch())}
+      {/* Submit Button */}
+      <Button type="submit">Guardar</Button>
     </form>
   );
 };

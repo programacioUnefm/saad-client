@@ -1,11 +1,15 @@
-import { z } from "zod";
+import { z } from "zod";  // Importamos la librería Zod para validación de datos
+import { isBefore, isAfter, parseISO } from "date-fns"; // Importamos funciones de date-fns para validación de fechas
 
+// Definición de constantes con valores para tipos de documentos
 export const documento = [
   { value: "V", label: "Venezolano" },
   { value: "J", label: "Jurídico" },
   { value: "E", label: "Extranjero" },
   { value: "P", label: "Pasaporte" },
 ];
+
+// Definición de constantes con valores para el estado civil
 export const estadoCivil = [
   { value: "S", label: "Soltero" },
   { value: "C", label: "Casado" },
@@ -13,262 +17,142 @@ export const estadoCivil = [
   { value: "D", label: "Divorciado" },
 ];
 
+// Definición de constantes con valores para el sexo
 export const sexo = [
   { value: "M", label: "Masculino" },
   { value: "F", label: "Femenino" },
 ];
 
-export const paises = [
-  "Afganistán",
-  "Albania",
-  "Alemania",
-  "Andorra",
-  "Angola",
-  "Antigua y Barbuda",
-  "Arabia Saudita",
-  "Argelia",
-  "Argentina",
-  "Armenia",
-  "Australia",
-  "Austria",
-  "Azerbaiyán",
-  "Bahamas",
-  "Bangladés",
-  "Barbados",
-  "Baréin",
-  "Bélgica",
-  "Belice",
-  "Benín",
-  "Bielorrusia",
-  "Birmania",
-  "Bolivia",
-  "Bosnia y Herzegovina",
-  "Botsuana",
-  "Brasil",
-  "Brunéi",
-  "Bulgaria",
-  "Burkina Faso",
-  "Burundi",
-  "Bután",
-  "Cabo Verde",
-  "Camboya",
-  "Camerún",
-  "Canadá",
-  "Catar",
-  "Chad",
-  "Chile",
-  "China",
-  "Chipre",
-  "Ciudad del Vaticano",
-  "Colombia",
-  "Comoras",
-  "Corea del Norte",
-  "Corea del Sur",
-  "Costa de Marfil",
-  "Costa Rica",
-  "Croacia",
-  "Cuba",
-  "Dinamarca",
-  "Dominica",
-  "Ecuador",
-  "Egipto",
-  "El Salvador",
-  "Emiratos Árabes Unidos",
-  "Eritrea",
-  "Eslovaquia",
-  "Eslovenia",
-  "España",
-  "Estados Unidos",
-  "Estonia",
-  "Etiopía",
-  "Filipinas",
-  "Finlandia",
-  "Fiyi",
-  "Francia",
-  "Gabón",
-  "Gambia",
-  "Georgia",
-  "Ghana",
-  "Granada",
-  "Grecia",
-  "Guatemala",
-  "Guyana",
-  "Guinea",
-  "Guinea ecuatorial",
-  "Guinea-Bisáu",
-  "Haití",
-  "Honduras",
-  "Hungría",
-  "India",
-  "Indonesia",
-  "Irak",
-  "Irán",
-  "Irlanda",
-  "Islandia",
-  "Islas Marshall",
-  "Islas Salomón",
-  "Israel",
-  "Italia",
-  "Jamaica",
-  "Japón",
-  "Jordania",
-  "Kazajistán",
-  "Kenia",
-  "Kirguistán",
-  "Kiribati",
-  "Kuwait",
-  "Laos",
-  "Lesoto",
-  "Letonia",
-  "Líbano",
-  "Liberia",
-  "Libia",
-  "Liechtenstein",
-  "Lituania",
-  "Luxemburgo",
-  "Macedonia del Norte",
-  "Madagascar",
-  "Malasia",
-  "Malaui",
-  "Maldivas",
-  "Malí",
-  "Malta",
-  "Marruecos",
-  "Mauricio",
-  "Mauritania",
-  "México",
-  "Micronesia",
-  "Moldavia",
-  "Mónaco",
-  "Mongolia",
-  "Montenegro",
-  "Mozambique",
-  "Namibia",
-  "Nauru",
-  "Nepal",
-  "Nicaragua",
-  "Níger",
-  "Nigeria",
-  "Noruega",
-  "Nueva Zelanda",
-  "Omán",
-  "Países Bajos",
-  "Pakistán",
-  "Palaos",
-  "Panamá",
-  "Papúa Nueva Guinea",
-  "Paraguay",
-  "Perú",
-  "Polonia",
-  "Portugal",
-  "Reino Unido",
-  "República Centroafricana",
-  "República Checa",
-  "República del Congo",
-  "República Democrática del Congo",
-  "República Dominicana",
-  "Ruanda",
-  "Rumanía",
-  "Rusia",
-  "Samoa",
-  "San Cristóbal y Nieves",
-  "San Marino",
-  "San Vicente y las Granadinas",
-  "Santa Lucía",
-  "Santo Tomé y Príncipe",
-  "Senegal",
-  "Serbia",
-  "Seychelles",
-  "Sierra Leona",
-  "Singapur",
-  "Siria",
-  "Somalia",
-  "Sri Lanka",
-  "Suazilandia",
-  "Sudáfrica",
-  "Sudán",
-  "Sudán del Sur",
-  "Suecia",
-  "Suiza",
-  "Surinam",
-  "Tailandia",
-  "Tanzania",
-  "Tayikistán",
-  "Timor Oriental",
-  "Togo",
-  "Tonga",
-  "Trinidad y Tobago",
-  "Túnez",
-  "Turkmenistán",
-  "Turquía",
-  "Tuvalu",
-  "Ucrania",
-  "Uganda",
-  "Uruguay",
-  "Uzbekistán",
-  "Vanuatu",
-  "Venezuela",
-  "Vietnam",
-  "Yemen",
-  "Yibuti",
-  "Zambia",
-  "Zimbabue",
+// Definición de niveles de estudios y sus opciones
+export const tipoPer = [
+  { value: "00", label: "NINGUNO", pago: 0, descorta: "NONE" },
+  { value: "01", label: "BÁSICA", pago: 0, descorta: "BAS" },
+  { value: "02", label: "BACHILLER", pago: 0, descorta: "BR" },
+  { value: "03", label: "TÉCNICO MEDIO", pago: 0, descorta: "TEC" },
+  { value: "04", label: "TÉCNICO SUPERIOR", pago: 1, descorta: "T.S.U" },
+  { value: "05", label: "UNIVERSITARIO", pago: 1, descorta: "UNIV" },
+  { value: "06", label: "ESPECIALIZACIÓN", pago: 1, descorta: "ESP" },
+  { value: "07", label: "MAESTRIA", pago: 1, descorta: "MSC" },
+  { value: "08", label: "DOCTORADO", pago: 1, descorta: "PH.D" },
 ];
 
-export const estados = [
-  "Amazonas",
-  "Anzoátegui",
-  "Apure",
-  "Aragua",
-  "Barinas",
-  "Bolívar",
-  "Carabobo",
-  "Cojedes",
-  "Delta Amacuro",
-  "Distrito Capital",
-  "Falcón",
-  "Guárico",
-  "Lara",
-  "Mérida",
-  "Miranda",
-  "Monagas",
-  "Nueva Esparta",
-  "Portuguesa",
-  "Sucre",
-  "Táchira",
-  "Trujillo",
-  "Vargas",
-  "Yaracuy",
-  "Zulia",
+// Idiomas disponibles
+export const idiomas = [
+  "Español", "Inglés", "Francés", "Alemán", "Chino", "Japonés", "Ruso", "Árabe", "Portugués",
+  "Italiano", "Hindi", "Coreano", "Sueco", "Holandés", "Turco", "Griego", "Danés", "Noruego", 
+  "Polaco", "Rumano",
 ];
 
+// Tipos de sangre disponibles
 export const sangre = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
-export const personalSchema = z.object({
-  documento: z.enum(documento, {
-    errorMap: () => ({
-      required_error: "El documento es requerido",
-      invalid_type_error: "Age must be a number",
-      message: "El documento es requerido",
-    }),
-  }),
-  cedula: z
+// Mensajes de error comunes para la validación
+const ERROR_MESSAGES = {
+  REQUIRED: "Campo requerido",  // Mensaje cuando el campo es obligatorio
+  INVALID_NUMBER: "Solo número",  // Mensaje para campos numéricos inválidos
+  INVALID_EMAIL: "Correo no válido",  // Mensaje para correos no válidos
+  INVALID_FIELD: "Campo no válido",  // Mensaje para campos con valores incorrectos
+  INVALID_DATE: "Fecha no válida",  // Mensaje para fechas inválidas
+  DATE_OUT_OF_RANGE: "La fecha debe estar entre 1960 y hoy",  // Mensaje para fechas fuera de rango
+  OUT_OF_RANGE: "El peso debe estar entre 15 y 300 kg",  // Mensaje para peso fuera de rango
+  MIN_LENGTH: (min) => `Mínimo ${min} caracteres`,  // Mensaje para longitud mínima
+  MAX_LENGTH: (max) => `Máximo ${max} caracteres`,  // Mensaje para longitud máxima
+};
+
+// Función para crear una validación de cadena reutilizable
+const stringValidation = (min, max) =>
+  z
     .string({
-      required_error: "La cédula es requerida",
-      invalid_type_error: "La cédula debe ser un numero",
+      required_error: ERROR_MESSAGES.REQUIRED,  // Mensaje si el campo es obligatorio
+      invalid_type_error: ERROR_MESSAGES.INVALID_FIELD,  // Mensaje si el tipo de dato es incorrecto
     })
-    .min(5, {
-      message: "El minimo es de 5 numeros",
-    })
-    .max(10, {
-      message: "El maximo son 10 numeros",
-    }),
-  email1: z.string().email({
-    required_error: "El email es requerido",
-    invalid_type_error: "El email no es válido",
+    .min(min, { message: ERROR_MESSAGES.MIN_LENGTH(min) })  // Validamos longitud mínima
+    .max(max, { message: ERROR_MESSAGES.MAX_LENGTH(max) });  // Validamos longitud máxima
+
+// Esquema principal de validación utilizando Zod
+export const personalSchema = z.object({
+  // Documento (tipo de documento)
+  documento: z.enum(["V", "J", "E", "P"], {
+    errorMap: () => ({ required_error: ERROR_MESSAGES.REQUIRED }),  // Mensaje si no se selecciona un documento
   }),
+
+  // Cédula (debe ser un número entre 5 y 10 caracteres)
+  cedula: stringValidation(5, 10).refine((val) => !isNaN(Number(val)), {
+    message: ERROR_MESSAGES.INVALID_NUMBER,  // Validación numérica
+  }),
+
+  // RIF (debe ser un número entre 5 y 10 caracteres)
+  rif: stringValidation(5, 10).refine((val) => !isNaN(Number(val)), {
+    message: ERROR_MESSAGES.INVALID_NUMBER,  // Validación numérica
+  }),
+
+  // Correo electrónico 1
+  email1: z.string().email({
+    message: ERROR_MESSAGES.INVALID_EMAIL,  // Validación de formato de correo
+  }),
+
+  // Correo electrónico 2 (opcional)
   email2: z
     .string()
-    .email({ invalid_type_error: "El email no es válido" })
+    .email({ message: ERROR_MESSAGES.INVALID_EMAIL })  // Validación de formato de correo
+    .optional()
     .nullable(),
+
+  // Nivel profesional (solo valores predefinidos)
+  nivel_profesional_id: z.enum(["01", "02", "03", "04", "05", "06", "07", "08"], {
+    required_error: ERROR_MESSAGES.REQUIRED,
+    message: ERROR_MESSAGES.REQUIRED,
+  }),
+
+  // Nombre y apellidos (debe tener entre 3 y 10 caracteres)
+  nombre1: z.string({ required_error: ERROR_MESSAGES.REQUIRED }).min(3, { message: ERROR_MESSAGES.MIN_LENGTH(3) }).max(10, { message: ERROR_MESSAGES.MAX_LENGTH(10) }),
+  nombre2: z.string({ required_error: ERROR_MESSAGES.REQUIRED }).min(3, { message: ERROR_MESSAGES.MIN_LENGTH(3) }).max(10, { message: ERROR_MESSAGES.MAX_LENGTH(10) }),
+  apellido1: z.string({ required_error: ERROR_MESSAGES.REQUIRED }).min(3, { message: ERROR_MESSAGES.MIN_LENGTH(3) }).max(10, { message: ERROR_MESSAGES.MAX_LENGTH(10) }),
+  apellido2: z.string({ required_error: ERROR_MESSAGES.REQUIRED }).min(3, { message: ERROR_MESSAGES.MIN_LENGTH(3) }).max(10, { message: ERROR_MESSAGES.MAX_LENGTH(10) }),
+
+  // Dirección (debe tener entre 3 y 10 caracteres)
+  direccion: z.string({ required_error: ERROR_MESSAGES.REQUIRED }).min(3, { message: ERROR_MESSAGES.MIN_LENGTH(3) }).max(30, { message: ERROR_MESSAGES.MAX_LENGTH(10) }),
+
+  // Teléfonos (debe ser numérico y tener entre 5 y 12 caracteres)
+  telefono1: stringValidation(5, 12).refine((val) => !isNaN(Number(val)), { message: ERROR_MESSAGES.INVALID_NUMBER }),
+  telefono2: stringValidation(5, 12).refine((val) => !isNaN(Number(val)), { message: ERROR_MESSAGES.INVALID_NUMBER }),
+
+  // País, estado, municipio y parroquia deben ser objetos no vacíos
+  pais: z.any({}).refine((data) => Object.keys(data).length > 0, { message: ERROR_MESSAGES.REQUIRED }),
+  estado: z.any({}).refine((data) => Object.keys(data).length > 0, { message: ERROR_MESSAGES.REQUIRED }),
+  municipio: z.any({}).refine((data) => Object.keys(data).length > 0, { message: ERROR_MESSAGES.REQUIRED }),
+  parroquia: z.any({}).refine((data) => Object.keys(data).length > 0, { message: ERROR_MESSAGES.REQUIRED }),
+
+  // Fecha de nacimiento (debe estar entre 1960 y la fecha actual)
+  fecha_nacimiento: z.any().refine((date) => {
+    const fechaLimiteInferior = parseISO("1960-01-01"); // Fecha límite inferior (1960-01-01)
+    const fechaLimiteSuperior = new Date(); // Fecha actual
+    return isAfter(date, fechaLimiteInferior) && isBefore(date, fechaLimiteSuperior); // Validación de rango de fechas
+  }, {
+    message: ERROR_MESSAGES.DATE_OUT_OF_RANGE, // Mensaje si la fecha está fuera del rango
+  }),
+
+  // Sexo (solo "M" o "F")
+  sexo: z.enum(["M", "F"], {
+    required_error: ERROR_MESSAGES.REQUIRED,
+    message: ERROR_MESSAGES.REQUIRED,
+  }),
+
+  // Estado civil (solo valores predefinidos)
+  estado_civil: z.enum(["S", "C", "D", "V"], {
+    required_error: ERROR_MESSAGES.REQUIRED,
+    message: ERROR_MESSAGES.REQUIRED,
+  }),
+
+  // Tipo de sangre (debe ser uno de los valores predefinidos)
+  sangre: z.enum(sangre, {
+    required_error: ERROR_MESSAGES.REQUIRED,
+    message: ERROR_MESSAGES.REQUIRED,
+  }),
+
+  // Peso (debe ser un número entre 15 y 300 kg)
+  peso: stringValidation(2, 3)
+    .refine((val) => !isNaN(Number(val)), { message: ERROR_MESSAGES.INVALID_NUMBER })
+    .refine((val) => Number(val) < 300, { message: ERROR_MESSAGES.OUT_OF_RANGE })
+    .refine((val) => Number(val) > 15, { message: ERROR_MESSAGES.OUT_OF_RANGE }),
 });

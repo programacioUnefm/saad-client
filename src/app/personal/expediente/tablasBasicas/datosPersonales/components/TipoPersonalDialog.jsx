@@ -20,7 +20,6 @@ export const TipoPersonalDialog = ({dialogStatus, setDialogStatus}) => {
         </DialogHeader>
         {dialogStatus.action === "cargaFamiliar" && <CargaFamComponent setDialogStatus={setDialogStatus}/>}
       </DialogContent>
-      
     </Dialog>
   );
 };
