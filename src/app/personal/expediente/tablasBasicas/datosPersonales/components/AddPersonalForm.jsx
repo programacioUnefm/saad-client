@@ -1,72 +1,25 @@
-import { Button } from "@/components/ui/button"; 
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  personalSchema,
+  personalSchema, // Esquema de validación con Zod
   documento,
   sangre,
   estadoCivil,
   sexo,
   tipoPer,
-  idiomas
+  idiomas,
 } from "@/features/validations/PersonalSchema";
 import { ComboBox } from "./comboBox/ComboBox";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { IdiomasInput } from "./IdiomasInput";
-
-// Input Component for easy reuse
-const FormInput = ({ label, register, name, type = "text", placeholder, error }) => (
-  <div>
-    <label>{label}</label>
-    <Input
-      type={type}
-      placeholder={placeholder}
-      className={error ? "border-red-500" : ""}
-      {...register(name)}
-    />
-    {error && <span className="text-red-500 text-xs">{error.message}</span>}
-  </div>
-);
-
-// select para poder reutilizar con estructura compleja
-const FormSelect = ({ label, options, register, name, defaultValue, setValue, error }) => (
-  
-  <div>
-    <label>{label}</label>
-    <Select defaultValue={defaultValue} onValueChange={(e) => setValue(name, e)} >
-      <SelectTrigger {...register(name)} className={error ? "border-red-500" : ""}>
-        <SelectValue placeholder={`Seleccionar ${label}`} />
-      </SelectTrigger>
-      <SelectContent>
-        {options.map((option) => (
-          <SelectItem key={option.value} value={option.value}>
-            {option.label}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-    {error && <span className="text-red-500 text-xs">{error.message}</span>}
-  </div>
-);
-
-
+import { FormInput } from "@/components/FormInput";
+import { FormSelect } from "@/components/FormSelect";
+import { FormSelectSimple } from "@/components/FormSelectSimple";
 
 export const AddPersonalForm = ({ data }) => {
+  // Inicialización del formulario con React Hook Form y Zod
   const {
     register,
     handleSubmit,
@@ -75,65 +28,71 @@ export const AddPersonalForm = ({ data }) => {
     watch,
     getValues,
   } = useForm({
-    defaultValues: data,
-    resolver: zodResolver(personalSchema),
+    defaultValues: data,  // Valores iniciales del formulario
+    resolver: zodResolver(personalSchema), // Resolver usando el esquema de Zod
   });
 
+  // Accedemos a los datos de países, municipios, estados, y parroquias desde Redux
   const { paises, municipios, estados, parroquias } = useSelector(
     (state) => state.personal.expediente.tablasBasicas.datosPer
   );
 
+  // Estado local para manejar los municipios y parroquias filtrados
   const [municipiosFiltered, setMunicipiosFiltered] = useState([]);
-  const [parroquisFiltered, setParroquisFiltered] = useState([]);
+  const [parroquiasFiltered, setParroquiasFiltered] = useState([]);
 
+  // Variables que observan los cambios en los valores del formulario
   const { pais, estado, municipio, parroquia } = watch();
 
-
-  // Filter municipios based on the selected estado
+  // Filtrar municipios según el estado seleccionado
   useEffect(() => {
     if (estado && municipios.data) {
       const filteredMunicipios = municipios.data.filter(
         (m) => m.estado_id === estado.id
       );
       setMunicipiosFiltered(filteredMunicipios);
-      setValue("municipio", {}); // Reset municipio when estado changes
-      setParroquisFiltered([]); // Reset parroquia when municipio changes
+      setValue("municipio", {}); // Reset municipio cuando cambia el estado
+      setValue("parroquia", {}); // Reset municipio cuando cambia el estado
+      setParroquiasFiltered([]); // Reset parroquia cuando cambia el municipio
     }
   }, [estado, municipios.data, setValue]);
 
-  // Filter parroquias based on selected municipio
+  // Filtrar parroquias según el municipio seleccionado
   useEffect(() => {
     if (municipio && parroquias.data) {
+      setValue("parroquia", {});
       const filteredParroquias = parroquias.data.filter(
         (p) => p.municipio_id === municipio.id
       );
-      setParroquisFiltered(filteredParroquias);
+      setParroquiasFiltered(filteredParroquias);
     }
   }, [municipio, parroquias.data]);
 
-  // Reset form values when pais changes (if not Venezuela)
+  // Resetear campos relacionados cuando cambia el país (si no es Venezuela)
   useEffect(() => {
-    if (pais.id !== 1) { // assuming pais.id === 1 is Venezuela
+    if (pais.id !== 1) {  // Asumimos que pais.id === 1 es Venezuela
       setMunicipiosFiltered([]);
-      setParroquisFiltered([]);
+      setParroquiasFiltered([]);
       setValue("estado", "");
       setValue("municipio", "");
       setValue("parroquia", "");
     }
   }, [pais, setValue]);
 
+  // Función que se llama al enviar el formulario
   const onSubmit = (data) => {
-    console.log(data);
+    console.log(data);  // Aquí se procesan los datos del formulario
   };
-
-  console.log(errors)
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {/* Datos Básicos */}
+      {/* Sección de Datos Básicos */}
       <section id="datos-basicos">
-        <div className="text-center uppercase font-bold mb-2">Datos básicos</div>
+        <div className="text-center uppercase font-bold mb-2">
+          Datos básicos
+        </div>
         <div className="grid md:grid-cols-3 xl:grid-cols-6 gap-4">
+          {/* Selección de Documento */}
           <FormSelect
             label="Documento"
             options={documento}
@@ -143,6 +102,7 @@ export const AddPersonalForm = ({ data }) => {
             setValue={setValue}
             error={errors.documento}
           />
+          {/* Campo para Cédula */}
           <FormInput
             label="Cédula"
             register={register}
@@ -151,6 +111,7 @@ export const AddPersonalForm = ({ data }) => {
             placeholder="Ej: 22602765"
             error={errors.cedula}
           />
+          {/* Campo para RIF */}
           <FormInput
             label="RIF"
             register={register}
@@ -159,6 +120,7 @@ export const AddPersonalForm = ({ data }) => {
             placeholder="Ej: 22602765-4"
             error={errors.rif}
           />
+          {/* Campo para Email personal */}
           <FormInput
             label="Email personal"
             register={register}
@@ -167,6 +129,7 @@ export const AddPersonalForm = ({ data }) => {
             placeholder="Ej: jhon_doe@gmail.com"
             error={errors.email1}
           />
+          {/* Campo para Email institucional */}
           <FormInput
             label="Email institucional"
             register={register}
@@ -175,6 +138,7 @@ export const AddPersonalForm = ({ data }) => {
             placeholder="Ej: jhon_doe2@gmail.com"
             error={errors.email2}
           />
+          {/* Selección de Tipo de personal */}
           <FormSelect
             label="Tipo personal"
             options={tipoPer}
@@ -187,97 +151,186 @@ export const AddPersonalForm = ({ data }) => {
         </div>
       </section>
 
-      {/* Nombre Completo */}
+      {/* Sección de Nombre Completo */}
       <section id="nombre-completo">
-        <div className="text-center uppercase font-bold mb-4 mt-4">Nombre completo</div>
+        <div className="text-center uppercase font-bold mb-4 mt-4">
+          Nombre completo
+        </div>
         <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
-          <FormInput label="Primer Nombre" register={register} name="nombre1" type="text" placeholder="Ej: Jhon" error={errors.nombre1} />
-          <FormInput label="Segundo Nombre" register={register} name="nombre2" placeholder="Ej: Doe" error={errors.nombre2} />
-          <FormInput label="Primer Apellido" register={register} name="apellido1" placeholder="Ej: Gonzáles" error={errors.apellido1} />
-          <FormInput label="Segundo Apellido" register={register} name="apellido2" placeholder="Ej: Cárdenas" error={errors.apellido2} />
+          {/* Campos para el nombre y apellidos */}
+          <FormInput
+            label="Primer Nombre"
+            register={register}
+            name="nombre1"
+            type="text"
+            placeholder="Ej: Jhon"
+            error={errors.nombre1}
+          />
+          <FormInput
+            label="Segundo Nombre"
+            register={register}
+            name="nombre2"
+            placeholder="Ej: Doe"
+            error={errors.nombre2}
+          />
+          <FormInput
+            label="Primer Apellido"
+            register={register}
+            name="apellido1"
+            placeholder="Ej: Gonzáles"
+            error={errors.apellido1}
+          />
+          <FormInput
+            label="Segundo Apellido"
+            register={register}
+            name="apellido2"
+            placeholder="Ej: Cárdenas"
+            error={errors.apellido2}
+          />
         </div>
       </section>
 
-      {/* Datos de Contacto */}
+      {/* Sección de Datos de Contacto */}
       <section id="contacto">
-        <div className="text-center uppercase font-bold mb-4 mt-4">Datos de contacto</div>
+        <div className="text-center uppercase font-bold mb-4 mt-4">
+          Datos de contacto
+        </div>
         <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
-          <FormInput label="Dirección" register={register} name="direccion" placeholder="Ej: Av. Josefa camejo" error={errors.direccion} />
-          <FormInput label="Teléfono" register={register} name="telefono1" placeholder="Ej: 04123688594" error={errors.telefono1}/>
-          <FormInput label="Teléfono 2" register={register} name="telefono2" placeholder="Ej: 04123688594" error={errors.telefono2} />
-          <ComboBox list={paises.data} title="país" keyLabel="pais" label="País residencia" setValue={setValue} value={pais} error={errors.pais}/>
+          {/* Dirección y Teléfonos */}
+          <FormInput
+            label="Dirección"
+            register={register}
+            name="direccion"
+            placeholder="Ej: Av. Josefa camejo"
+            error={errors.direccion}
+          />
+          <FormInput
+            label="Teléfono"
+            register={register}
+            name="telefono1"
+            placeholder="Ej: 04123688594"
+            error={errors.telefono1}
+          />
+          <FormInput
+            label="Teléfono 2"
+            register={register}
+            name="telefono2"
+            placeholder="Ej: 04123688594"
+            error={errors.telefono2}
+          />
+          {/* Selección de País */}
+          <ComboBox
+            list={paises.data}
+            title="país"
+            keyLabel="pais"
+            label="País residencia"
+            setValue={setValue}
+            value={pais}
+            error={errors.pais}
+          />
         </div>
 
-        {/* Mostrar campos específicos si el país es Venezuela */}
+        {/* Mostrar campos para Venezuela */}
         {pais.nombre === "Venezuela" && (
           <div className="grid grid-cols-3 mt-2 gap-4">
-            <ComboBox list={estados.data} title="estado" label="Estado" setValue={setValue} value={estado} error={errors.estado}/>
-            <ComboBox list={municipiosFiltered} title="municipio" label="Municipio" setValue={setValue} value={municipio} error={errors.municipio} />
-            <ComboBox list={parroquisFiltered} title="parroquia" label="Parroquias" setValue={setValue} value={parroquia} error={errors.parroquia}/>
+            {/* Selección de Estado, Municipio y Parroquia */}
+            <ComboBox
+              list={estados.data}
+              title="estado"
+              label="Estado"
+              setValue={setValue}
+              value={estado}
+              error={errors.estado}
+            />
+            <ComboBox
+              list={municipiosFiltered}
+              title="municipio"
+              label="Municipio"
+              setValue={setValue}
+              value={municipio}
+              error={errors.municipio}
+            />
+            <ComboBox
+              list={parroquiasFiltered}
+              title="parroquia"
+              label="Parroquias"
+              setValue={setValue}
+              value={parroquia}
+              error={errors.parroquia}
+            />
           </div>
         )}
       </section>
 
-      {/* Datos Personales */}
+      {/* Sección de Datos Personales */}
       <section id="datos-personales" className="pt-4">
-        <div className="text-center uppercase font-bold mb-4 mt-4">Datos personales</div>
-        <div className="grid grid-cols-4 gap-4">
-          <div>
-            {/* <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <label>Fecha nacimiento</label>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Fecha de nacimiento</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider> */}
-            
-            <FormInput label="Fecha de nacimiento" register={register} name="fecha_nacimiento" type="date" placeholder="" error={errors.fecha_nacimiento} />
-          </div>
-          <FormSelect label="Sexo" options={sexo} register={register} name="sexo" defaultValue={data.sexo} setValue={setValue} error={errors.sexo}/>
-          <FormSelect label="Estado civil" options={estadoCivil} register={register} name="estado_civil" defaultValue={data.estado_civil} setValue={setValue} error={errors.estado_civil} />
-          <div>
-            <label>Tipo de sangre</label>
-            <Select defaultValue={data.sangre} onValueChange={(e) => setValue("sangre", e)}>
-              <SelectTrigger {...register("sangre")} className={errors?.sangre && "border-red-500"}>
-                <SelectValue placeholder="selecciona un tipo" />
-              </SelectTrigger>
-              <SelectContent>
-                {sangre.map((option, index) => (
-                <SelectItem key={index} value={option}>
-                  {option}
-                </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            
-            {errors?.sangre && <span className="text-red-500 text-xs">{errors.sangre.message}</span>}
-          </div>
-
+        <div className="text-center uppercase font-bold mb-4 mt-4">
+          Datos personales
         </div>
+        <div className="grid grid-cols-4 gap-4">
+          {/* Fecha de nacimiento, sexo y estado civil */}
+          <FormInput
+            label="Fecha de nacimiento"
+            register={register}
+            name="fecha_nacimiento"
+            type="date"
+            placeholder=""
+            error={errors.fecha_nacimiento}
+          />
+          <FormSelect
+            label="Sexo"
+            options={sexo}
+            register={register}
+            name="sexo"
+            defaultValue={data.sexo}
+            setValue={setValue}
+            error={errors.sexo}
+          />
+          <FormSelect
+            label="Estado civil"
+            options={estadoCivil}
+            register={register}
+            name="estado_civil"
+            defaultValue={data.estado_civil}
+            setValue={setValue}
+            error={errors.estado_civil}
+          />
+          <FormSelectSimple
+            label="Tipo de sangre"
+            options={sangre}
+            register={register}
+            name="sangre"
+            defaultValue={data.sangre}
+            setValue={setValue}
+            error={errors.sangre}
+          />
+        </div>
+        {/* Peso, altura e idiomas */}
         <div className="grid grid-cols-3 gap-4 mt-2">
-          <div>
-            
-            <FormInput label="Peso en KG" register={register} name="peso" type="number" placeholder="60.50" error={errors.peso} />
-            {/* {errors?.peso && <span className="text-red-500 text-xs">{errors.peso.message}</span>} */}
-          </div>
-          <div>
-            <label>Altura</label>
-            <div className="flex w-full items-center">
-              <Input placeholder="1.65" className="rounded-tr-none rounded-br-none" {...register("altura")} type="number" />
-              <span className="bg-accent/50 py-[8px] px-[12px] rounded-tr-md rounded-br-md font-bold">M</span>
-            </div>
-          </div>
-          <div>
-            <IdiomasInput idiomas={idiomas} setValue={setValue}/>
-          </div>
+          <FormInput
+            label="Peso en KG"
+            register={register}
+            name="peso"
+            type="string"
+            placeholder="60.50"
+            error={errors.peso}
+          />
+          <FormInput
+            label="Altura en metros"
+            register={register}
+            name="altura"
+            type="string"
+            placeholder="1.6"
+            error={errors.altura}
+          />
+          <IdiomasInput idiomas={idiomas} setValue={setValue} />
         </div>
       </section>
-{console.log(watch())}
-      {/* Submit Button */}
-      <Button type="submit">Guardar</Button>
+
+      {/* Botón de Submit */}
+      <div className="">
+        <Button type="submit" variant="primary">guardar personal</Button>
+      </div>
     </form>
   );
 };

@@ -1,21 +1,15 @@
 import { AppLayout } from "@/app/layouts/appLayout/AppLayout";
 import React, {
   useState,
-  forwardRef,
-  useImperativeHandle,
   useEffect,
 } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { dataPerEjemplo } from "./dataper";
-import { SkeletonList } from "@/components/Skeletons/SkeletonList";
-import { SkeletonGrid } from "@/components/Skeletons/SkeletonGrid";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
@@ -345,10 +339,10 @@ const data = {
     region: "Centroccidental",
   },
   municipio: {
-    id: 117,
-    nombre: "Miranda",
-    capital: "Santa Ana de Coro",
-    estado_id: 10,
+    // id: 117,
+    // nombre: "Miranda",
+    // capital: "Santa Ana de Coro",
+    // estado_id: 10,
   },
   parroquia: {},
   direccion: "",
@@ -378,7 +372,8 @@ export const DatosPersonalesPage = () => {
       altura: false,
       sangre: "",
       direccion: true,
-      email1: false,
+      email1: true,
+      email2: false,
       lugar_nacimiento: false,
       tipo_personal: true,
       fecha_nacimiento: false,

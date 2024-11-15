@@ -1,4 +1,4 @@
-import { z } from "zod";  // Importamos la librería Zod para validación de datos
+import { z } from "zod"; // Importamos la librería Zod para validación de datos
 import { isBefore, isAfter, parseISO } from "date-fns"; // Importamos funciones de date-fns para validación de fechas
 
 // Definición de constantes con valores para tipos de documentos
@@ -38,9 +38,26 @@ export const tipoPer = [
 
 // Idiomas disponibles
 export const idiomas = [
-  "Español", "Inglés", "Francés", "Alemán", "Chino", "Japonés", "Ruso", "Árabe", "Portugués",
-  "Italiano", "Hindi", "Coreano", "Sueco", "Holandés", "Turco", "Griego", "Danés", "Noruego", 
-  "Polaco", "Rumano",
+  "Español",
+  "Inglés",
+  "Francés",
+  "Alemán",
+  "Chino",
+  "Japonés",
+  "Ruso",
+  "Árabe",
+  "Portugués",
+  "Italiano",
+  "Hindi",
+  "Coreano",
+  "Sueco",
+  "Holandés",
+  "Turco",
+  "Griego",
+  "Danés",
+  "Noruego",
+  "Polaco",
+  "Rumano",
 ];
 
 // Tipos de sangre disponibles
@@ -48,89 +65,136 @@ export const sangre = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
 // Mensajes de error comunes para la validación
 const ERROR_MESSAGES = {
-  REQUIRED: "Campo requerido",  // Mensaje cuando el campo es obligatorio
-  INVALID_NUMBER: "Solo número",  // Mensaje para campos numéricos inválidos
-  INVALID_EMAIL: "Correo no válido",  // Mensaje para correos no válidos
-  INVALID_FIELD: "Campo no válido",  // Mensaje para campos con valores incorrectos
-  INVALID_DATE: "Fecha no válida",  // Mensaje para fechas inválidas
-  DATE_OUT_OF_RANGE: "La fecha debe estar entre 1960 y hoy",  // Mensaje para fechas fuera de rango
-  OUT_OF_RANGE: "El peso debe estar entre 15 y 300 kg",  // Mensaje para peso fuera de rango
-  MIN_LENGTH: (min) => `Mínimo ${min} caracteres`,  // Mensaje para longitud mínima
-  MAX_LENGTH: (max) => `Máximo ${max} caracteres`,  // Mensaje para longitud máxima
+  REQUIRED: "Campo requerido", // Mensaje cuando el campo es obligatorio
+  INVALID_NUMBER: "Solo número", // Mensaje para campos numéricos inválidos
+  INVALID_EMAIL: "Correo no válido", // Mensaje para correos no válidos
+  INVALID_FIELD: "Campo no válido", // Mensaje para campos con valores incorrectos
+  INVALID_DATE: "Fecha no válida", // Mensaje para fechas inválidas
+  DATE_OUT_OF_RANGE: "La fecha debe estar entre 1960 y hoy", // Mensaje para fechas fuera de rango
+  OUT_OF_RANGE: "El peso debe estar entre 15 y 300 kg", // Mensaje para peso fuera de rango
+  OUT_OF_RANGE_PESO: "Altura debe ser entre 1.2 y 2.5",
+  NO_NAME: "Debe ser una sola palabra",
+  MIN_LENGTH: (min) => `Mínimo ${min} caracteres`, // Mensaje para longitud mínima
+  MAX_LENGTH: (max) => `Máximo ${max} caracteres`, // Mensaje para longitud máxima
 };
-
+const singleWordRegex = /^\S+$/;
 // Función para crear una validación de cadena reutilizable
 const stringValidation = (min, max) =>
   z
     .string({
-      required_error: ERROR_MESSAGES.REQUIRED,  // Mensaje si el campo es obligatorio
-      invalid_type_error: ERROR_MESSAGES.INVALID_FIELD,  // Mensaje si el tipo de dato es incorrecto
+      required_error: ERROR_MESSAGES.REQUIRED, // Mensaje si el campo es obligatorio
+      invalid_type_error: ERROR_MESSAGES.INVALID_FIELD, // Mensaje si el tipo de dato es incorrecto
     })
-    .min(min, { message: ERROR_MESSAGES.MIN_LENGTH(min) })  // Validamos longitud mínima
-    .max(max, { message: ERROR_MESSAGES.MAX_LENGTH(max) });  // Validamos longitud máxima
+    .min(min, { message: ERROR_MESSAGES.MIN_LENGTH(min) }) // Validamos longitud mínima
+    .max(max, { message: ERROR_MESSAGES.MAX_LENGTH(max) }); // Validamos longitud máxima
 
 // Esquema principal de validación utilizando Zod
 export const personalSchema = z.object({
   // Documento (tipo de documento)
   documento: z.enum(["V", "J", "E", "P"], {
-    errorMap: () => ({ required_error: ERROR_MESSAGES.REQUIRED }),  // Mensaje si no se selecciona un documento
+    errorMap: () => ({ required_error: ERROR_MESSAGES.REQUIRED }), // Mensaje si no se selecciona un documento
   }),
 
   // Cédula (debe ser un número entre 5 y 10 caracteres)
   cedula: stringValidation(5, 10).refine((val) => !isNaN(Number(val)), {
-    message: ERROR_MESSAGES.INVALID_NUMBER,  // Validación numérica
+    message: ERROR_MESSAGES.INVALID_NUMBER, // Validación numérica
   }),
 
   // RIF (debe ser un número entre 5 y 10 caracteres)
   rif: stringValidation(5, 10).refine((val) => !isNaN(Number(val)), {
-    message: ERROR_MESSAGES.INVALID_NUMBER,  // Validación numérica
+    message: ERROR_MESSAGES.INVALID_NUMBER, // Validación numérica
   }),
 
   // Correo electrónico 1
   email1: z.string().email({
-    message: ERROR_MESSAGES.INVALID_EMAIL,  // Validación de formato de correo
+    message: ERROR_MESSAGES.INVALID_EMAIL, // Validación de formato de correo
   }),
 
   // Correo electrónico 2 (opcional)
-  email2: z
-    .string()
-    .email({ message: ERROR_MESSAGES.INVALID_EMAIL })  // Validación de formato de correo
-    .optional()
-    .nullable(),
+
+  email2: z.string().optional().nullable(),
 
   // Nivel profesional (solo valores predefinidos)
-  nivel_profesional_id: z.enum(["01", "02", "03", "04", "05", "06", "07", "08"], {
-    required_error: ERROR_MESSAGES.REQUIRED,
+  nivel_profesional_id: z.enum(
+    ["01", "02", "03", "04", "05", "06", "07", "08"],
+    {
+      required_error: ERROR_MESSAGES.REQUIRED,
+      message: ERROR_MESSAGES.REQUIRED,
+    }
+  ),
+
+  // Nombre y apellidos (debe tener entre 3 y 10 caracteres)
+  nombre1: z
+    .string({ required_error: ERROR_MESSAGES.REQUIRED })
+    .min(3, { message: ERROR_MESSAGES.MIN_LENGTH(3) })
+    .max(10, { message: ERROR_MESSAGES.MAX_LENGTH(10) })
+    .refine((val) => singleWordRegex.test(val), {
+      message: ERROR_MESSAGES.NO_NAME,
+    }),
+  nombre2: z
+    .string({ required_error: ERROR_MESSAGES.REQUIRED })
+    .min(3, { message: ERROR_MESSAGES.MIN_LENGTH(3) })
+    .max(10, { message: ERROR_MESSAGES.MAX_LENGTH(10) })
+    .refine((val) => singleWordRegex.test(val), {
+      message: ERROR_MESSAGES.NO_NAME,
+    }),
+  apellido1: z
+    .string({ required_error: ERROR_MESSAGES.REQUIRED })
+    .min(3, { message: ERROR_MESSAGES.MIN_LENGTH(3) })
+    .max(10, { message: ERROR_MESSAGES.MAX_LENGTH(10) })
+    .refine((val) => singleWordRegex.test(val), {
+      message: ERROR_MESSAGES.NO_NAME,
+    }),
+  apellido2: z
+    .string({ required_error: ERROR_MESSAGES.REQUIRED })
+    .min(3, { message: ERROR_MESSAGES.MIN_LENGTH(3) })
+    .max(10, { message: ERROR_MESSAGES.MAX_LENGTH(10) })
+    .refine((val) => singleWordRegex.test(val), {
+      message: ERROR_MESSAGES.NO_NAME,
+    }),
+
+  // Dirección (debe tener entre 3 y 10 caracteres)
+  direccion: z
+    .string({ required_error: ERROR_MESSAGES.REQUIRED })
+    .min(3, { message: ERROR_MESSAGES.MIN_LENGTH(3) })
+    .max(30, { message: ERROR_MESSAGES.MAX_LENGTH(10) }),
+
+  // Teléfonos (debe ser numérico y tener entre 5 y 12 caracteres)
+  telefono1: stringValidation(5, 12).refine((val) => !isNaN(Number(val)), {
+    message: ERROR_MESSAGES.INVALID_NUMBER,
+  }),
+  telefono2: z.string().optional().nullable().refine((val) => !isNaN(Number(val)), {
+    message: ERROR_MESSAGES.INVALID_NUMBER,
+  }),
+
+  // País, estado, municipio y parroquia deben ser objetos no vacíos
+  pais: z.any({}).refine((data) => Object.keys(data).length > 0, {
+    message: ERROR_MESSAGES.REQUIRED,
+  }),
+  estado: z.any({}).refine((data) => Object.keys(data).length > 0, {
+    message: ERROR_MESSAGES.REQUIRED,
+  }),
+  municipio: z.any({}).refine((data) => Object.keys(data).length > 0, {
+    message: ERROR_MESSAGES.REQUIRED,
+  }),
+  parroquia: z.any({}).refine((data) => Object.keys(data).length > 0, {
     message: ERROR_MESSAGES.REQUIRED,
   }),
 
-  // Nombre y apellidos (debe tener entre 3 y 10 caracteres)
-  nombre1: z.string({ required_error: ERROR_MESSAGES.REQUIRED }).min(3, { message: ERROR_MESSAGES.MIN_LENGTH(3) }).max(10, { message: ERROR_MESSAGES.MAX_LENGTH(10) }),
-  nombre2: z.string({ required_error: ERROR_MESSAGES.REQUIRED }).min(3, { message: ERROR_MESSAGES.MIN_LENGTH(3) }).max(10, { message: ERROR_MESSAGES.MAX_LENGTH(10) }),
-  apellido1: z.string({ required_error: ERROR_MESSAGES.REQUIRED }).min(3, { message: ERROR_MESSAGES.MIN_LENGTH(3) }).max(10, { message: ERROR_MESSAGES.MAX_LENGTH(10) }),
-  apellido2: z.string({ required_error: ERROR_MESSAGES.REQUIRED }).min(3, { message: ERROR_MESSAGES.MIN_LENGTH(3) }).max(10, { message: ERROR_MESSAGES.MAX_LENGTH(10) }),
-
-  // Dirección (debe tener entre 3 y 10 caracteres)
-  direccion: z.string({ required_error: ERROR_MESSAGES.REQUIRED }).min(3, { message: ERROR_MESSAGES.MIN_LENGTH(3) }).max(30, { message: ERROR_MESSAGES.MAX_LENGTH(10) }),
-
-  // Teléfonos (debe ser numérico y tener entre 5 y 12 caracteres)
-  telefono1: stringValidation(5, 12).refine((val) => !isNaN(Number(val)), { message: ERROR_MESSAGES.INVALID_NUMBER }),
-  telefono2: stringValidation(5, 12).refine((val) => !isNaN(Number(val)), { message: ERROR_MESSAGES.INVALID_NUMBER }),
-
-  // País, estado, municipio y parroquia deben ser objetos no vacíos
-  pais: z.any({}).refine((data) => Object.keys(data).length > 0, { message: ERROR_MESSAGES.REQUIRED }),
-  estado: z.any({}).refine((data) => Object.keys(data).length > 0, { message: ERROR_MESSAGES.REQUIRED }),
-  municipio: z.any({}).refine((data) => Object.keys(data).length > 0, { message: ERROR_MESSAGES.REQUIRED }),
-  parroquia: z.any({}).refine((data) => Object.keys(data).length > 0, { message: ERROR_MESSAGES.REQUIRED }),
-
   // Fecha de nacimiento (debe estar entre 1960 y la fecha actual)
-  fecha_nacimiento: z.any().refine((date) => {
-    const fechaLimiteInferior = parseISO("1960-01-01"); // Fecha límite inferior (1960-01-01)
-    const fechaLimiteSuperior = new Date(); // Fecha actual
-    return isAfter(date, fechaLimiteInferior) && isBefore(date, fechaLimiteSuperior); // Validación de rango de fechas
-  }, {
-    message: ERROR_MESSAGES.DATE_OUT_OF_RANGE, // Mensaje si la fecha está fuera del rango
-  }),
+  fecha_nacimiento: z.any().refine(
+    (date) => {
+      const fechaLimiteInferior = parseISO("1960-01-01"); // Fecha límite inferior (1960-01-01)
+      const fechaLimiteSuperior = new Date(); // Fecha actual
+      return (
+        isAfter(date, fechaLimiteInferior) &&
+        isBefore(date, fechaLimiteSuperior)
+      ); // Validación de rango de fechas
+    },
+    {
+      message: ERROR_MESSAGES.DATE_OUT_OF_RANGE, // Mensaje si la fecha está fuera del rango
+    }
+  ),
 
   // Sexo (solo "M" o "F")
   sexo: z.enum(["M", "F"], {
@@ -151,8 +215,32 @@ export const personalSchema = z.object({
   }),
 
   // Peso (debe ser un número entre 15 y 300 kg)
-  peso: stringValidation(2, 3)
-    .refine((val) => !isNaN(Number(val)), { message: ERROR_MESSAGES.INVALID_NUMBER })
-    .refine((val) => Number(val) < 300, { message: ERROR_MESSAGES.OUT_OF_RANGE })
-    .refine((val) => Number(val) > 15, { message: ERROR_MESSAGES.OUT_OF_RANGE }),
+  peso: z
+    .string() // Asegura que el valor sea una cadena.
+    .refine((val) => !isNaN(Number(val)), {
+      message: ERROR_MESSAGES.INVALID_NUMBER,
+    })
+    .nullable()
+    .optional()
+    .refine(
+      (val) => {
+        const num = Number(val);
+        return num >= 0 && num <= 250;
+      },
+      { message: ERROR_MESSAGES.OUT_OF_RANGE }
+    ),
+  altura: z
+    .string() // Asegura que el valor sea una cadena.
+    .refine((val) => !isNaN(Number(val)), {
+      message: ERROR_MESSAGES.INVALID_NUMBER,
+    })
+    .nullable()
+    .optional()
+    .refine(
+      (val) => {
+        const num = Number(val);
+        return num >= 0 && num <= 2.5;
+      },
+      { message: ERROR_MESSAGES.OUT_OF_RANGE_PESO }
+    ),
 });
