@@ -25,8 +25,8 @@ export const Sidebar = ({ menu }) => {
   return (
     <div className="hidden border-r dark:bg-background bg-white md:block h-full">
       <div className="flex h-[100vh] max-h-screen flex-col gap-2 relative">
-        <div className="flex px-4 mt-4 border-b  mb-5">
-          <Link to="/inicio/" className="mb-2">
+        <div className="flex px-4 mt-4 border-b  mb-5 ">
+          <Link to="/inicio" className="mb-2">
             <img src={theme == "dark" ? logoReversed : logo} alt="logo saad" />
           </Link>
         </div>
@@ -50,7 +50,7 @@ export const Sidebar = ({ menu }) => {
           </Accordion>
         </ScrollArea>
 
-        <div className="mt-auto p-4">
+        {/* <div className="mt-auto p-4">
           <Card className="bg-gray-100 dark:bg-accent/30">
             <CardHeader className="p-2 pt-0 md:p-4">
               <CardTitle className="mb-2">Hola de nuevo</CardTitle>
@@ -67,7 +67,7 @@ export const Sidebar = ({ menu }) => {
               </Link>
             </CardContent>
           </Card>
-        </div>
+        </div> */}
       </div>
     </div>
   );

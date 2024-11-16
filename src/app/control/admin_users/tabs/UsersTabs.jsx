@@ -47,7 +47,6 @@ export const UsersTabs = ({ users, tabState }) => {
     });
   };
 
-  
   const roleAssign = async (e) => {
     const { user, rolActive } = e;
     const newState = { userId: user.id, roles: { roles: rolActive } };
@@ -107,10 +106,11 @@ export const UsersTabs = ({ users, tabState }) => {
         action: "assign",
         arrayItem: e,
       });
-    }else{
+    } else {
       toast({
         title: "Error de privilegios",
-        description: "tu usuario puede reasignar roles, sin embargo no posee permisos para ver la lista de roles, contacta a un administrador para que lo resuelva.",
+        description:
+          "tu usuario puede reasignar roles, sin embargo no posee permisos para ver la lista de roles, contacta a un administrador para que lo resuelva.",
       });
     }
   };
@@ -126,7 +126,7 @@ export const UsersTabs = ({ users, tabState }) => {
       },
     },
     {
-      id:"cédula",
+      id: "cédula",
       header: "CÉDULA",
       accessorKey: "document_id",
       classname: "text-center",
@@ -135,7 +135,7 @@ export const UsersTabs = ({ users, tabState }) => {
       ),
     },
     {
-      id:"nombre usuario",
+      id: "nombre usuario",
       header: "USUARIO",
       accessorKey: "username",
       enableSorting: false,
@@ -143,19 +143,19 @@ export const UsersTabs = ({ users, tabState }) => {
       cell: (info) => <div className="text-center">{info.getValue()}</div>,
     },
     {
-      id:"nombres",
+      id: "nombres",
       header: "NOMBRES",
       accessorKey: "name",
       enableSorting: false,
-      classname: "text-center w-5",
+      classname: "text-center",
       cell: (info) => <div className="">{info.getValue()}</div>,
     },
     {
-      id:"apellidos",
+      id: "apellidos",
       header: "APELLIDOS",
       enableSorting: false,
       accessorKey: "last_name",
-      classname: "text-center w-5",
+      classname: "text-center",
       cell: (info) => <div className="">{info.getValue()}</div>,
     },
 
@@ -282,15 +282,15 @@ export const UsersTabs = ({ users, tabState }) => {
 
   const [filtersTable, setFiltersTable] = useState({
     columnVisibility: {
-      "id": true,
-      "cédula": true,
+      id: true,
+      cédula: true,
       "nombre usuario": true,
-      "nombres": true,
-      "apellidos": true,
-      "email": true,
-      "activo": true,
-      "roles": true,
-      "acciones": true,
+      nombres: true,
+      apellidos: true,
+      email: true,
+      activo: true,
+      roles: true,
+      acciones: true,
     },
     filters: "",
     sorting: [],
@@ -327,14 +327,14 @@ export const UsersTabs = ({ users, tabState }) => {
           user={action.arrayItem}
           dialogAction={roleAssign}
         />
-      ) : action.action == "edit" ? (
-        <EditUser
-          open={action.dialog}
-          setAction={setAction}
-          user={action.arrayItem}
-        />
       ) : (
-        ""
+        action.action == "edit" && (
+          <EditUser
+            open={action.dialog}
+            setAction={setAction}
+            user={action.arrayItem}
+          />
+        )
       )}
     </>
   );

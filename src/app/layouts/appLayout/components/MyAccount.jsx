@@ -13,17 +13,21 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ModeToggle } from "@/components/ui/mode-toggle";
+import { Link, Navigate } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { MyAccount } from "@/app/myaccount/MyAccount";
 
-export const UserIcon = () => {
+export const MyAccount = () => {
   const dispatch = useDispatch();
-  const user = useSelector( state => state.auth );
-  
+  const user = useSelector((state) => state.auth);
+
   const navigate = useNavigate();
   const { toast } = useToast();
   const signOut = () => {
@@ -55,18 +59,19 @@ export const UserIcon = () => {
             Mi cuenta
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            className="uppercase text-[12px]"
-            onClick={() => setdialog({ status: true, component: "myprofile" })}
-          >
+          <Link to={"/mi-cuenta"}>
+          <DropdownMenuItem className="uppercase text-[12px]" >
             Ver mi perfil
           </DropdownMenuItem>
-          <DropdownMenuItem
+          </Link>
+          
+          
+          {/* <DropdownMenuItem
             className="uppercase text-[12px]"
             onClick={() => setdialog({ status: true, component: "mypermiss" })}
           >
             Mis permisos
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           <div className="mt-4 mb-2 px-2 mr-2">
             <ModeToggle />
           </div>
@@ -76,13 +81,6 @@ export const UserIcon = () => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-
-      <Dialog open={dialog.status}>
-        <DialogContent>
-          {dialog.component == "myprofile" && <MyAccount user={user} setdialog={setdialog} />}
-          {dialog.component == "mypermiss" && "asd"}
-        </DialogContent>
-      </Dialog>
     </>
   );
 };

@@ -25,26 +25,25 @@ import { LogsPage } from "@/app/control/log/LogsPage";
 import { ActuacionPage } from "@/app/personal/expediente/regDatos/actuacion/ActuacionPage";
 import { NoAuthPage } from "@/app/layouts/unAuth/NoAuthPage";
 import { DatosPersonalesPage } from "@/app/personal/expediente/tablasBasicas/datosPersonales/DatosPersonalesPage";
-
+import { MyAccountConfig } from "@/app/myaccount/MyAccountConfig";
 
 export const RouterApp = () => {
   let theme = localStorage.getItem("vite-ui-theme");
   let token = localStorage.getItem("token_access");
   let defaultLayout = localStorage.getItem("layoutList");
-  const {user} = useSelector(state => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   useEffect(() => {
     if (defaultLayout == null || defaultLayout == undefined) {
       localStorage.setItem("layoutList", "list");
-      dispatch(layoutChanged("list"))
-    }else{
-      dispatch(layoutChanged(defaultLayout))
+      dispatch(layoutChanged("list"));
+    } else {
+      dispatch(layoutChanged(defaultLayout));
     }
     if (token != null && token != undefined) {
-      dispatch(VerifyUser(token))
-    }else{
-      dispatch(login({Authstatus: false, name: "", role: [], token: "",
-      }))
+      dispatch(VerifyUser(token));
+    } else {
+      dispatch(login({ Authstatus: false, name: "", role: [], token: "" }));
     }
     dispatch(themeChange(theme));
   }, []);
@@ -55,11 +54,11 @@ export const RouterApp = () => {
         {/* RUTAS PUBLICAS */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/no-autorizado" element={<NoAuthPage />} />
+        <Route path="/" element={<Navigate to="/inicio" />} />
         
-        <Route path="/"  element={<Navigate to="/inicio" />} />
         {/* RUTAS PRIVADAS */}
+        <Route path="/mi-cuenta" element={<MyAccountConfig />} />
         <Route element={<ProtectedRoutes />}>
-          
           <Route path="/inicio" element={<DashboardPage />} />
           <Route path="/administrativo" element={<Administrativo />} />
           <Route path="/administrativo/compras" element={<ComprasPage />} />
@@ -88,8 +87,14 @@ export const RouterApp = () => {
           <Route path="/habilitaduria" element={<HabilitaduriaPage />} />
           <Route path="/presupuesto" element={<PresupuestoPage />} />
 
-          <Route path="/personal/expediente/registro-datos/actuacion" element={<ActuacionPage />} />
-          <Route path="/personal/tablas-basicas/datos-personales" element={<DatosPersonalesPage />} />
+          <Route
+            path="/personal/expediente/registro-datos/actuacion"
+            element={<ActuacionPage />}
+          />
+          <Route
+            path="/personal/tablas-basicas/datos-personales"
+            element={<DatosPersonalesPage />}
+          />
           <Route path="/control/usuarios" element={<UsersListPage />} />
           <Route path="/control/bitacora" element={<LogsPage />} />
         </Route>

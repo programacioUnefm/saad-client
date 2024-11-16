@@ -31,6 +31,10 @@ saadApi.interceptors.response.use(
       window.location.href = `${appUrl}/login`;
     }
 
+    if(codeError == 500){
+      console.log("Uno de los módulos no está funcionando de manera correcta");
+    }
+
     return Promise.reject(error);
   }
 );

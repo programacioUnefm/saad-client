@@ -26,6 +26,8 @@ export const ProtectedRoutes = ({ redirectTo = "/login" }) => {
     return result;
   };
 
+  
+
   //este useMemo se utiliza para memorizar el resulta de la función buscarRuta
   const route = useMemo(
     () => buscarRuta(navbarMenu, currentRoute),
@@ -35,6 +37,7 @@ export const ProtectedRoutes = ({ redirectTo = "/login" }) => {
   // funcion que returna null si esta cargando, false si no tiene permisos y true si tiene permisos
   // esta funcion sirve para ver los privilegios del usuario al entrar a una ruta
   const permissionStatus = permissionCheck(route.permission, permissionsList);
+
   // este useEffect es para renderizar el componente no autorizado si no posee permisos suficientes el usuario, los permisos están en el archivo navbarMenu el cual es un menú echo como un JSON
   useEffect(() => {
     permissionStatus === false && navigate("/no-autorizado");

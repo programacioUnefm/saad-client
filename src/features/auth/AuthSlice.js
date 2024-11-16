@@ -13,6 +13,7 @@ export const Auth = createSlice({
     permissions: [],
     document_id: "",
     token: "",
+    loadData:false,
   },
   reducers: {
     login: (state, { payload }) => {
@@ -37,6 +38,7 @@ export const Auth = createSlice({
       state.permissions = permissionsList;
       state.document_id = payload.document_id;
       state.token = payload.token;
+      state.loadData = true;
     },
 
     editMyUser: (state, { payload }) => {

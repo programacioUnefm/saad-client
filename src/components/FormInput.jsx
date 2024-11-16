@@ -24,8 +24,7 @@ export const FormInput = ({
   return (
     <div className="form-input-container">
       {/* Etiqueta asociada al campo */}
-      <label htmlFor={name}>{label}</label>
-      
+      <label htmlFor={name} className="dark:text-gray-400">{label}</label>
       {/* Campo de entrada principal */}
       <Input
         type={type}                              // Define el tipo del input (texto, número, etc.)

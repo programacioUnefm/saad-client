@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 import {
   Table,
@@ -63,12 +63,9 @@ export const DataTable = ({ data, columns, filtersTable, setFiltersTable }) => {
       columnVisibility: filtersTable.columnVisibility,
       columnFilters: filtersTable.columnFilters,
       pagination: filtersTable.pagination,
-      globalFilter:filtersTable.filters
+      globalFilter: filtersTable.filters,
     },
-    
   });
-
-  
 
   //funcion para organizar los items de forma ascendentes o descendentes
   const sortingHandle = (e) => {
@@ -142,11 +139,11 @@ export const DataTable = ({ data, columns, filtersTable, setFiltersTable }) => {
       },
     }));
   };
-//funcion para cambiar el input de busqueda general
+  //funcion para cambiar el input de busqueda general
   const changeFilter = (input) => {
     setFiltersTable((prevState) => ({
       ...prevState,
-      filters: input.target.value
+      filters: input.target.value,
     }));
   };
 
@@ -155,7 +152,13 @@ export const DataTable = ({ data, columns, filtersTable, setFiltersTable }) => {
       <section className="filters px-1">
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <Input placeholder="Buscador general" value={filtersTable.filters} onChange={(e) => {changeFilter(e)}} />
+            <Input
+              placeholder="Buscador general"
+              value={filtersTable.filters}
+              onChange={(e) => {
+                changeFilter(e);
+              }}
+            />
           </div>
           <div className="flex justify-end items-center">
             <DropdownMenu>
@@ -259,108 +262,111 @@ export const DataTable = ({ data, columns, filtersTable, setFiltersTable }) => {
       </section>
 
       <div className="mb-12 mt-4">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead
-                      key={header.id}
-                      className={header.column.columnDef.classname}
-                      colSpan={header.colSpan}
-                    >
-                      {header.isPlaceholder ? null : (
-                        <div className="">
-                          {header.column.getIsSorted() != null && (
-                            <div className="relative py-2">
-                              {header.column.getCanSort() ? (
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className=" h-8"
-                                  onClick={() => sortingHandle(header.column)}
-                                >
-                                  {flexRender(
-                                    header.column.columnDef.header,
-                                    header.getContext()
-                                  )}
-                                  {
+        <ScrollArea className="w-[83vw] sm:w-[83vw] md:w-[66vw] lg:w-[68vw] xl:w-[70vw] 2xl:w-full rounded-md border bg-accent/10">
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead
+                        key={header.id}
+                        className={header.column.columnDef.classname}
+                        colSpan={header.colSpan}
+                      >
+                        {header.isPlaceholder ? null : (
+                          <div className="">
+                            {header.column.getIsSorted() != null && (
+                              <div className="relative py-2">
+                                {header.column.getCanSort() ? (
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className=" h-8"
+                                    onClick={() => sortingHandle(header.column)}
+                                  >
+                                    {flexRender(
+                                      header.column.columnDef.header,
+                                      header.getContext()
+                                    )}
                                     {
-                                      asc: (
-                                        <ArrowUpNarrowWide className="ml-2 w-4" />
-                                      ),
-                                      desc: (
-                                        <ArrowDownNarrowWide className="ml-2 w-4" />
-                                      ),
-                                    }[header.column.getIsSorted() ?? null]
-                                  }
-                                  {!header.column.getIsSorted() && (
-                                    <ArrowLeftRight className="ml-2 w-3 rotate-90" />
-                                  )}
-                                </Button>
-                              ) : (
-                                <Button
-                                  variant="link"
-                                  className="p-0 h-8 text-ring/70"
-                                >
-                                  {flexRender(
-                                    header.column.columnDef.header,
-                                    header.getContext()
-                                  )}
-                                </Button>
-                              )}
-                              <br />
-                              <FiltersDataTable
-                                header={header}
-                                filtersTable={filtersTable}
-                                setFiltersTable={setFiltersTable}
-                              />
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+                                      {
+                                        asc: (
+                                          <ArrowUpNarrowWide className="ml-2 w-4" />
+                                        ),
+                                        desc: (
+                                          <ArrowDownNarrowWide className="ml-2 w-4" />
+                                        ),
+                                      }[header.column.getIsSorted() ?? null]
+                                    }
+                                    {!header.column.getIsSorted() && (
+                                      <ArrowLeftRight className="ml-2 w-3 rotate-90" />
+                                    )}
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    variant="link"
+                                    className="p-0 h-8 text-ring/70"
+                                  >
+                                    {flexRender(
+                                      header.column.columnDef.header,
+                                      header.getContext()
+                                    )}
+                                  </Button>
+                                )}
+                                <br />
+                                <FiltersDataTable
+                                  header={header}
+                                  filtersTable={filtersTable}
+                                  setFiltersTable={setFiltersTable}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-[65vh]">
-                  <div className="flex justify-center items-center flex-col w-full text-center">
-                    <SearchX className="mb-4 text-ring " size={50} />
-                    <span className="text-xl font-bold uppercase text-ring">
-                      No hay resultados
-                    </span>
-                    <p className="mt-4">
-                      Lo que estás intentando buscar no existe
-                      <br /> o no tienes privilegios para verlo.
-                    </p>
-                  </div>
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={columns.length} className="h-[65vh]">
+                    <div className="flex justify-center items-center flex-col w-full text-center">
+                      <SearchX className="mb-4 text-ring " size={50} />
+                      <span className="text-xl font-bold uppercase text-ring">
+                        No hay resultados
+                      </span>
+                      <p className="mt-4">
+                        Lo que estás intentando buscar no existe
+                        <br /> o no tienes privilegios para verlo.
+                      </p>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+          <ScrollBar orientation="horizontal" className="mb-2" />
+        </ScrollArea>
         {data.length > filtersTable.view && (
           <div className="absolute w-full -bottom-4 bg-background">
             <div className="flex items-center justify-end space-x-2 py-4 pr-8">
