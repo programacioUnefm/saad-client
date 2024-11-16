@@ -96,14 +96,10 @@ export const personalSchema = z.object({
   }),
 
   // Cédula (debe ser un número entre 5 y 10 caracteres)
-  cedula: stringValidation(5, 10).refine((val) => !isNaN(Number(val)), {
-    message: ERROR_MESSAGES.INVALID_NUMBER, // Validación numérica
-  }),
+  cedula: z.number({message:ERROR_MESSAGES.REQUIRED}).min(5,{message:ERROR_MESSAGES.MIN_LENGTH(5)}),
 
   // RIF (debe ser un número entre 5 y 10 caracteres)
-  rif: stringValidation(5, 10).refine((val) => !isNaN(Number(val)), {
-    message: ERROR_MESSAGES.INVALID_NUMBER, // Validación numérica
-  }),
+  rif: z.number({message:ERROR_MESSAGES.REQUIRED}).min(5,{message:ERROR_MESSAGES.MIN_LENGTH(5)}),
 
   // Correo electrónico 1
   email1: z.string().email({
@@ -157,7 +153,7 @@ export const personalSchema = z.object({
   direccion: z
     .string({ required_error: ERROR_MESSAGES.REQUIRED })
     .min(3, { message: ERROR_MESSAGES.MIN_LENGTH(3) })
-    .max(30, { message: ERROR_MESSAGES.MAX_LENGTH(10) }),
+    .max(50, { message: ERROR_MESSAGES.MAX_LENGTH(50) }),
 
   // Teléfonos (debe ser numérico y tener entre 5 y 12 caracteres)
   telefono1: stringValidation(5, 12).refine((val) => !isNaN(Number(val)), {
@@ -216,10 +212,7 @@ export const personalSchema = z.object({
 
   // Peso (debe ser un número entre 15 y 300 kg)
   peso: z
-    .string() // Asegura que el valor sea una cadena.
-    .refine((val) => !isNaN(Number(val)), {
-      message: ERROR_MESSAGES.INVALID_NUMBER,
-    })
+    .number() // Asegura que el valor sea una cadena.
     .nullable()
     .optional()
     .refine(
@@ -230,10 +223,7 @@ export const personalSchema = z.object({
       { message: ERROR_MESSAGES.OUT_OF_RANGE }
     ),
   altura: z
-    .string() // Asegura que el valor sea una cadena.
-    .refine((val) => !isNaN(Number(val)), {
-      message: ERROR_MESSAGES.INVALID_NUMBER,
-    })
+    .number() // Asegura que el valor sea una cadena.
     .nullable()
     .optional()
     .refine(

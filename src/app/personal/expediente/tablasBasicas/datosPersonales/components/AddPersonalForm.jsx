@@ -16,7 +16,6 @@ import { useEffect, useState } from "react";
 import { IdiomasInput } from "./IdiomasInput";
 import { FormInput } from "@/components/FormInput";
 import { FormSelect } from "@/components/FormSelect";
-import { FormSelectSimple } from "@/components/FormSelectSimple";
 
 export const AddPersonalForm = ({ data }) => {
   // Inicialización del formulario con React Hook Form y Zod
@@ -26,6 +25,7 @@ export const AddPersonalForm = ({ data }) => {
     setValue,
     formState: { errors },
     watch,
+    trigger,
     getValues,
   } = useForm({
     defaultValues: data,  // Valores iniciales del formulario
@@ -94,6 +94,7 @@ export const AddPersonalForm = ({ data }) => {
         <div className="grid md:grid-cols-3 xl:grid-cols-6 gap-4">
           {/* Selección de Documento */}
           <FormSelect
+            trigger={trigger}
             label="Documento"
             options={documento}
             register={register}
@@ -140,6 +141,7 @@ export const AddPersonalForm = ({ data }) => {
           />
           {/* Selección de Tipo de personal */}
           <FormSelect
+            trigger={trigger}
             label="Tipo personal"
             options={tipoPer}
             register={register}
@@ -220,6 +222,7 @@ export const AddPersonalForm = ({ data }) => {
           />
           {/* Selección de País */}
           <ComboBox
+            trigger={trigger}
             list={paises.data}
             title="país"
             keyLabel="pais"
@@ -235,6 +238,7 @@ export const AddPersonalForm = ({ data }) => {
           <div className="grid grid-cols-3 mt-2 gap-4">
             {/* Selección de Estado, Municipio y Parroquia */}
             <ComboBox
+              trigger={trigger}
               list={estados.data}
               title="estado"
               label="Estado"
@@ -243,6 +247,7 @@ export const AddPersonalForm = ({ data }) => {
               error={errors.estado}
             />
             <ComboBox
+              trigger={trigger}
               list={municipiosFiltered}
               title="municipio"
               label="Municipio"
@@ -251,6 +256,7 @@ export const AddPersonalForm = ({ data }) => {
               error={errors.municipio}
             />
             <ComboBox
+              trigger={trigger}
               list={parroquiasFiltered}
               title="parroquia"
               label="Parroquias"
@@ -278,6 +284,7 @@ export const AddPersonalForm = ({ data }) => {
             error={errors.fecha_nacimiento}
           />
           <FormSelect
+            trigger={trigger}
             label="Sexo"
             options={sexo}
             register={register}
@@ -287,6 +294,7 @@ export const AddPersonalForm = ({ data }) => {
             error={errors.sexo}
           />
           <FormSelect
+            trigger={trigger}
             label="Estado civil"
             options={estadoCivil}
             register={register}
@@ -295,7 +303,8 @@ export const AddPersonalForm = ({ data }) => {
             setValue={setValue}
             error={errors.estado_civil}
           />
-          <FormSelectSimple
+          <FormSelect
+            trigger={trigger}
             label="Tipo de sangre"
             options={sangre}
             register={register}
@@ -311,7 +320,7 @@ export const AddPersonalForm = ({ data }) => {
             label="Peso en KG"
             register={register}
             name="peso"
-            type="string"
+            type="number"
             placeholder="60.50"
             error={errors.peso}
           />
@@ -319,7 +328,7 @@ export const AddPersonalForm = ({ data }) => {
             label="Altura en metros"
             register={register}
             name="altura"
-            type="string"
+            type="number"
             placeholder="1.6"
             error={errors.altura}
           />
