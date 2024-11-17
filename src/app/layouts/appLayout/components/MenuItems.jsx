@@ -8,70 +8,69 @@ import { NavLink, useLocation } from "react-router-dom";
 import { icons } from "lucide-react";
 import { useSelector } from "react-redux";
 
-export const MenuItems = ({ item, index, active }) => {
-  const { permissions } = useSelector((state) => state.auth);
-  const { roleList } = useSelector((state) => state.auth);
+const Icon = ({ name, color = "currentColor", size = 18 }) => {
+  const LucideIcon = icons[name];
+  return LucideIcon ? <LucideIcon color={color} size={size} /> : null;
+};
+
+const checkPermissions = (permissions, requiredPermissions, roleList) => {
+  // Admins tienen todos los permisos
+  if (roleList.some((role) => role.includes("ADMIN"))) return true;
+  // Verificar permisos específicos
+  if (!requiredPermissions) return true;
+  return requiredPermissions.every((perm) => permissions.includes(perm));
+};
+
+const SingleMenuItem = ({ item, classDefault, hasPermission }) => (
+  <NavLink
+    to={item.path}
+    style={!hasPermission ? { pointerEvents: "none" } : {}}
+  >
+    {({ isActive }) =>
+      item.action === "hidden" ? null : (
+        <div
+          className={`${classDefault} ${
+            isActive
+              ? "bg-primary/80 dark:bg-accent dark:text-accent-foreground/80 text-white"
+              : hasPermission
+              ? "dark:text-accent-foreground/80 hover:bg-accent/50 hover:text-accent-foreground"
+              : "text-ring/40 cursor-not-allowed"
+          }`}
+        >
+          {item.icon && <Icon name={item.icon} />}
+          {item.title}
+        </div>
+      )
+    }
+  </NavLink>
+);
+
+export const MenuItems = ({ item, index }) => {
+  const { permissions, roleList } = useSelector((state) => state.auth);
   const location = useLocation();
   const pathSegments = location.pathname.split("/").filter(Boolean);
+
+  const hasPermission = checkPermissions(permissions, item.permission, roleList);
+
   const classDefault =
-    "p-3 rounded-md w-full mb-0.5 uppercase font-bold text-[10px] cursor-pointer flex items-center gap-2 ";
-  const Icon = ({ name, color, size }) => {
-    const LucideIcon = icons[name];
-    return <LucideIcon color={color} size={size} />;
-  };
+    "p-3 rounded-md w-full mb-0.5 uppercase font-bold text-[10px] flex items-center gap-2";
 
-  const permissionCheck = (permission) => {
-    if (roleList.every((role) => role.includes("ADMIN"))) {
-      return true;
-    } else {
-      if (permission != undefined) {
-        return permission.every((element) => permissions.includes(element));
-      }
-    }
-
-    return false;
-  };
-  const SingleItem = ({ element }) => {
-    return (
-      <NavLink
-        to={item.path}
-        style={
-          !permissionCheck(item.permission) ? { pointerEvents: "none" } : {}
-        }
-      >
-        {({ isActive }) => (
-          <div
-            className={
-              isActive
-                ? `${classDefault} bg-primary/80 dark:bg-accent dark:text-accent-foreground/80 dark:hover:text-accent-foreground text-white`
-                : !permissionCheck(item.permission)
-                ? `${classDefault} text-ring/40`
-                : `${classDefault} dark:text-accent-foreground/80 hover:bg-accent/50 hover:text-accent-foreground `
-            }
-          >
-            {item.icon && <Icon name={item.icon} size={18} />}
-            {element.title}
-          </div>
-        )}
-      </NavLink>
-    );
-  };
   return (
     <div>
       {item.subMenu ? (
         <AccordionItem
           value={item.title.toUpperCase()}
-          disabled={!permissionCheck(item.permission)}
+          disabled={!hasPermission}
         >
           <AccordionTrigger
-            className={
-              !permissionCheck(item.permission)
-                ? "uppercase font-bold text-sm cursor-not-allowed"
-                : "uppercase font-bold text-sm text-accent-foreground/80 hover:text-accent-foreground"
-            }
+            className={`uppercase font-bold text-sm ${
+              hasPermission
+                ? "text-accent-foreground/80 hover:text-accent-foreground"
+                : "cursor-not-allowed text-gray-400"
+            }`}
           >
             <div className="flex gap-2 text-[10px]">
-              {item.icon != undefined && <Icon name={item.icon} size={18} />}
+              {item.icon && <Icon name={item.icon} />}
               {item.title}
             </div>
           </AccordionTrigger>
@@ -83,19 +82,22 @@ export const MenuItems = ({ item, index, active }) => {
                 className="px-2"
                 collapsible
                 defaultValue={
-                  pathSegments[index] != undefined &&
-                  pathSegments[index].replace(/-/g, " ").toUpperCase()
+                  pathSegments[index]?.replace(/-/g, " ").toUpperCase()
                 }
               >
                 {item.subMenu.map((submenu) => (
-                  <MenuItems key={Math.random()} item={submenu} />
+                  <MenuItems key={submenu.title} item={submenu} />
                 ))}
               </Accordion>
             </div>
           </AccordionContent>
         </AccordionItem>
       ) : (
-        <SingleItem element={item} />
+        <SingleMenuItem
+          item={item}
+          classDefault={classDefault}
+          hasPermission={hasPermission}
+        />
       )}
     </div>
   );

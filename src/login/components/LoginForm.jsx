@@ -27,7 +27,7 @@ export const LoginForm = ({ setloginState }) => {
       case 200:
         toast({
           title: `Bienvenido de nuevo.`,
-          description: "Comencemos a trabaja.",
+          description: "Comencemos a trabajar.",
         });
         navigate("/inicio");
         setload(false);

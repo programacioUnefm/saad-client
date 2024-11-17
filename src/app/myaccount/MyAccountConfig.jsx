@@ -9,7 +9,6 @@ export const MyAccountConfig = () => {
   const { last_name, name, email, document_id, loadData, roles } = useSelector(
     (state) => state.auth
   );
-
   const data = {
     name,
     last_name,

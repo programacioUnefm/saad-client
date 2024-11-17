@@ -1,0 +1,65 @@
+/* Clases comunes */
+.menu-item {
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    width: 100%;
+    margin-bottom: 0.125rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  /* Clases para estados */
+  .menu-item-default {
+    color: var(--accent-foreground-color, #e7e7e7); /* Cambia según tema */
+  }
+  
+  .menu-item-hover {
+    background-color: var(--accent-hover-bg, --primary-active-bg); /* Cambia según tema */
+    color: var(--accent-foreground-color-hover, #464646); /* Cambia según tema */
+  }
+  
+  .menu-item-active {
+    background-color: var(--primary-active-bg, #2d72e0); /* Cambia según tema */
+    color: var(--primary-text-color, #ffffff);
+  }
+  
+  .menu-item-disabled {
+    color: var(--disabled-text-color, #d1d5db);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  
+  /* Estilo de submenú */
+  .submenu-accordion {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  
+  .submenu-indicator {
+    width: 0.25rem;
+    height: 100%;
+    background-color: var(--submenu-indicator-bg, #9ca3af); /* Cambia según tema */
+    position: absolute;
+    left: -0.5rem;
+  }
+  
+  /* Estilos de trigger */
+  .trigger-enabled {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 0.875rem;
+    color: var(--accent-foreground-color, #9ca3af);
+  }
+  
+  .trigger-disabled {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 0.875rem;
+    color: var(--disabled-text-color, #e7e7e7);
+    cursor: not-allowed;
+  }
+  

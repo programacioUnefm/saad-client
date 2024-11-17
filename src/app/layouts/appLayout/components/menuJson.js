@@ -8,6 +8,13 @@ export const navbarMenu = [
     permission: ["HOME"],
     action: "disable",
   },
+  {
+    title: "Mi cuenta",
+    path: "/mi-cuenta",
+    icon: "",
+    permission: ["NONE"],
+    action: "hidden",
+  },
   // {
   //   title: "Administrativo",
   //   path: "/administrativo",
