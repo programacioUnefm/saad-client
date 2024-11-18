@@ -27,8 +27,8 @@ export const HeaderApp = () => {
       </Sheet> */}
       {/* menu movil */}
       <div className="w-full flex">
-        {/* <InputApp /> 
-        <MegaMenu /> */}
+         {/* <InputApp />  */}
+        <MegaMenu />
       </div>
       <MyAccount />
     </header>

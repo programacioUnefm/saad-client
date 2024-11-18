@@ -27,6 +27,7 @@ import { NoAuthPage } from "@/app/layouts/unAuth/NoAuthPage";
 import { DatosPersonalesPage } from "@/app/personal/expediente/tablasBasicas/datosPersonales/DatosPersonalesPage";
 import { MyAccountConfig } from "@/app/myaccount/MyAccountConfig";
 import { PublicRoutes } from "./PublicRoutes";
+import { NotFoundPage } from "@/app/404/NotFoundPage";
 
 export const RouterApp = () => {
   let theme = localStorage.getItem("vite-ui-theme");
@@ -52,6 +53,10 @@ export const RouterApp = () => {
   return (
     <>
       <Routes>
+
+        <Route path="*" element={<NotFoundPage />} />
+        <Route path="/no-encontrada" element={<NotFoundPage />} />
+
         {/* RUTAS PUBLICAS */}
         <Route element={<PublicRoutes />}>
           <Route path="/login" element={<LoginPage />} />
@@ -61,8 +66,9 @@ export const RouterApp = () => {
         
         {/* RUTAS PRIVADAS */}
         <Route element={<ProtectedRoutes />}>
-          <Route path="/" element={<Navigate to="/inicio" />} />
+          <Route path="/" element={<Navigate to="/inicio" replace/>} />
           <Route path="/inicio" element={<DashboardPage />} />
+          
           <Route path="/mi-cuenta" element={<MyAccountConfig />} />          
           <Route path="/administrativo" element={<Administrativo />} />
           <Route path="/administrativo/compras" element={<ComprasPage />} />

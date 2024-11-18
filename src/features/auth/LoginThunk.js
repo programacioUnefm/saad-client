@@ -108,9 +108,8 @@ export const VerifyUser = () => {
       }
       return { code };
     } catch (error) {
-
       //TODO: ver como resolver esto
-      console.log(error)
+      console.log(error);
       // const message = error.response.data.message;
       // const codeError = error.response.status;
 
@@ -152,13 +151,14 @@ export const VerifyUser = () => {
 };
 
 export const LogOutApp = () => {
-  localStorage.removeItem("token_access");
-  const appUrl = import.meta.env.VITE_APP_URL;
-  window.location.href = `${appUrl}/login`;
   return async (dispatch) => {
+    console.log("cerrando sesion");
     try {
-      const resp = await saadApi.get(`auth/logout`);
       dispatch(login({ Authstatus: false, name: "", role: [], token: "" }));
+      const resp = await saadApi.get(`auth/logout`);
+      localStorage.removeItem("token_access");
+      // const appUrl = import.meta.env.VITE_APP_URL;
+      // window.location.href = `${appUrl}/login`;
     } catch (error) {}
   };
 };

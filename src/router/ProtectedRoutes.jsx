@@ -39,7 +39,7 @@ export const ProtectedRoutes = ({ redirectTo = "/login" }) => {
 
   // Redirige si el usuario no tiene permisos suficientes
   useEffect(() => {
-    if (permissionStatus === false) navigate("/no-autorizado");
+    if (permissionStatus == false) navigate("/no-autorizado");
   }, [permissionStatus, navigate]);
 
   // Si el usuario no está autenticado, redirige al login

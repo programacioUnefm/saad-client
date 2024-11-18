@@ -36,7 +36,6 @@ export const MyAccount = () => {
       title: `Estás cerrando sesión`,
       description: "Que tengas buen día.",
     });
-    navigate("/login");
   };
 
   const [dialog, setdialog] = useState({ status: false, component: null });

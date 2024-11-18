@@ -9,6 +9,13 @@ export const navbarMenu = [
     action: "disable",
   },
   {
+    title: "Página no encontrada",
+    path: "/no-encontrada",
+    icon: "Home",
+    permission: ["HOME"],
+    action: "hidden",
+  },
+  {
     title: "Mi cuenta",
     path: "/mi-cuenta",
     icon: "",
