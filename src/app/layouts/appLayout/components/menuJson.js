@@ -396,9 +396,10 @@ export const navbarMenu = [
             permission: ["PERSONAL_EXPEDIENTE_TABLASB"],
             action: "disable",
             path: "/personal/expediente/tablas-basicas",
+            icon: "Table",
             subMenu: [
               {
-                title: "Datos per...",
+                title: "Datos personales",
                 path: "/personal/tablas-basicas/datos-personales",
                 permission: ["EXPEDIENTE_TABLASB_DATOS_PERSONALES"],
                 action: "disable",
@@ -604,19 +605,19 @@ export const navbarMenu = [
     path: "/control",
     icon: "Lock",
     permission: ["HOME", "HOME_CONTROL"],
-    action: "hidden",
+    action: "only-admin",
     subMenu: [
       {
         title: "Administrar Usuarios",
         path: "/control/usuarios",
         permission: ["HOME_CONTROL", "CONTROL_ADMIN_USERS"],
-        icon: "UserRoundCog",
+        icon: null,
       },
       {
         title: "Bitacora de sistema",
         path: "/control/bitacora",
         permission: ["HOME_CONTROL", "CONTROL_BITACORA"],
-        icon: "BookOpenText",
+        icon: null,
       },
     ],
   },

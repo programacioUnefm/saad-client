@@ -63,3 +63,34 @@
     cursor: not-allowed;
   }
   
+
+  nav {
+    font-family: Arial, sans-serif;
+    width: 250px;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    padding: 10px 0;
+  }
+  
+  li a {
+    text-decoration: none;
+    color: black;
+    display: flex;
+    align-items: center;
+  }
+  
+  li a:hover {
+    background-color: #f0f0f0;
+    color: #007bff;
+  }
+  
+  .accordion-content {
+    padding-left: 20px;
+  }
+  
