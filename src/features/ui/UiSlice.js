@@ -6,6 +6,7 @@ export const ui = createSlice({
     theme: "",
     layout: "",
     paginationNumber: 12,
+    siebarState: false,
     filters: {
       search: "",
       status: false,
@@ -45,11 +46,14 @@ export const ui = createSlice({
     },
     routeChange: (state, {payload}) => {
       state.menuState = payload
+    },
+    siebarStateChange: (state, {payload}) => {
+      state.siebarState = payload;
     }
   },
 });
 
-export const { themeChange, layoutChanged, dialogChange, filtersChange, resetDialog, filterUrlChange, routeChange } =
+export const { themeChange, layoutChanged, dialogChange, filtersChange, resetDialog, filterUrlChange, routeChange, siebarStateChange } =
   ui.actions;
 
 export default ui.reducer;

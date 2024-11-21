@@ -7,9 +7,7 @@ import { AcademicoMM } from "./components/AcademicoMM";
 export const MegaMenu = () => {
   return (
     <div className="ml-6 items-center hidden md:flex ">
-      <AdministrativoMM />
-      <AcademicoMM />
-      <PersonalMM />
+      {/* <PersonalMM /> */}
     </div>
   );
 };

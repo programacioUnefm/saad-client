@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, cloneElement } from "react";
+import React, { useEffect, useMemo, useRef, cloneElement, useState } from "react";
 
 import { Toaster } from "../../../components/ui/toaster";
 import { ScrollArea, ScrollBar } from "../../../components/ui/scroll-area";
@@ -18,7 +18,7 @@ export function AppLayout({
   functionButton = undefined,
 }) {
   const { theme } = useSelector((state) => state.auth);
-  const { dialog } = useSelector((state) => state.ui);
+  const { dialog, siebarState } = useSelector((state) => state.ui);
   const { toast } = useToast();
   useEffect(() => {
     dialog.status &&
@@ -28,13 +28,14 @@ export function AppLayout({
         description: dialog.message,
       });
   }, [dialog]);
+  
   const sidebarComponent = useMemo(
     () => <Sidebar menu={navbarMenu} />,
     [navbarMenu]
   );
 
   return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+    <div className={`grid min-h-screen w-full transition-all ${siebarState ? "md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]" : "md:grid-cols-[80px_1fr]"}`}>
       {sidebarComponent}
       <div className="flex flex-col bg-slate-50 dark:bg-background">
         <HeaderApp />

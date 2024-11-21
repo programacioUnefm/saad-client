@@ -1,0 +1,33 @@
+.sidebarIcon{
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+
+.line{
+    display: block;
+    width: 20px;
+    height:2px;
+    background-color: rgb(155, 155, 155);
+    transition: 0.2s all;
+}
+
+.line3{
+    width: 80%;
+}
+
+.line2{
+    width: 60%;
+}
+
+.line-active{
+    width: 20px!important;
+}
+
+
+
+
+
+
+

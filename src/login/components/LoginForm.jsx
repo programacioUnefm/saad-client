@@ -80,7 +80,7 @@ export const LoginForm = ({ setloginState }) => {
           {load ? "Enviando..." : "Iniciar sesión"}
         </Button>
       </div>
-      <div className="flex mt-8">
+      {/* <div className="flex mt-8">
         <div className="flex items-center space-x-2 w-2/5">
         <span
             onClick={() => setloginState("register")}
@@ -97,7 +97,7 @@ export const LoginForm = ({ setloginState }) => {
             Olvidé mi contraseña
           </span>
         </div>
-      </div>
+      </div> */}
     </form>
   );
 };
