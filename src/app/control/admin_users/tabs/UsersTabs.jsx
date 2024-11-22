@@ -24,6 +24,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { permissionCheck } from "@/features/PermissionCheck";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export const UsersTabs = ({ users, tabState }) => {
   const [action, setAction] = useState({
@@ -187,18 +193,24 @@ export const UsersTabs = ({ users, tabState }) => {
       accessorKey: "roles",
       classname: "text-center",
       cell: (info) => (
-        <div className="text-center">
+        <div className="text-center flex gap-2">
           {info.getValue().length > 0 ? (
-            info.getValue().map((rol) => (
-              <Badge
-                className="uppercase dark:bg-white dark:text-black"
-                key={Math.random()}
-              >
-                {rol.name}
-              </Badge>
+            info.getValue().map((rol, index) => (
+              <TooltipProvider key={index}>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Badge className="uppercase dark:bg-accent  line-clamp-1" >
+                      {rol.name}
+                    </Badge>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{rol.name}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             ))
           ) : (
-            <Badge variant="secondary" className="uppercase">
+            <Badge variant="secondary" className="uppercase bg-slate-500">
               Sin Rol
             </Badge>
           )}
