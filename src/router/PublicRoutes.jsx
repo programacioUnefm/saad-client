@@ -7,7 +7,7 @@ export const PublicRoutes = () => {
   // console.log(auth)
   // Si el usuario está autenticado, redirige al Dashboard o página de inicio
   if (auth.Authstatus) {
-    // return <Navigate to="/not-found" replace />;
+    return <Navigate to="/inicio" replace />;
   }
 
   // Si no está autenticado, renderiza las rutas públicas
