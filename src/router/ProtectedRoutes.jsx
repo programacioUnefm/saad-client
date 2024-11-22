@@ -42,7 +42,30 @@ export const ProtectedRoutes = ({ redirectTo = "/login" }) => {
 
   // Resultado de los permisos, memoizado para optimizar
   const permissionStatus = useMemo(checkPermissionStatus, [currentRoute, auth.permissions]);
+// *** Manejo de inactividad con idle-js ***
+useEffect(() => {
+  const handleLogout = () => {
+    dispatch(LogOutApp()); // Acción para cerrar sesión
+    navigate('/login'); // Redirige al usuario a la página de login
+  };
 
+  // Configuración de idle-js
+  const idle = new IdleJs({
+    idle: 5 * 60 * 1000, // Tiempo de inactividad en milisegundos (5 minuto)
+    events: ["mousemove", "keydown", "click", "touchstart"], // Eventos que reinician el timer
+    onIdle: handleLogout, // Acción cuando el usuario está inactivo
+    onActive: () => console.log("Usuario activo nuevamente."), // Opcional: acción cuando el usuario regresa
+    keepTracking: true, // Mantener el seguimiento activo continuamente
+    startAtIdle: false, // Comienza en estado activo
+  });
+
+  idle.start(); // Inicia el seguimiento
+
+  // Limpieza al desmontar el componente
+  return () => {
+    idle.stop(); // Detiene el seguimiento de inactividad
+  };
+}, [dispatch, navigate]); // Ejecuta solo al montar el componente, a menos que cambie el dispatcher o navigate
   
 
   // Renderiza las rutas protegidas o muestra componentes alternativos según el estado de permisos
