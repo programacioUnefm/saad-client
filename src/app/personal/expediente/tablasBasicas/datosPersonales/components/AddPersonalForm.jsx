@@ -16,9 +16,8 @@ import { useEffect, useState } from "react";
 import { IdiomasInput } from "./IdiomasInput";
 import { FormInput } from "@/components/FormInput";
 import { FormSelect } from "@/components/FormSelect";
-import { addNewPersonal } from "@/features/personal/expediente/tablasBasicas/datosPersonales/datosPersonalesThunk";
-
-
+import { addNewEmploye } from "@/features/personal/expediente/tablasBasicas/datosPersonales/datosPersonalesThunk";
+import { dialogChange, resetDialog } from "@/features/ui/UiSlice";
 
 export const AddPersonalForm = ({ data }) => {
   // Inicialización del formulario con React Hook Form y Zod
@@ -86,9 +85,43 @@ export const AddPersonalForm = ({ data }) => {
   const dispatch = useDispatch();
 
   // Función que se llama al enviar el formulario
-  const onSubmit = (dataForm) => {
-    const newData = { ...dataForm, parroquia_id: dataForm.parroquia.id, pais_id: dataForm.pais.id };
-    dispatch(addNewPersonal(newData))
+  const onSubmit = async (dataForm) => {
+    const newData = {
+      ...dataForm,
+      parroquia_id: dataForm.parroquia.id,
+      pais_id: dataForm.pais.id,
+    };
+    const resp = await dispatch(addNewEmploye(newData));
+    console.log(resp);
+
+    switch (resp.responseCode) {
+      case 200:
+        dispatch(
+          dialogChange({
+            title: "Personal agregado",
+            message: `El nuevo personal ${dataForm.name1} ha sido ingresado.`,
+            status: true,
+            duration: 3000,
+            variant: "",
+          })
+        );
+        break;
+      case 422:
+        const errorMessage = Object.values(resp.errors).flat().join(' | ');
+        dispatch(
+          dialogChange({
+            title: resp.message,
+            message: errorMessage,
+            status: true,
+            duration: 3000,
+            variant: "destructive",
+          })
+        );
+        setTimeout(() => {
+          dispatch(resetDialog());
+        }, 3000);
+        break;
+    }
   };
 
   return (
@@ -98,6 +131,14 @@ export const AddPersonalForm = ({ data }) => {
         <div className="text-center uppercase font-bold mb-2">
           Datos básicos
         </div>
+        <FormInput
+          label="Cédula"
+          register={register}
+          name="foto"
+          type="text"
+          placeholder="Ej: url"
+          error={errors.foto}
+        />
         <div className="grid md:grid-cols-3 xl:grid-cols-6 gap-4">
           {/* Selección de Documento */}
           <FormSelect
@@ -115,7 +156,7 @@ export const AddPersonalForm = ({ data }) => {
             label="Cédula"
             register={register}
             name="cedula"
-            type="number"
+            type="text"
             placeholder="Ej: 22602765"
             error={errors.cedula}
           />
@@ -124,7 +165,7 @@ export const AddPersonalForm = ({ data }) => {
             label="RIF"
             register={register}
             name="rif"
-            type="number"
+            type="text"
             placeholder="Ej: 22602765-4"
             error={errors.rif}
           />
@@ -339,7 +380,17 @@ export const AddPersonalForm = ({ data }) => {
             placeholder="1.6"
             error={errors.altura}
           />
-          <IdiomasInput idiomas={idiomas} setValue={setValue} />
+          <FormSelect
+            trigger={trigger}
+            label="Idioma"
+            options={idiomas}
+            register={register}
+            name="idiomas"
+            defaultValue={data.idiomas}
+            setValue={setValue}
+            error={errors.idiomas}
+          />
+          {/* <IdiomasInput idiomas={idiomas} setValue={setValue} /> */}
         </div>
       </section>
 

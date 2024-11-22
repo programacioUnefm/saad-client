@@ -5,6 +5,7 @@ export const PersonalSlice = createSlice({
   initialState: {
     expediente: {
       tablasBasicas: {
+        personal:[],
         datosPer: {
           paises: {},
           estados: {},
@@ -26,9 +27,12 @@ export const PersonalSlice = createSlice({
     },
     getParroquias: (state, action) => {
         state.expediente.tablasBasicas.datosPer.parroquias = action.payload;
+    },
+    getEmployeSlice:(state, action) => {
+      state.expediente.tablasBasicas.personal = action.payload;
     }
   },
 });
-export const { getPaises, getEstados, getMunicipios, getParroquias } = PersonalSlice.actions;
+export const { getPaises, getEstados, getMunicipios, getParroquias, getEmployeSlice } = PersonalSlice.actions;
 
 export default PersonalSlice.reducer;

@@ -90,16 +90,20 @@ const stringValidation = (min, max) =>
 
 // Esquema principal de validación utilizando Zod
 export const personalSchema = z.object({
+  
+  // Foto del personal
+  foto: z.string().url({ message: "Debe ser una URL válida", }),
+
   // Documento (tipo de documento)
   documento: z.enum(["V", "J", "E", "P"], {
     errorMap: () => ({ required_error: ERROR_MESSAGES.REQUIRED }), // Mensaje si no se selecciona un documento
   }),
 
   // Cédula (debe ser un número entre 5 y 10 caracteres)
-  cedula: z.number({message:ERROR_MESSAGES.REQUIRED}).min(5,{message:ERROR_MESSAGES.MIN_LENGTH(5)}),
+  cedula: stringValidation(4,12),
 
   // RIF (debe ser un número entre 5 y 10 caracteres)
-  rif: z.number({message:ERROR_MESSAGES.REQUIRED}).min(5,{message:ERROR_MESSAGES.MIN_LENGTH(5)}),
+  rif: stringValidation(4,12),
 
   // Correo electrónico 1
   email1: z.string().email({
@@ -233,4 +237,8 @@ export const personalSchema = z.object({
       },
       { message: ERROR_MESSAGES.OUT_OF_RANGE_PESO }
     ),
+    idiomas: z.enum(idiomas, {
+      required_error: ERROR_MESSAGES.REQUIRED,
+      message: ERROR_MESSAGES.REQUIRED
+    })
 });

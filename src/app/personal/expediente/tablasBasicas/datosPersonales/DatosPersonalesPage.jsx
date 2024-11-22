@@ -30,6 +30,7 @@ import {
   getMunicipality,
   getParishes,
 } from "@/features/personal/expediente/tablasBasicas/paisesThunk";
+import { getEmploye } from "@/features/personal/expediente/tablasBasicas/datosPersonales/datosPersonalesThunk";
 
 const columns = [
   {
@@ -338,7 +339,7 @@ const data = {
   altura: null,
   sangre: "",
   foto:"",
-  idiomas: ["Español"],
+  idiomas: "Español",
   nivel_profesional_id: null,
   pais: {
     id: 1,
@@ -376,6 +377,7 @@ export const DatosPersonalesPage = () => {
     dispatch(getContryState());
     dispatch(getMunicipality());
     dispatch(getParishes());
+    dispatch(getEmploye());
   }, []);
 
   return (
