@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import React, { useEffect} from "react"; 
+import { Navigate, Route, Routes } from "react-router-dom"; 
+import { useDispatch, useSelector } from "react-redux"; 
 import { LoginPage } from "../login/pages/LoginPage";
 import { ComprasPage } from "../app/administrativo/compras/ComprasPage";
 import { ContabilidadPage } from "../app/administrativo/contabilidad/ContabilidadPage";
@@ -7,8 +8,6 @@ import { HabilitaduriaPage } from "../app/administrativo/habilitaduria/Habilitad
 import { PresupuestoPage } from "../app/administrativo/presupuesto/PresupuestoPage";
 import { DashboardPage } from "../app/dasboard/DashboardPage";
 import { ProtectedRoutes } from "./ProtectedRoutes";
-import { useDispatch, useSelector } from "react-redux";
-
 import { RegistroControl } from "../app/administrativo/compras/components/RegistroControl";
 import { Administrativo } from "../app/administrativo/Administrativo";
 import { Movimientos } from "../app/administrativo/compras/components/Movimientos";
@@ -16,7 +15,6 @@ import { Cierres } from "../app/administrativo/compras/components/Cierres";
 import { Reportes } from "../app/administrativo/compras/components/Reportes";
 import { TablasBasicas } from "../app/administrativo/compras/components/TablasBasicas";
 import { PlanCompras } from "../app/administrativo/compras/components/PlanCompras";
-
 import { UsersListPage } from "../app/control/admin_users/UsersListPage";
 import { layoutChanged, themeChange } from "../features/ui/UiSlice";
 import { VerifyUser } from "../features/auth/LoginThunk";
@@ -27,49 +25,72 @@ import { NoAuthPage } from "@/app/layouts/unAuth/NoAuthPage";
 import { DatosPersonalesPage } from "@/app/personal/expediente/tablasBasicas/datosPersonales/DatosPersonalesPage";
 import { MyAccountConfig } from "@/app/myaccount/MyAccountConfig";
 import { PublicRoutes } from "./PublicRoutes";
-import { NotFoundPage } from "@/app/404/NotFoundPage";
+import { NotFoundPage } from "@/app/layouts/404page/NotFoundPage";
 
 export const RouterApp = () => {
-  let theme = localStorage.getItem("vite-ui-theme");
-  let token = localStorage.getItem("token_access");
-  let defaultLayout = localStorage.getItem("layoutList");
-  const { user } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+  // Variables iniciales obtenidas del almacenamiento local
+  let theme = localStorage.getItem("vite-ui-theme"); // Tema de la interfaz
+  let token = localStorage.getItem("token_access"); // Token de autenticación
+  let defaultLayout = localStorage.getItem("layoutList"); // Diseño predeterminado
+
+  // Uso del estado global para saber si el usuario está autenticado
+  const { Authstatus } = useSelector((state) => state.auth);
+  const dispatch = useDispatch(); // Hook para despachar acciones de Redux
+
+  // Efecto para inicializar configuraciones al cargar el componente
   useEffect(() => {
+    // Verifica si existe un layout guardado, si no, lo inicializa
     if (defaultLayout == null || defaultLayout == undefined) {
-      localStorage.setItem("layoutList", "list");
-      dispatch(layoutChanged("list"));
+      localStorage.setItem("layoutList", "list"); // Establece "list" como diseño por defecto
+      dispatch(layoutChanged("list")); // Actualiza el estado global del layout
     } else {
-      dispatch(layoutChanged(defaultLayout));
+      dispatch(layoutChanged(defaultLayout)); // Usa el diseño guardado
     }
+
+    // Verifica si hay un token de autenticación
     if (token != null && token != undefined) {
-      dispatch(VerifyUser(token));
+      dispatch(VerifyUser(token)); // Verifica el token con una acción
     } else {
+      // Si no hay token, actualiza el estado de autenticación a "no autenticado"
       dispatch(login({ Authstatus: false, name: "", role: [], token: "" }));
     }
+
+    // Cambia el tema de la aplicación al cargado desde localStorage
     dispatch(themeChange(theme));
-  }, []);
+  }, []); // El array vacío indica que se ejecuta solo al montar el componente
 
   return (
     <>
+      {/* Definición de las rutas de la aplicación */}
       <Routes>
-
-        <Route path="*" element={<NotFoundPage />} />
+        {/* Rutas para manejar errores y páginas no encontradas */}
+        <Route path="*" element={<NotFoundPage />} /> {/* Página 404 */}
         <Route path="/no-encontrada" element={<NotFoundPage />} />
-
-        {/* RUTAS PUBLICAS */}
+        {/* Rutas públicas: accesibles sin autenticación */}
         <Route element={<PublicRoutes />}>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/no-autorizado" element={<NoAuthPage />} />
+          <Route path="/login" element={<LoginPage />} />{" "}
+          {/* Página de inicio de sesión */}
         </Route>
-
-        
-        {/* RUTAS PRIVADAS */}
+        {/* Redirección de la raíz dependiendo del estado de autenticación */}
+        <Route
+          path="/"
+          element={
+            Authstatus ? (
+              <Navigate to="/inicio" replace /> // Si está autenticado, redirige a /inicio
+            ) : (
+              <Navigate to="/login" replace /> // Si no, redirige a /login
+            )
+          }
+        />
+        {/* Página de acceso no autorizado */}
+        <Route path="/no-autorizado" element={<NoAuthPage />} />
+        {/* Rutas privadas: solo accesibles con autenticación */}
         <Route element={<ProtectedRoutes />}>
-          <Route path="/" element={<Navigate to="/inicio" replace/>} />
+          {/* Página principal del usuario */}
           <Route path="/inicio" element={<DashboardPage />} />
-          
-          <Route path="/mi-cuenta" element={<MyAccountConfig />} />          
+          <Route path="/mi-cuenta" element={<MyAccountConfig />} />
+
+          {/* Módulo administrativo */}
           <Route path="/administrativo" element={<Administrativo />} />
           <Route path="/administrativo/compras" element={<ComprasPage />} />
           <Route
@@ -97,6 +118,7 @@ export const RouterApp = () => {
           <Route path="/habilitaduria" element={<HabilitaduriaPage />} />
           <Route path="/presupuesto" element={<PresupuestoPage />} />
 
+          {/* Módulo personal */}
           <Route
             path="/personal/expediente/registro-datos/actuacion"
             element={<ActuacionPage />}
@@ -105,6 +127,8 @@ export const RouterApp = () => {
             path="/personal/tablas-basicas/datos-personales"
             element={<DatosPersonalesPage />}
           />
+
+          {/* Módulo de control */}
           <Route path="/control/usuarios" element={<UsersListPage />} />
           <Route path="/control/bitacora" element={<LogsPage />} />
         </Route>

@@ -49,6 +49,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Label } from "../ui/label";
+import { useSelector } from "react-redux";
 
 export const DataTable = ({ data, columns, filtersTable, setFiltersTable }) => {
   const table = useReactTable({
@@ -147,6 +148,12 @@ export const DataTable = ({ data, columns, filtersTable, setFiltersTable }) => {
     }));
   };
 
+  const {siebarState} = useSelector((state) => state.ui)
+
+  
+
+  const scrollArea = `w-[83vw] sm:w-[83vw]  xl:w-full 2xl:w-full rounded-md border bg-accent/10`
+  
   return (
     <div>
       <section className="filters px-1">
@@ -262,7 +269,7 @@ export const DataTable = ({ data, columns, filtersTable, setFiltersTable }) => {
       </section>
 
       <div className="mb-12 mt-4">
-        <ScrollArea className="w-[83vw] sm:w-[83vw] md:w-[66vw] lg:w-[68vw] xl:w-[70vw] 2xl:w-full rounded-md border bg-accent/10">
+        <ScrollArea className={`${scrollArea} ${siebarState == true? "lg:w-[68vw] md:w-[66vw]" :"lg:w-[83vw] md:w-[79vw]"}`}>
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (

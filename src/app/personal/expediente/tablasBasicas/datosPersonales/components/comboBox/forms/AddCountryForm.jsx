@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { AddCountry, editCountry } from "@/features/personal/expediente/tablasBasicas/datosPersonales/DatosPerThunk";
+import { AddCountry, editCountry } from "@/features/personal/expediente/tablasBasicas/paisesThunk";
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useDispatch } from "react-redux";

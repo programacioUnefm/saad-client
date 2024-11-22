@@ -11,11 +11,14 @@ import {
   idiomas,
 } from "@/features/validations/PersonalSchema";
 import { ComboBox } from "./comboBox/ComboBox";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { IdiomasInput } from "./IdiomasInput";
 import { FormInput } from "@/components/FormInput";
 import { FormSelect } from "@/components/FormSelect";
+import { addNewPersonal } from "@/features/personal/expediente/tablasBasicas/datosPersonales/datosPersonalesThunk";
+
+
 
 export const AddPersonalForm = ({ data }) => {
   // Inicialización del formulario con React Hook Form y Zod
@@ -28,7 +31,7 @@ export const AddPersonalForm = ({ data }) => {
     trigger,
     getValues,
   } = useForm({
-    defaultValues: data,  // Valores iniciales del formulario
+    defaultValues: data, // Valores iniciales del formulario
     resolver: zodResolver(personalSchema), // Resolver usando el esquema de Zod
   });
 
@@ -70,7 +73,8 @@ export const AddPersonalForm = ({ data }) => {
 
   // Resetear campos relacionados cuando cambia el país (si no es Venezuela)
   useEffect(() => {
-    if (pais.id !== 1) {  // Asumimos que pais.id === 1 es Venezuela
+    if (pais.id !== 1) {
+      // Asumimos que pais.id === 1 es Venezuela
       setMunicipiosFiltered([]);
       setParroquiasFiltered([]);
       setValue("estado", "");
@@ -79,9 +83,12 @@ export const AddPersonalForm = ({ data }) => {
     }
   }, [pais, setValue]);
 
+  const dispatch = useDispatch();
+
   // Función que se llama al enviar el formulario
-  const onSubmit = (data) => {
-    console.log(data);  // Aquí se procesan los datos del formulario
+  const onSubmit = (dataForm) => {
+    const newData = { ...dataForm, parroquia_id: dataForm.parroquia.id, pais_id: dataForm.pais.id };
+    dispatch(addNewPersonal(newData))
   };
 
   return (
@@ -338,7 +345,9 @@ export const AddPersonalForm = ({ data }) => {
 
       {/* Botón de Submit */}
       <div className="">
-        <Button type="submit" variant="primary">guardar personal</Button>
+        <Button type="submit" variant="primary">
+          guardar personal
+        </Button>
       </div>
     </form>
   );

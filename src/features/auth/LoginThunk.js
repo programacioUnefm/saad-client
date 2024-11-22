@@ -152,7 +152,6 @@ export const VerifyUser = () => {
 
 export const LogOutApp = () => {
   return async (dispatch) => {
-    console.log("cerrando sesion");
     try {
       dispatch(login({ Authstatus: false, name: "", role: [], token: "" }));
       const resp = await saadApi.get(`auth/logout`);

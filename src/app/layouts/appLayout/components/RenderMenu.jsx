@@ -37,7 +37,6 @@ export const RenderMenu = ({ menu }) => {
           result[parent] = true; // Marca el acordeón padre
         }
       });
-      console.log(result)
       return result;
     };
 

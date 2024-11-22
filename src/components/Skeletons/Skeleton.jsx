@@ -1,12 +1,12 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-export const SkeletonList = () => {
+export const Skeleton = () => {
   const constant = 10;
   const iterations = Array.from({ length: constant }, (_, index) => index + 1);
 
   return (
     <>
-      {iterations.map((iteration) => (
+      {/* {iterations.map((iteration) => (
         <div className="flex flex-col mt-4" key={Math.random()}>
           <div className="flex items-center space-x-4" >
             <Skeleton className="h-14 w-14 rounded-full" />
@@ -17,7 +17,8 @@ export const SkeletonList = () => {
             </div>
           </div>
         </div>
-      ))}
+      ))} */}
+      
     </>
   );
 };

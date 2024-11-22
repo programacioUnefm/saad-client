@@ -29,7 +29,7 @@ import {
   getCountry,
   getMunicipality,
   getParishes,
-} from "@/features/personal/expediente/tablasBasicas/datosPersonales/DatosPerThunk";
+} from "@/features/personal/expediente/tablasBasicas/paisesThunk";
 
 const columns = [
   {

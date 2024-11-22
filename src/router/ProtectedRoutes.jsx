@@ -1,52 +1,56 @@
+// Importación de dependencias necesarias
 import { navbarMenu } from '@/app/layouts/appLayout/components/menuJson';
-import { permissionCheck } from '@/features/PermissionCheck';
-import React, { useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate, Navigate, Outlet, useLocation } from 'react-router-dom';
+import { ChargeState } from '@/app/layouts/chargeState/ChargeState'; 
+import { NoAuthPage } from '@/app/layouts/unAuth/NoAuthPage'; 
+import { permissionCheck } from '@/features/PermissionCheck'; 
+import React, { useMemo, useEffect } from 'react'; 
+import { useSelector, useDispatch } from 'react-redux'; 
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'; // Importa useNavigate
+import IdleJs from 'idle-js'; 
+import { LogOutApp } from '@/features/auth/LoginThunk';
+import { dialogChange } from '@/features/ui/UiSlice';
 
 export const ProtectedRoutes = ({ redirectTo = "/login" }) => {
   const auth = useSelector((state) => state.auth);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation(); 
+  const dispatch = useDispatch(); 
+  const navigate = useNavigate(); // Hook para redireccionar
 
-  // Función recursiva para buscar una ruta específica en el menú
+  // Función recursiva para buscar la ruta actual dentro del menú de navegación
   const buscarRuta = (menu, rutaActual) => {
     for (const item of menu) {
-      if (item.path === rutaActual) return item;
-      if (item.subMenu) {
+      if (item.path === rutaActual) return item; // Coincide con la ruta actual
+      if (item.subMenu) { // Si hay un submenú, busca dentro de él
         const found = buscarRuta(item.subMenu, rutaActual);
         if (found) return found;
       }
     }
-    return null;
+    return null; // Si no encuentra nada, devuelve null
   };
+
+  // Obtiene información de la ruta actual mediante el hook `useMemo` para optimizar el rendimiento
+  const currentRoute = useMemo(
+    () => buscarRuta(navbarMenu, location.pathname),
+    [location.pathname] // Se actualiza cuando cambia la ruta
+  );
+
+  // Función para verificar si el usuario tiene permisos para acceder a la ruta actual
+  const checkPermissionStatus = () => {
+    if (!currentRoute) return false; // Si no existe la ruta, deniega el acceso
+    return permissionCheck(currentRoute.permission, auth.permissions); // Verifica los permisos
+  };
+
+  // Resultado de los permisos, memoizado para optimizar
+  const permissionStatus = useMemo(checkPermissionStatus, [currentRoute, auth.permissions]);
 
   
 
-  // Memoriza la ruta actual para evitar cálculos innecesarios
-  const currentRoute = useMemo(
-    () => buscarRuta(navbarMenu, location.pathname),
-    [location.pathname]
+  // Renderiza las rutas protegidas o muestra componentes alternativos según el estado de permisos
+  return permissionStatus === true ? ( 
+    <Outlet /> // Muestra el contenido de la ruta si tiene permisos
+  ) : permissionStatus === null ? (
+    <ChargeState /> // Muestra estado de carga si los permisos están pendientes
+  ) : (
+    <NoAuthPage /> // Muestra página de no autorizado si no tiene permisos
   );
-
-  // Verifica el estado de permisos
-  const checkPermissionStatus = () => {
-    if (!currentRoute) return false; // Si no encuentra la ruta, deniega acceso
-    return permissionCheck(currentRoute.permission, auth.permissions);
-  };
-
-  const permissionStatus = useMemo(checkPermissionStatus, [currentRoute, auth.permissions]);
-
-  // Redirige si el usuario no tiene permisos suficientes
-  useEffect(() => {
-    if (permissionStatus == false) navigate("/no-autorizado");
-  }, [permissionStatus, navigate]);
-
-  // Si el usuario no está autenticado, redirige al login
-  if (!auth.Authstatus) {
-    return <Navigate to={redirectTo} />;
-  }
-
-  // Renderiza la ruta protegida o nada si no tiene permisos
-  return permissionStatus ? <Outlet /> : null;
 };
