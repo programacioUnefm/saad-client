@@ -9,7 +9,6 @@ import { HeaderApp } from './components/HeaderApp'
 import { Button } from '../../../components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
 import { navbarMenu } from './components/menuJson'
-import { Card } from '@/components/ui/card'
 
 export function AppLayout ({
   children,
@@ -51,11 +50,11 @@ export function AppLayout ({
               </div>
             )}
           </div>
-          <Card className='p-5  rounded-lg border border-dashed shadow-sm h-full'>
+          <div className='p-5 dark:bg-background bg-slate-200/50 rounded-lg border border-dashed shadow-sm h-full'>
             <ScrollArea className='h-[75vh] px-4 relative'>
               {children}
             </ScrollArea>
-          </Card>
+          </div>
         </main>
       </div>
       <Toaster />
