@@ -1,65 +1,64 @@
-import React, { useEffect, useMemo, useRef, cloneElement, useState } from "react";
+import React, { useEffect, useMemo } from 'react'
 
-import { Toaster } from "../../../components/ui/toaster";
-import { ScrollArea, ScrollBar } from "../../../components/ui/scroll-area";
-import { Sidebar } from "./components/Sidebar";
-import { useSelector } from "react-redux";
-import { TitleAndBradCrum } from "./components/TitleAndBradCrum";
-import { HeaderApp } from "./components/HeaderApp";
-import { Button } from "../../../components/ui/button";
-import { PaginationItems } from "./components/PaginationItems";
-import { useToast } from "@/components/ui/use-toast";
-import { navbarMenu } from "./components/menuJson";
+import { Toaster } from '../../../components/ui/toaster'
+import { ScrollArea } from '../../../components/ui/scroll-area'
+import { Sidebar } from './components/Sidebar'
+import { useSelector } from 'react-redux'
+import { TitleAndBradCrum } from './components/TitleAndBradCrum'
+import { HeaderApp } from './components/HeaderApp'
+import { Button } from '../../../components/ui/button'
+import { useToast } from '@/components/ui/use-toast'
+import { navbarMenu } from './components/menuJson'
+import { Card } from '@/components/ui/card'
 
-export function AppLayout({
+export function AppLayout ({
   children,
   title,
-  titleButton = "",
-  functionButton = undefined,
+  titleButton = '',
+  functionButton = undefined
 }) {
-  const { theme } = useSelector((state) => state.auth);
-  const { dialog, siebarState } = useSelector((state) => state.ui);
-  const { toast } = useToast();
+  const { dialog, siebarState } = useSelector((state) => state.ui)
+  const { toast } = useToast()
   useEffect(() => {
     dialog.status &&
       toast({
         title: dialog.title,
         variant: dialog.variant,
-        description: dialog.message,
-      });
-  }, [dialog]);
-  
+        description: dialog.message
+      })
+  }, [dialog])
+
   const sidebarComponent = useMemo(
     () => <Sidebar menu={navbarMenu} />,
     [navbarMenu]
-  );
+  )
 
   return (
-    <div className={`grid min-h-screen w-full transition-all ${siebarState ? "md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]" : "md:grid-cols-[80px_1fr]"}`}>
+    <div className={`grid min-h-screen w-full transition-all ${siebarState ? 'md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]' : 'md:grid-cols-[80px_1fr]'}`}>
       {sidebarComponent}
-      <div className="flex flex-col bg-slate-50 dark:bg-background">
+      <div className='flex flex-col bg-slate-50 dark:bg-background'>
         <HeaderApp />
-        <main className="flex flex-1 flex-col bg-muted/10 gap-4 p-4 lg:gap-6 lg:p-6">
-          <div className="grid grid-cols-2">
+        <main className='flex flex-1 flex-col bg-muted/10 gap-4 p-4 lg:gap-6 lg:p-6'>
+          <div className='grid grid-cols-2'>
             <div>
               <TitleAndBradCrum title={title} />
             </div>
             {!!titleButton && (
-              <div className="flex justify-end items-end pr-12">
-                <Button variant="outline" onClick={functionButton}>
+              <div className='flex justify-end items-end pr-12'>
+                <Button variant='outline' onClick={functionButton}>
                   {titleButton}
                 </Button>
               </div>
             )}
           </div>
-          <div className="p-5 dark:bg-background bg-slate-100 rounded-lg border border-dashed shadow-sm h-full">
-            <ScrollArea className="h-[75vh] px-4 relative">
+          <Card className='p-5  rounded-lg border border-dashed shadow-sm h-full'>
+            <ScrollArea className='h-[75vh] px-4 relative'>
               {children}
             </ScrollArea>
-          </div>
+          </Card>
         </main>
       </div>
       <Toaster />
     </div>
-  );
+  )
 }
