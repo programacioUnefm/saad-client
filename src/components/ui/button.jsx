@@ -9,16 +9,14 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-white hover:bg-primary/80 uppercase",
-        primary: "bg-primary hover:bg-primary/50 uppercase",
-        destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground px-4 uppercase",
-        secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+        default: 'bg-primary text-white hover:bg-primary/80 uppercase',
+        primary: 'bg-primary hover:bg-primary/50 uppercase',
+        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+        warn: 'bg-danger-default text-danger-foreground hover:bg-danger/90 uppercase',
+        outline: 'border border-slate-300 dark:border-input bg-slate-100 dark:bg-background hover:bg-accent hover:text-accent-foreground px-4 uppercase',
+        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80 uppercase',
+        ghost: 'hover:bg-accent hover:text-accent-foreground',
+        link: 'text-primary underline-offset-4 hover:underline'
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -35,6 +33,7 @@ const buttonVariants = cva(
   }
 )
 
+// eslint-disable-next-line react/prop-types
 const Button = React.forwardRef(({ className, variant, size, asChild = false, ...props }, ref) => {
   const Comp = asChild ? Slot : "button"
   return (
