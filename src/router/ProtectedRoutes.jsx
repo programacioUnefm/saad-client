@@ -38,6 +38,8 @@ export const ProtectedRoutes = ({ redirectTo = '/login' }) => {
     return permissionCheck(currentRoute.permission, auth.permissions) // Verifica los permisos
   }
 
+  // FIXME: este codigo esta comentado en fase de desarrolo pero debo descomentarlo en producción
+
   // Resultado de los permisos, memoizado para optimizar
   const permissionStatus = useMemo(checkPermissionStatus, [currentRoute, auth.permissions])
   // *** Manejo de inactividad con idle-js ***
