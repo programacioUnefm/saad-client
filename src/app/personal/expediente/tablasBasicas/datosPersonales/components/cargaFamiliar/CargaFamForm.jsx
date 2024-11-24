@@ -1,116 +1,162 @@
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import React from "react";
-import { useForm } from "react-hook-form";
+import { FormInput } from '@/components/FormInput'
+import { FormSelect } from '@/components/FormSelect'
+import { Button } from '@/components/ui/button'
+import { addNewCargaFam } from '@/features/personal/expediente/tablasBasicas/datosPersonales/cargaFamiliarThunk'
+import { CargaFamiliarSchema, parentesco } from '@/features/validations/CargaFamiliarSchema'
+import { sexo } from '@/features/validations/PersonalSchema'
+import { zodResolver } from '@hookform/resolvers/zod'
+import PropTypes from 'prop-types'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
 
-export const CargaFamForm = ({ data }) => {
-  const { register, handleSubmit, watch } = useForm({
+export const CargaFamForm = ({ data, setcargaFamDialogStatus }) => {
+  const { register, handleSubmit, formState: { errors }, trigger, setValue } = useForm({
     defaultValues: data,
-  });
-  const onSubmit = (data) => console.log(data);
-  console.log(watch());
+    resolver: zodResolver(CargaFamiliarSchema) // Resolver usando el esquema de Zod
+  })
+  const { tipoDiscapacidades } = useSelector(state => state.personal.expediente.tablasBasicas)
+  const discapacidad = tipoDiscapacidades.data.map(
+    item => ({ value: JSON.stringify(item.id), label: item.discapacidad })
+  )
+
+  discapacidad.unshift({ value: null, label: 'Ningúna' })
+  const dispatch = useDispatch()
+  const onSubmit = async (dataForm) => {
+    const newData = { ...dataForm, registrado: dataForm.registrado ? dataForm.registrado : new Date() }
+    const resp = await dispatch(addNewCargaFam(newData))
+    console.log(resp)
+  }
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="grid grid-cols-3 gap-4">
-        <div>
-          <Label>Cédula familiar</Label>
-          <Input
-            placeholder="Ej: 23453548"
-            {...register("cedula_fam", { required: true, maxLength: 20 })}
+    <div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className='grid grid-cols-3 gap-4'>
+          <FormInput
+            register={register}
+            type='text'
+            name='cedula_fam'
+            placeholder='Ej: 23453548'
+            label='Cédula familiar *'
+            error={errors.cedula_fam}
+          />
+          <FormInput
+            register={register}
+            type='text'
+            name='nombre1'
+            placeholder='Jhon'
+            label='Primer nombre *'
+            error={errors.nombre1}
+          />
+          <FormInput
+            register={register}
+            type='text'
+            name='nombre2'
+            placeholder='Doe'
+            label='Segundo nombre'
+            error={errors.nombre2}
           />
         </div>
-        <div>
-          <Label>Nombre 1</Label>
-          <Input
-            placeholder="Ej: Jhon"
-            {...register("nombre1", { required: true, maxLength: 20 })}
+        <div className='grid grid-cols-2 gap-4'>
+          <FormInput
+            register={register}
+            type='text'
+            name='apellido1'
+            placeholder='Gomez'
+            label='Primer apellido *'
+            error={errors.apellido1}
+          />
+          <FormInput
+            register={register}
+            type='text'
+            name='apellido2'
+            placeholder='Polanco'
+            label='Segundo apellido'
+            error={errors.apellido2}
           />
         </div>
-        <div>
-          <Label>Nombre 2</Label>
-          <Input
-            placeholder="Ej: Doe"
-            {...register("nombre2", { required: true, maxLength: 20 })}
+        <div className='grid grid-cols-3 gap-4'>
+          <FormInput
+            register={register}
+            type='date'
+            name='nacimiento'
+            label='Nacimiento *'
+            error={errors.nacimiento}
+          />
+
+          <FormSelect
+            trigger={trigger}
+            label='Parentesco *'
+            options={parentesco}
+            register={register}
+            name='parentesco'
+            defaultValue={data.parentesco}
+            setValue={setValue}
+            error={errors.parentesco}
+          />
+
+          <FormSelect
+            trigger={trigger}
+            label='Sexo *'
+            options={sexo}
+            register={register}
+            name='sexo'
+            defaultValue={data.sexo}
+            setValue={setValue}
+            error={errors.sexo}
+          />
+
+        </div>
+        <div className='grid grid-cols-3 gap-4 mt-4'>
+          <FormSelect
+            trigger={trigger}
+            label='Discapacidad'
+            options={discapacidad}
+            register={register}
+            name='tipo_discapacidad_id'
+            defaultValue={data.tipo_discapacidad_id}
+            setValue={setValue}
+            error={errors.tipo_discapacidad_id}
+          />
+
+          <FormInput
+            register={register}
+            type='date'
+            name='registrado'
+            label='registrado'
+            error={errors.registrado}
+          />
+          <FormInput
+            register={register}
+            type='date'
+            name='fallecimiento'
+            label='Fallecimiento'
+            error={errors.fallecimiento}
           />
         </div>
-      </div>
-      <div className="grid grid-cols-2 gap-4 mt-2">
-        <div>
-          <Label>Apellido 1</Label>
-          <Input
-            placeholder="Ej: 23453548"
-            {...register("apellido1", { required: true, maxLength: 20 })}
-          />
+        <div className='flex gap-4 mt-4'>
+          <Button variant='secondary' type='button' onClick={() => setcargaFamDialogStatus({ status: false, employed: {} })}>Cerrar</Button>
+          {/* <Button type='button' variant='outline'>Resetear</Button> */}
+          <Button type='submit'>agregar familiar</Button>
         </div>
-        <div>
-          <Label>Apellido 2</Label>
-          <Input
-            placeholder="Ej: Jhon"
-            {...register("apellido2", { required: true, maxLength: 20 })}
-          />
-        </div>
-      </div>
-      <div className="grid grid-cols-3 gap-4 mt-2">
-        <div>
-          <Label>Nacimiento</Label>
-          <Input
-            placeholder="Ej: 23453548"
-            type="date"
-            {...register("nacimiento")}
-          />
-        </div>
-        <div>
-          <Label>Parentesco</Label>
-          <Select defaultValue={watch().parentesco}>
-            <SelectTrigger {...register("parentesco")}>
-              <SelectValue placeholder="seleccione" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="padre">Padre</SelectItem>
-              <SelectItem value="hijo">Hijo</SelectItem>
-              <SelectItem value="conyugue">Conyugue</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div>
-          <Label>sexo</Label>
-          <Select defaultValue={watch().sexo}>
-            <SelectTrigger {...register("sexo")}>
-              <SelectValue placeholder="seleccione" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="M">Masculino</SelectItem>
-              <SelectItem value="F">Femenino</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-      <div className="grid grid-cols-3 gap-4 mt-4">
-        <div>comboBox</div>
-        <div>
-          <Label>Registrado</Label>
-          <Input
-            placeholder="Ej: 23453548"
-            type="date"
-            {...register("registrado")}
-          />
-        </div>
-        <div>
-          <Label>FALLECIMIENTO</Label>
-          <Input
-            placeholder="Ej: 23453548"
-            type="date"
-            {...register("registrado")}
-          />
-        </div>
-      </div>
-    </form>
-  );
-};
+      </form>
+    </div>
+  )
+}
+
+CargaFamForm.propTypes = {
+  data: PropTypes.shape({
+    empleado_id: PropTypes.number.isRequired,
+    tipo_discapacidad_id: PropTypes.number,
+    cedula_fam: PropTypes.string.isRequired,
+    nombre1: PropTypes.string.isRequired,
+    nombre2: PropTypes.string.isRequired,
+    apellido1: PropTypes.string,
+    apellido2: PropTypes.string,
+    nacimiento: PropTypes.string,
+    sexo: PropTypes.string.isRequired,
+    parentesco: PropTypes.string.isRequired,
+    registrado: PropTypes.string,
+    fallecimiento: PropTypes.string
+  }),
+  setcargaFamDialogStatus: PropTypes.func.isRequired
+}

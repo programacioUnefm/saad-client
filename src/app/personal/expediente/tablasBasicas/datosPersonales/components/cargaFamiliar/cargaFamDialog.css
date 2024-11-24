@@ -1,0 +1,19 @@
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .dialog-content {
+    background: white;
+    padding: 20px;
+    width: 800px!important; /* Ajusta el ancho del diálogo */
+    height: 300px; /* Ajusta la altura del diálogo */
+    border-radius: 8px;
+  }
+  
