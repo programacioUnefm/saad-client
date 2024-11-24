@@ -6,7 +6,8 @@ export const PersonalSlice = createSlice({
     expediente: {
       tablasBasicas: {
         personal: [],
-        datosPer: {
+        tipoDiscapacidades: [],
+        dataPais: {
           paises: {},
           estados: {},
           municipios: {},
@@ -17,22 +18,25 @@ export const PersonalSlice = createSlice({
   },
   reducers: {
     getPaises: (state, action) => {
-      state.expediente.tablasBasicas.datosPer.paises = action.payload
+      state.expediente.tablasBasicas.dataPais.paises = action.payload
     },
     getEstados: (state, action) => {
-      state.expediente.tablasBasicas.datosPer.estados = action.payload
+      state.expediente.tablasBasicas.dataPais.estados = action.payload
     },
     getMunicipios: (state, action) => {
-      state.expediente.tablasBasicas.datosPer.municipios = action.payload
+      state.expediente.tablasBasicas.dataPais.municipios = action.payload
     },
     getParroquias: (state, action) => {
-      state.expediente.tablasBasicas.datosPer.parroquias = action.payload
+      state.expediente.tablasBasicas.dataPais.parroquias = action.payload
     },
     getEmployeSlice: (state, action) => {
       state.expediente.tablasBasicas.personal = action.payload
+    },
+    getTipoDiscapacidad: (state, action) => {
+      state.expediente.tablasBasicas.tipoDiscapacidades = action.payload
     }
   }
 })
-export const { getPaises, getEstados, getMunicipios, getParroquias, getEmployeSlice } = PersonalSlice.actions
+export const { getPaises, getEstados, getMunicipios, getParroquias, getEmployeSlice, getTipoDiscapacidad } = PersonalSlice.actions
 
 export default PersonalSlice.reducer

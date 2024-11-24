@@ -1,26 +1,24 @@
-import { icons } from "lucide-react";
-
 export const navbarMenu = [
   {
-    title: "Inicio",
-    path: "/inicio",
-    icon: "Home",
-    permission: ["HOME"],
-    action: "disable",
+    title: 'Inicio',
+    path: '/inicio',
+    icon: 'Home',
+    permission: ['HOME'],
+    action: 'disable'
   },
   {
-    title: "Página no encontrada",
-    path: "/no-encontrada",
-    icon: "Home",
-    permission: ["HOME"],
-    action: "hidden",
+    title: 'Página no encontrada',
+    path: '/no-encontrada',
+    icon: 'Home',
+    permission: ['HOME'],
+    action: 'hidden'
   },
   {
-    title: "Mi cuenta",
-    path: "/mi-cuenta",
-    icon: "",
-    permission: ["NONE"],
-    action: "hidden",
+    title: 'Mi cuenta',
+    path: '/mi-cuenta',
+    icon: '',
+    permission: ['NONE'],
+    action: 'hidden'
   },
   // {
   //   title: "Administrativo",
@@ -297,18 +295,18 @@ export const navbarMenu = [
   //   ],
   // },
   {
-    title: "Personal",
-    path: "/academico",
-    permission: ["HOME_PERSONAL"],
-    action: "disable",
-    icon: "Users",
+    title: 'Personal',
+    path: '/academico',
+    permission: ['HOME_PERSONAL'],
+    action: 'disable',
+    icon: 'Users',
     subMenu: [
       {
-        title: "Expediente",
-        path: "/personal/expediente",
-        permission: ["PERSONAL_EXPEDIENTE"],
-        action: "disable",
-        icon: "Library",
+        title: 'Expediente',
+        path: '/personal/expediente',
+        permission: ['PERSONAL_EXPEDIENTE'],
+        action: 'disable',
+        icon: 'Library',
         subMenu: [
           // {
           //   title: "Registro datos",
@@ -399,19 +397,19 @@ export const navbarMenu = [
           //   ],
           // },
           {
-            title: "Tablas básicas",
-            permission: ["PERSONAL_EXPEDIENTE_TABLASB"],
-            action: "disable",
-            path: "/personal/expediente/tablas-basicas",
-            icon: "Table",
+            title: 'Tablas básicas',
+            permission: ['PERSONAL_EXPEDIENTE_TABLASB'],
+            action: 'disable',
+            path: '/personal/expediente/tablas-basicas',
+            icon: 'Table',
             subMenu: [
               {
-                title: "Datos personales",
-                path: "/personal/tablas-basicas/datos-personales",
-                permission: ["EXPEDIENTE_TABLASB_DATOS_PERSONALES"],
-                action: "disable",
-                icon: "ChevronRight",
-              },
+                title: 'Datos personales',
+                path: '/personal/tablas-basicas/datos-personales',
+                permission: ['EXPEDIENTE_TABLASB_DATOS_PERSONALES'],
+                action: 'disable',
+                icon: 'ChevronRight'
+              }
               // {
               //   title: "Dedicación",
               //   path: "/personal/expediente/trabajos-anteriores",
@@ -534,8 +532,8 @@ export const navbarMenu = [
               //     },
               //   ],
               // },
-            ],
-          },
+            ]
+          }
           // {
           //   title: "Reportes",
           //   path: "/personal/expediente/reportes",
@@ -554,8 +552,8 @@ export const navbarMenu = [
           //     },
           //   ],
           // },
-        ],
-      },
+        ]
+      }
       // {
       //   title: "Nómina",
       //   path: "/administrativo/compras/plan-compras",
@@ -605,27 +603,27 @@ export const navbarMenu = [
       //     },
       //   ],
       // },
-    ],
+    ]
   },
   {
-    title: "Control",
-    path: "/control",
-    icon: "Lock",
-    permission: ["HOME", "HOME_CONTROL"],
-    action: "only-admin",
+    title: 'Control',
+    path: '/control',
+    icon: 'Lock',
+    permission: ['HOME', 'HOME_CONTROL'],
+    action: 'only-admin',
     subMenu: [
       {
-        title: "Administrar Usuarios",
-        path: "/control/usuarios",
-        permission: ["HOME_CONTROL", "CONTROL_ADMIN_USERS"],
-        icon: "ChevronRight",
+        title: 'Administrar Usuarios',
+        path: '/control/usuarios',
+        permission: ['HOME_CONTROL', 'CONTROL_ADMIN_USERS'],
+        icon: 'ChevronRight'
       },
       {
-        title: "Bitacora de sistema",
-        path: "/control/bitacora",
-        permission: ["HOME_CONTROL", "CONTROL_BITACORA"],
-        icon: "ChevronRight",
-      },
-    ],
-  },
-];
+        title: 'Bitacora de sistema',
+        path: '/control/bitacora',
+        permission: ['HOME_CONTROL', 'CONTROL_BITACORA'],
+        icon: 'ChevronRight'
+      }
+    ]
+  }
+]

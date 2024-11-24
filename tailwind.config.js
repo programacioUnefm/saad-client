@@ -59,7 +59,8 @@ module.exports = {
         },
 
         danger: {
-          default: '#ff6f00'
+          default: '#ffd900a6',
+          foreground: '#ffff'
         },
 
         muted: {

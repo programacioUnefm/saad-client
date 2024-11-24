@@ -15,10 +15,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { FormInput } from '@/components/FormInput'
 import { FormSelect } from '@/components/FormSelect'
-import { addNewEmploye } from '@/features/personal/expediente/tablasBasicas/datosPersonales/datosPersonalesThunk'
+import { addNewEmploye, editEmploye } from '@/features/personal/expediente/tablasBasicas/datosPersonales/datosPersonalesThunk'
 import { dialogChange, resetDialog } from '@/features/ui/UiSlice'
-
-export const AddPersonalForm = ({ data }) => {
+// TODO: pasar cada seccioón a componentes mas pequeños para acortar el código y pasar todo a una carpeta llamada acctionsPersonal, renombara este comoponente a actionsPersonalForm
+export const AddPersonalForm = ({ data, setactionButton }) => {
   // Inicialización del formulario con React Hook Form y Zod
   const {
     register,
@@ -34,7 +34,7 @@ export const AddPersonalForm = ({ data }) => {
 
   // Accedemos a los datos de países, municipios, estados, y parroquias desde Redux
   const { paises, municipios, estados, parroquias } = useSelector(
-    (state) => state.personal.expediente.tablasBasicas.datosPer
+    (state) => state.personal.expediente.tablasBasicas.dataPais
   )
 
   // Estado local para manejar los municipios y parroquias filtrados
@@ -51,16 +51,12 @@ export const AddPersonalForm = ({ data }) => {
         (m) => m.estado_id === estado.id
       )
       setMunicipiosFiltered(filteredMunicipios)
-      setValue('municipio', {}) // Reset municipio cuando cambia el estado
-      setValue('parroquia', {}) // Reset municipio cuando cambia el estado
-      setParroquiasFiltered([]) // Reset parroquia cuando cambia el municipio
     }
   }, [estado, municipios.data, setValue])
 
   // Filtrar parroquias según el municipio seleccionado
   useEffect(() => {
     if (municipio && parroquias.data) {
-      setValue('parroquia', {})
       const filteredParroquias = parroquias.data.filter(
         (p) => p.municipio_id === municipio.id
       )
@@ -84,31 +80,44 @@ export const AddPersonalForm = ({ data }) => {
 
   // Función que se llama al enviar el formulario
   const onSubmit = async (dataForm) => {
+    let resp = null
     const newData = {
+      id: data.id,
       ...dataForm,
       parroquia_id: dataForm.parroquia.id,
-      pais_id: dataForm.pais.id
+      pais_nacimiento_id: dataForm.pais.id
     }
-    const resp = await dispatch(addNewEmploye(newData))
-    console.log(resp)
+    if (!data?.id) {
+      resp = await dispatch(addNewEmploye(newData))
+    } else {
+      resp = await dispatch(editEmploye(newData))
+    }
 
     switch (resp.responseCode) {
       case 200:
         dispatch(
           dialogChange({
-            title: 'Personal agregado',
-            message: `El nuevo personal ${dataForm.name1} ha sido ingresado.`,
+            title: `Personal ${!data?.id ? 'agregado' : 'editado'}`,
+            message: `El ${!data?.id ? 'nuevo' : ''} personal ${dataForm.nombre1} ha sido ${!data?.id ? 'agregado' : 'editado'}.`,
             status: true,
             duration: 3000,
             variant: ''
           })
         )
+        setTimeout(() => {
+          dispatch(resetDialog())
+        }, 3000)
+        data?.id && setactionButton({
+          status: false,
+          textButton: 'Agregar personal',
+          title: 'Personal'
+        })
         break
       case 422:
         dispatch(
           dialogChange({
-            title: resp.message,
-            message: Object.values(resp.errors).flat().join(' | '),
+            title: 'Error de validación',
+            message: Object.values(resp.errors).flat().join(' '),
             status: true,
             duration: 3000,
             variant: 'destructive'
@@ -121,6 +130,16 @@ export const AddPersonalForm = ({ data }) => {
     }
   }
 
+  // function isValidURL (url) {
+  //   try {
+  //     // eslint-disable-next-line no-new
+  //     new URL(url) // Intenta construir la URL
+  //     return true // Si no hay error, la URL es válida
+  //   } catch {
+  //     return false // Si hay error, no es válida
+  //   }
+  // }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {/* Sección de Datos Básicos */}
@@ -128,14 +147,20 @@ export const AddPersonalForm = ({ data }) => {
         <div className='text-center uppercase font-bold mb-2'>
           Datos básicos
         </div>
+        {/* TODO: discutir con el equipo de trabajo como se va a tratar las imágenes para aplicar este cambio */}
+        {/* <div className='justify-center flex mt-8'>
+          <div className={`dark:bg-accent bg-slate-300 rounded-md w-[200px] h-[200px] bg-cover bg-center flex justify-center items-center text-center bg-[url('${watch().foto}')]`}>
+            {watch().foto === '' || !isValidURL(watch().foto) ? (<span>La imágen debe ser de <b>500 x 500</b> (opcional)</span>) : ''}
+          </div>
+        </div>
         <FormInput
-          label='Cédula'
+          label='Foto tipo carnet'
           register={register}
           name='foto'
           type='text'
-          placeholder='Ej: url'
+          placeholder='Ej: ingrese url válida'
           error={errors.foto}
-        />
+        /> */}
         <div className='grid md:grid-cols-3 xl:grid-cols-6 gap-4'>
           {/* Selección de Documento */}
           <FormSelect
@@ -150,7 +175,7 @@ export const AddPersonalForm = ({ data }) => {
           />
           {/* Campo para Cédula */}
           <FormInput
-            label='Cédula'
+            label='Cédula *'
             register={register}
             name='cedula'
             type='text'
@@ -159,7 +184,7 @@ export const AddPersonalForm = ({ data }) => {
           />
           {/* Campo para RIF */}
           <FormInput
-            label='RIF'
+            label='RIF *'
             register={register}
             name='rif'
             type='text'
@@ -168,7 +193,7 @@ export const AddPersonalForm = ({ data }) => {
           />
           {/* Campo para Email personal */}
           <FormInput
-            label='Email personal'
+            label='Email personal *'
             register={register}
             name='email1'
             type='email'
@@ -187,7 +212,7 @@ export const AddPersonalForm = ({ data }) => {
           {/* Selección de Tipo de personal */}
           <FormSelect
             trigger={trigger}
-            label='Tipo personal'
+            label='Tipo personal *'
             options={tipoPer}
             register={register}
             name='nivel_profesional_id'
@@ -206,7 +231,7 @@ export const AddPersonalForm = ({ data }) => {
         <div className='grid md:grid-cols-2 xl:grid-cols-4 gap-4'>
           {/* Campos para el nombre y apellidos */}
           <FormInput
-            label='Primer Nombre'
+            label='Primer Nombre *'
             register={register}
             name='nombre1'
             type='text'
@@ -221,7 +246,7 @@ export const AddPersonalForm = ({ data }) => {
             error={errors.nombre2}
           />
           <FormInput
-            label='Primer Apellido'
+            label='Primer Apellido *'
             register={register}
             name='apellido1'
             placeholder='Ej: Gonzáles'
@@ -245,14 +270,14 @@ export const AddPersonalForm = ({ data }) => {
         <div className='grid md:grid-cols-2 xl:grid-cols-4 gap-4'>
           {/* Dirección y Teléfonos */}
           <FormInput
-            label='Dirección'
+            label='Dirección *'
             register={register}
             name='direccion'
             placeholder='Ej: Av. Josefa camejo'
             error={errors.direccion}
           />
           <FormInput
-            label='Teléfono'
+            label='Teléfono *'
             register={register}
             name='telefono1'
             placeholder='Ej: 04123688594'
@@ -269,9 +294,9 @@ export const AddPersonalForm = ({ data }) => {
           <ComboBox
             trigger={trigger}
             list={paises.data}
-            title='país'
+            title='pais'
             keyLabel='pais'
-            label='País residencia'
+            label='País residencia *'
             setValue={setValue}
             value={pais}
             error={errors.pais}
@@ -286,7 +311,7 @@ export const AddPersonalForm = ({ data }) => {
               trigger={trigger}
               list={estados.data}
               title='estado'
-              label='Estado'
+              label='Estado *'
               setValue={setValue}
               value={estado}
               error={errors.estado}
@@ -295,7 +320,7 @@ export const AddPersonalForm = ({ data }) => {
               trigger={trigger}
               list={municipiosFiltered}
               title='municipio'
-              label='Municipio'
+              label='Municipio *'
               setValue={setValue}
               value={municipio}
               error={errors.municipio}
@@ -304,7 +329,7 @@ export const AddPersonalForm = ({ data }) => {
               trigger={trigger}
               list={parroquiasFiltered}
               title='parroquia'
-              label='Parroquias'
+              label='Parroquia *'
               setValue={setValue}
               value={parroquia}
               error={errors.parroquia}
@@ -321,7 +346,7 @@ export const AddPersonalForm = ({ data }) => {
         <div className='grid grid-cols-4 gap-4'>
           {/* Fecha de nacimiento, sexo y estado civil */}
           <FormInput
-            label='Fecha de nacimiento'
+            label='Fecha de nacimiento *'
             register={register}
             name='fecha_nacimiento'
             type='date'
@@ -330,7 +355,7 @@ export const AddPersonalForm = ({ data }) => {
           />
           <FormSelect
             trigger={trigger}
-            label='Sexo'
+            label='Sexo *'
             options={sexo}
             register={register}
             name='sexo'
@@ -340,7 +365,7 @@ export const AddPersonalForm = ({ data }) => {
           />
           <FormSelect
             trigger={trigger}
-            label='Estado civil'
+            label='Estado civil *'
             options={estadoCivil}
             register={register}
             name='estado_civil'
@@ -350,7 +375,7 @@ export const AddPersonalForm = ({ data }) => {
           />
           <FormSelect
             trigger={trigger}
-            label='Tipo de sangre'
+            label='Tipo de sangre *'
             options={sangre}
             register={register}
             name='sangre'
@@ -393,8 +418,8 @@ export const AddPersonalForm = ({ data }) => {
 
       {/* Botón de Submit */}
       <div className=''>
-        <Button type='submit' variant='primary'>
-          guardar personal
+        <Button type='submit' variant={data?.id ? 'warn' : 'primary'}>
+          {!data?.id ? 'guardar personal' : 'editar personal'}
         </Button>
       </div>
     </form>
