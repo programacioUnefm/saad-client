@@ -1,7 +1,8 @@
 import { FormInput } from '@/components/FormInput'
 import { FormSelect } from '@/components/FormSelect'
 import { Button } from '@/components/ui/button'
-import { addNewCargaFam } from '@/features/personal/expediente/tablasBasicas/datosPersonales/cargaFamiliarThunk'
+import { addNewCargaFam, EditCargaFam } from '@/features/personal/expediente/tablasBasicas/datosPersonales/cargaFamiliarThunk'
+import { dialogChange, resetDialog } from '@/features/ui/UiSlice'
 import { CargaFamiliarSchema, parentesco } from '@/features/validations/CargaFamiliarSchema'
 import { sexo } from '@/features/validations/PersonalSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -10,7 +11,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 
-export const CargaFamForm = ({ data, setcargaFamDialogStatus }) => {
+export const CargaFamForm = ({ data, setcargaFamDialogStatus, setaction, employed }) => {
   const { register, handleSubmit, formState: { errors }, trigger, setValue } = useForm({
     defaultValues: data,
     resolver: zodResolver(CargaFamiliarSchema) // Resolver usando el esquema de Zod
@@ -19,13 +20,57 @@ export const CargaFamForm = ({ data, setcargaFamDialogStatus }) => {
   const discapacidad = tipoDiscapacidades.data.map(
     item => ({ value: JSON.stringify(item.id), label: item.discapacidad })
   )
-
   discapacidad.unshift({ value: null, label: 'Ningúna' })
+
   const dispatch = useDispatch()
   const onSubmit = async (dataForm) => {
-    const newData = { ...dataForm, registrado: dataForm.registrado ? dataForm.registrado : new Date() }
-    const resp = await dispatch(addNewCargaFam(newData))
-    console.log(resp)
+    const newData = { ...dataForm, id: data.id ? data.id : null, registrado: dataForm.registrado }
+    let resp = null
+
+    if (!data?.id) {
+      resp = await dispatch(addNewCargaFam(newData))
+    } else {
+      resp = await dispatch(EditCargaFam(newData))
+    }
+
+    switch (resp.responseCode) {
+      case 200:
+        dispatch(
+          dialogChange({
+            title: `Carga familiar ${!data?.id ? 'agregado' : 'editado'}`,
+            message: `El ${!data?.id
+            ? 'nuevo'
+            : ''} familiar "${dataForm.nombre1} ${dataForm.apellido1}" ha sido 
+            ${!data?.id
+            ? 'agregado'
+            : 'editado'} en la carga familiar de 
+            "${employed.nombre1} 
+            ${employed.nombre2}".`,
+            status: true,
+            duration: 3000,
+            variant: ''
+          })
+        )
+        setTimeout(() => {
+          dispatch(resetDialog())
+        }, 3000)
+        setaction('table')
+        break
+      case 422:
+        dispatch(
+          dialogChange({
+            title: 'Error de validación',
+            message: Object.values(resp.errors).flat().join(' '),
+            status: true,
+            duration: 3000,
+            variant: 'destructive'
+          })
+        )
+        setTimeout(() => {
+          dispatch(resetDialog())
+        }, 3000)
+        break
+    }
   }
   return (
     <div>
@@ -134,9 +179,11 @@ export const CargaFamForm = ({ data, setcargaFamDialogStatus }) => {
           />
         </div>
         <div className='flex gap-4 mt-4'>
-          <Button variant='secondary' type='button' onClick={() => setcargaFamDialogStatus({ status: false, employed: {} })}>Cerrar</Button>
-          {/* <Button type='button' variant='outline'>Resetear</Button> */}
-          <Button type='submit'>agregar familiar</Button>
+          <Button variant='outline' type='button' onClick={() => setcargaFamDialogStatus({ status: false, employed: {} })}>Cerrar</Button>
+          <Button variant='secondary' type='button' onClick={() => setaction('table')}>Volver</Button>
+          <Button type='submit' variant={data?.id ? 'warn' : 'primary'}>
+            {!data?.id ? 'guardar personal' : 'editar personal'}
+          </Button>
         </div>
       </form>
     </div>
@@ -145,7 +192,7 @@ export const CargaFamForm = ({ data, setcargaFamDialogStatus }) => {
 
 CargaFamForm.propTypes = {
   data: PropTypes.shape({
-    empleado_id: PropTypes.number.isRequired,
+    empleado_id: PropTypes.number,
     tipo_discapacidad_id: PropTypes.number,
     cedula_fam: PropTypes.string.isRequired,
     nombre1: PropTypes.string.isRequired,

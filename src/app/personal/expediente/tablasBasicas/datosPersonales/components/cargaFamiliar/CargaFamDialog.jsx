@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CargaFamForm } from './CargaFamForm'
 import {
   Dialog,
@@ -10,9 +10,12 @@ import {
 import './cargaFamDialog.css'
 import PropTypes from 'prop-types'
 import { DataTableCargaFam } from './DataTableCargaFam'
+import { format } from 'date-fns'
 
 export const CargaFamDialog = ({ cargaFamDialogStatus, setcargaFamDialogStatus }) => {
-  const [data] = useState({
+  const fechaHoy = new Date(); const
+    today = format(fechaHoy, 'yyyy-MM-dd')
+  const initialState = {
     empleado_id: cargaFamDialogStatus.employed.id,
     tipo_discapacidad_id: null,
     cedula_fam: '',
@@ -23,20 +26,30 @@ export const CargaFamDialog = ({ cargaFamDialogStatus, setcargaFamDialogStatus }
     nacimiento: null,
     sexo: 'M',
     parentesco: 'padre',
-    registrado: null,
+    registrado: today,
     fallecimiento: null
-  })
+  }
+  const [data, setData] = useState({ ...initialState })
+
+  const [action, setaction] = useState('table')
+
+  useEffect(() => {
+    setaction('table')
+  }, [])
 
   return (
     <Dialog open={cargaFamDialogStatus.status}>
-      <DialogContent className='max-w-[800px] h-auto'>
+      <DialogContent className='max-w-none w-[80vw] h-auto'>
         <DialogHeader>
           <DialogTitle className='uppercase text-foreground/80 font-normal'>Familiares de <b className='text-white'>{cargaFamDialogStatus.employed.nombre1}  {cargaFamDialogStatus.employed.apellido1}</b></DialogTitle>
           <DialogDescription />
         </DialogHeader>
         <div className='mt-2'>
-          <DataTableCargaFam employed={cargaFamDialogStatus.employed} setcargaFamDialogStatus={setcargaFamDialogStatus} />
-          {/* <CargaFamForm data={data} setcargaFamDialogStatus={setcargaFamDialogStatus} /> */}
+          {
+          action === 'table'
+            ? (<DataTableCargaFam employed={cargaFamDialogStatus.employed} setcargaFamDialogStatus={setcargaFamDialogStatus} setaction={setaction} setData={setData} />)
+            : (<CargaFamForm employed={cargaFamDialogStatus.employed} data={data} setcargaFamDialogStatus={setcargaFamDialogStatus} setaction={setaction} />)
+          }
         </div>
       </DialogContent>
     </Dialog>

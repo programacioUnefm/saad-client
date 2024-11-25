@@ -73,7 +73,7 @@ export const CargaFamiliarSchema = z.object({
     {
       message: ERROR_MESSAGES.DATE_OUT_OF_RANGE // Mensaje si la fecha está fuera del rango
     }
-  ).nullable().optional(),
+  ),
   fallecimiento: z.any().refine(
     (date) => {
       const fechaLimiteInferior = parseISO('1960-01-01') // Fecha límite inferior (1960-01-01)

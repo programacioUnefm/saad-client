@@ -24,11 +24,11 @@ import { ConfigTable } from './ConfigTable'
 import { NoData } from './NoData'
 import { FiltersHeader } from './FiltersHeader'
 import { NoFIlterHeader } from './NoFIlterHeader'
+import { NoDataTable } from '@/app/layouts/404page/NoDataTable'
 
 export const DataTable = ({ data, columns, filtersTable = null, setFiltersTable = null }) => {
   let table = {}
   if (filtersTable && setFiltersTable) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     table = useReactTable({
       data,
       columns,
@@ -45,7 +45,6 @@ export const DataTable = ({ data, columns, filtersTable = null, setFiltersTable 
       }
     })
   } else {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     table = useReactTable({
       data,
       columns,
@@ -88,77 +87,86 @@ export const DataTable = ({ data, columns, filtersTable = null, setFiltersTable 
   const scrollArea = 'w-[83vw] sm:w-[83vw]  xl:w-[85vw] 2xl:w-[90vw] rounded-md border bg-accent/10'
   const sidebarTrue = 'lg:w-[68vw] md:w-[66vw]'
   const sidebarFalse = 'lg:w-[83vw] md:w-[79vw]'
+
   return (
     <div>
-      {
-        data[0] !== 'load'
-          ? (
-            <div>
-              <section className='filters px-1'>
-                <div className='grid grid-cols-2 gap-4'>
-                  <div>
-                    {
-                      filtersTable && (
-                        <Input
-                          placeholder='Buscador general'
-                          value={filtersTable.filters}
-                          onChange={(e) => {
-                            changeFilter(e)
-                          }}
-                        />
-                      )
-                    }
+      {data !== null
+        ? (
+          <div>
+            {
+          data[0] !== 'load'
+            ? (
+              <div>
+                <section className='filters px-1'>
+                  <div className='grid grid-cols-2 gap-4'>
+                    <div>
+                      {
+                        filtersTable && (
+                          <Input
+                            placeholder='Buscador general'
+                            value={filtersTable.filters}
+                            onChange={(e) => {
+                              changeFilter(e)
+                            }}
+                          />
+                        )
+                      }
+                    </div>
+                    {filtersTable && (
+                      <ConfigTable filtersTable={filtersTable} setFiltersTable={setFiltersTable} />
+                    )}
                   </div>
-                  {filtersTable && (
-                    <ConfigTable filtersTable={filtersTable} setFiltersTable={setFiltersTable} />
+                </section>
+
+                <div className='mb-12 mt-4'>
+                  <ScrollArea className={filtersTable && `${scrollArea} ${siebarState ? sidebarTrue : sidebarFalse}`}>
+                    <Table>
+                      {filtersTable ? <FiltersHeader table={table} filtersTable={filtersTable} setFiltersTable={setFiltersTable} /> : <NoFIlterHeader table={table} />}
+                      <TableBody>
+                        {table.getRowModel().rows?.length
+                          ? (
+                              table.getRowModel().rows.map((row) => (
+                                <TableRow
+                                  key={row.id}
+                                  data-state={row.getIsSelected() && 'selected'}
+                                >
+                                  {row.getVisibleCells().map((cell) => (
+                                    <TableCell key={cell.id}>
+                                      {flexRender(
+                                        cell.column.columnDef.cell,
+                                        cell.getContext()
+                                      )}
+                                    </TableCell>
+                                  ))}
+                                </TableRow>
+                              ))
+                            )
+                          : (
+                            <NoData columns={columns} />
+                            )}
+                      </TableBody>
+                    </Table>
+                    <ScrollBar orientation='horizontal' className='mb-2' />
+                  </ScrollArea>
+                  {filtersTable && data.length > filtersTable.view && (
+                    <Paginate table={table} paginationHandle={paginationHandle} />
                   )}
                 </div>
-              </section>
-
-              <div className='mb-12 mt-4'>
-                <ScrollArea className={filtersTable && `${scrollArea} ${siebarState ? sidebarTrue : sidebarFalse}`}>
-                  <Table>
-                    {filtersTable ? <FiltersHeader table={table} filtersTable={filtersTable} setFiltersTable={setFiltersTable} /> : <NoFIlterHeader table={table} />}
-                    <TableBody>
-                      {table.getRowModel().rows?.length
-                        ? (
-                            table.getRowModel().rows.map((row) => (
-                              <TableRow
-                                key={row.id}
-                                data-state={row.getIsSelected() && 'selected'}
-                              >
-                                {row.getVisibleCells().map((cell) => (
-                                  <TableCell key={cell.id}>
-                                    {flexRender(
-                                      cell.column.columnDef.cell,
-                                      cell.getContext()
-                                    )}
-                                  </TableCell>
-                                ))}
-                              </TableRow>
-                            ))
-                          )
-                        : (
-                          <NoData columns={columns} />
-                          )}
-                    </TableBody>
-                  </Table>
-                  <ScrollBar orientation='horizontal' className='mb-2' />
-                </ScrollArea>
-                {filtersTable && data.length > filtersTable.view && (
-                  <Paginate table={table} paginationHandle={paginationHandle} />
-                )}
               </div>
-            </div>
-            )
-          : <SkeletonDatatable />
-      }
+              )
+            : <SkeletonDatatable />
+        }
+          </div>
+          )
+        : (
+          <NoDataTable />
+          )}
     </div>
   )
 }
 
 DataTable.propTypes = {
-  data: PropTypes.array.isRequired,
+  data: PropTypes.array,
   columns: PropTypes.array.isRequired,
   filtersTable: PropTypes.shape({
     columnVisibility: PropTypes.object.isRequired,

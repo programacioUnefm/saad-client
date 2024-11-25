@@ -18,7 +18,24 @@ export const addNewCargaFam = (data) => {
     try {
       const resp = await saadApi.post('/saad/expediente/cargafamiliar', data)
       if (resp.data.responseCode === 200) {
-        // dispatch(getEmploye())
+        return resp.data
+      }
+      if (resp.data.responseCode === 422) {
+        return resp.data
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
+export const EditCargaFam = (data) => {
+  console.log(data)
+  return async (dispatch, getState) => {
+    try {
+      const resp = await saadApi.put(`/saad/expediente/cargafamiliar/update/${data.id}`, data)
+
+      if (resp.data.responseCode === 200) {
         return resp.data
       }
       if (resp.data.responseCode === 422) {

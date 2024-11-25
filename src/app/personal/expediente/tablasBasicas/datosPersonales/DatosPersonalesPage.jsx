@@ -263,6 +263,16 @@ export const DatosPersonalesPage = () => {
       },
       cell: (info) => <div className='text-center'>{info.getValue() ? info.getValue() : 'N/A'}</div>
     },
+    // TODO: agregar el numero de familiares del empleado
+    // {
+    //   header: 'FAMILIARES',
+    //   accessorKey: 'altura',
+    //   classname: 'text-center',
+    //   meta: {
+    //     filterVariant: 'range'
+    //   },
+    //   cell: (info) => <div className='text-center'>{info.getValue() ? info.getValue() : 'N/A'}</div>
+    // },
     {
       header: 'SANGRE',
       accessorKey: 'sangre',
@@ -461,8 +471,11 @@ export const DatosPersonalesPage = () => {
             setFiltersTable={setFiltersTable}
           />
           )}
-
-      <CargaFamDialog cargaFamDialogStatus={cargaFamDialogStatus} setcargaFamDialogStatus={setcargaFamDialogStatus} />
+      {
+        cargaFamDialogStatus.status && (
+          <CargaFamDialog cargaFamDialogStatus={cargaFamDialogStatus} setcargaFamDialogStatus={setcargaFamDialogStatus} />
+        )
+      }
 
     </AppLayout>
   )
