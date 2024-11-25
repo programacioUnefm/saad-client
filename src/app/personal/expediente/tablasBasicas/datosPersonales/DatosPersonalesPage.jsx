@@ -165,7 +165,7 @@ export const DatosPersonalesPage = () => {
             <Tooltip>
               <TooltipTrigger>
                 <Badge
-                  className='max-w-[100px] overflow-hidden line-clamp-2 flex items-center gap-2 bg-accent'
+                  className='max-w-[100px] overflow-hidden bg-slate-300 hover:text-white line-clamp-2 flex items-center gap-2 dark:bg-accent'
                 >
                   <Search size={18} className='text-ring' />
                 </Badge>
@@ -193,7 +193,7 @@ export const DatosPersonalesPage = () => {
                   variant='outline'
                   className='max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap break-all'
                 >
-                  {info.getValue()}
+                  {info.getValue().slice(0, 8) + '...'}
                 </Badge>
               </TooltipTrigger>
               <TooltipContent className='max-w-[500px]'>
@@ -263,16 +263,6 @@ export const DatosPersonalesPage = () => {
       },
       cell: (info) => <div className='text-center'>{info.getValue() ? info.getValue() : 'N/A'}</div>
     },
-    // TODO: agregar el numero de familiares del empleado
-    // {
-    //   header: 'FAMILIARES',
-    //   accessorKey: 'altura',
-    //   classname: 'text-center',
-    //   meta: {
-    //     filterVariant: 'range'
-    //   },
-    //   cell: (info) => <div className='text-center'>{info.getValue() ? info.getValue() : 'N/A'}</div>
-    // },
     {
       header: 'SANGRE',
       accessorKey: 'sangre',
@@ -290,10 +280,40 @@ export const DatosPersonalesPage = () => {
       cell: (info) => <div className='text-center'>{info.getValue() ? info.getValue() : 'N/A'}</div>
     },
     {
+      header: 'FAMILIARES',
+      enableSorting: false,
+      accessorKey: 'numero_familiares',
+      cell: (info) => (
+        <div className='text-center'>
+          {
+            info.getValue() > 0
+              ? <Badge
+                  variant='hoverOutline'
+                  onClick={() => setcargaFamDialogStatus({ status: true, employed: { ...info.row.original } })}
+                >
+                {info.getValue()}
+                {/* eslint-disable-next-line react/jsx-closing-tag-location  */}
+              </Badge>
+              : <Badge
+                  variant='hoverOutline'
+                  onClick={() => setcargaFamDialogStatus({ status: true, employed: { ...info.row.original } })}
+                >N/A
+                {/* eslint-disable-next-line react/jsx-closing-tag-location  */}
+              </Badge>
+          }
+
+        </div>
+      )
+    },
+    {
       header: 'PARROQUIA',
       enableSorting: false,
       accessorKey: 'parroquia',
-      cell: (info) => <div className='text-center'><Badge variant='outline' className='uppercase text-[10px]'>{info.getValue().nombre}</Badge></div>
+      cell: (info) => (
+        <div className='text-center'>
+          <Badge variant='outline' className='uppercase text-[10px]'>{info.getValue().nombre}</Badge>
+        </div>
+      )
     },
     {
       id: 'acciones',
@@ -460,7 +480,10 @@ export const DatosPersonalesPage = () => {
       {actionButton.status
         ? (
           <div id='addPersonal' className='p-2'>
-            <AddPersonalForm data={data} setactionButton={setactionButton} />
+            <AddPersonalForm
+              data={data}
+              setactionButton={setactionButton}
+            />
           </div>
           )
         : (
@@ -473,7 +496,10 @@ export const DatosPersonalesPage = () => {
           )}
       {
         cargaFamDialogStatus.status && (
-          <CargaFamDialog cargaFamDialogStatus={cargaFamDialogStatus} setcargaFamDialogStatus={setcargaFamDialogStatus} />
+          <CargaFamDialog
+            cargaFamDialogStatus={cargaFamDialogStatus}
+            setcargaFamDialogStatus={setcargaFamDialogStatus}
+          />
         )
       }
 
