@@ -146,7 +146,7 @@ export const DataTable = ({ data, columns, filtersTable = null, setFiltersTable 
                             )}
                       </TableBody>
                     </Table>
-                    <ScrollBar orientation='horizontal' className='mb-2' />
+                    <ScrollBar orientation='horizontal' className='mb-2 dark:bg-slate-500 bg-slate-400 rounded-md' />
                   </ScrollArea>
                   {filtersTable && data.length > filtersTable.view && (
                     <Paginate table={table} paginationHandle={paginationHandle} />
