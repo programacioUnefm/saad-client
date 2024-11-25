@@ -26,6 +26,7 @@ export const AddPersonalForm = ({ data, setactionButton }) => {
     setValue,
     formState: { errors },
     watch,
+    reset,
     trigger
   } = useForm({
     defaultValues: data, // Valores iniciales del formulario
@@ -98,7 +99,7 @@ export const AddPersonalForm = ({ data, setactionButton }) => {
         dispatch(
           dialogChange({
             title: `Personal ${!data?.id ? 'agregado' : 'editado'}`,
-            message: `El ${!data?.id ? 'nuevo' : ''} personal ${dataForm.nombre1} ha sido ${!data?.id ? 'agregado' : 'editado'}.`,
+            message: `El ${!data?.id ? 'nuevo' : ''} personal "${dataForm.nombre1} ${dataForm.apellido1}" ha sido ${!data?.id ? 'agregado' : 'editado'}.`,
             status: true,
             duration: 3000,
             variant: ''
@@ -112,6 +113,7 @@ export const AddPersonalForm = ({ data, setactionButton }) => {
           textButton: 'Agregar personal',
           title: 'Personal'
         })
+        reset()
         break
       case 422:
         dispatch(
