@@ -56,7 +56,7 @@ export const SidebarColapse = ({ menu }) => {
                     <span
                       className={
                       Object.keys(openMenus)[0] === item.title
-                        ? `${buttonClass} bg-accent`
+                        ? `${buttonClass} bg-accent ${btnActiveClass}`
                         : buttonClass
                     }
                     >
@@ -82,7 +82,7 @@ export const SidebarColapse = ({ menu }) => {
                     btnActiveClass
                   } ${
                     Object.keys(openMenus)[0] === item.title
-                      ? `${buttonClass} bg-accent`
+                      ? `${buttonClass} ${btnActiveClass}`
                       : buttonClass
                   }`}
                   >
