@@ -8,6 +8,7 @@ import { getDiscapacidades, getEmploye } from '@/features/personal/expediente/ta
 import { DataTable } from '@/components/DataTable/DataTable'
 import { CargaFamDialog } from './components/cargaFamiliar/CargaFamDialog'
 import { DatosPerColumn } from './components/DatosPerColumn'
+import { tablesFiltersState } from '@/features/ui/UiSlice'
 
 export const DatosPersonalesPage = () => {
   const personal = useSelector((state) => state.personal.expediente.tablasBasicas.personal)
@@ -71,18 +72,21 @@ export const DatosPersonalesPage = () => {
       cedula: true,
       documento: true,
       rif: true,
-      nombre1: true,
-      'nivel profesiona': true,
-      fecha_nacimiento: true,
+      nombre: true,
+      'nivel profesional': true,
+      'fecha nacimiento': true,
       direccion: true,
-      email1: true,
-      telefono1: true,
+      email: true,
+      telefonos: true,
       sexo: true,
       estado_civil: true,
       peso: true,
       altura: true,
       sangre: true,
       foto: true,
+      edad: true,
+      familiares: true,
+      parroquia: true,
       idiomas: true,
       acciones: true
     },
@@ -105,7 +109,19 @@ export const DatosPersonalesPage = () => {
     dispatch(getMunicipality())
     dispatch(getParishes())
     dispatch(getDiscapacidades())
+    const storage = localStorage.getItem('tablesFilters')
+    const visibility = JSON.parse(storage)
+    if (visibility && typeof visibility.datosPer !== 'undefined' && visibility.datosPer !== null) {
+      console.log(JSON.parse(storage).datosPer)
+      setFiltersTable({ ...filtersTable, columnVisibility: JSON.parse(storage).datosPer })
+    } else {
+      console.log('visibility o datosPer no existen')
+    }
   }, [])
+
+  useEffect(() => {
+    dispatch(tablesFiltersState({ datosPer: filtersTable.columnVisibility }))
+  }, [filtersTable.columnVisibility])
 
   return (
     <AppLayout
@@ -120,23 +136,25 @@ export const DatosPersonalesPage = () => {
         })
       }}
     >
-      {actionButton.status
-        ? (
-          <div id='addPersonal' className='p-2'>
-            <AddPersonalForm
-              data={data}
-              setactionButton={setactionButton}
+      {
+        actionButton.status
+          ? (
+            <div id='addPersonal' className='p-2'>
+              <AddPersonalForm
+                data={data}
+                setactionButton={setactionButton}
+              />
+            </div>
+            )
+          : (
+            <DataTable
+              columns={columns}
+              data={personal.data !== undefined ? personal.data : ['load']}
+              filtersTable={filtersTable}
+              setFiltersTable={setFiltersTable}
             />
-          </div>
-          )
-        : (
-          <DataTable
-            columns={columns}
-            data={personal.data !== undefined ? personal.data : ['load']}
-            filtersTable={filtersTable}
-            setFiltersTable={setFiltersTable}
-          />
-          )}
+            )
+          }
       {
         cargaFamDialogStatus.status && (
           <CargaFamDialog
@@ -145,7 +163,6 @@ export const DatosPersonalesPage = () => {
           />
         )
       }
-
     </AppLayout>
   )
 }

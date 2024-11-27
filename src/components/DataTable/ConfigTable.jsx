@@ -13,11 +13,11 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { Label } from '../ui/label'
-import { ScrollArea } from '@radix-ui/react-scroll-area'
 import { FileText, Sheet, Wrench } from 'lucide-react'
 import React from 'react'
 import { Switch } from '@/components/ui/switch'
 import { Button } from '../ui/button'
+import { ScrollArea } from '../ui/scroll-area'
 
 export const ConfigTable = ({ filtersTable, setFiltersTable }) => {
   // funcion para visualizar items en la tabla escoge cuales se quieren ver y cuales no con un switch

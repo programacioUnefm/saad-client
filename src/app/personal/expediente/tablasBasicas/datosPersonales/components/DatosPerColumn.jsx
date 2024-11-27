@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/tooltip'
 import { useSelector } from 'react-redux'
 import { differenceInYears, parseISO } from 'date-fns'
+import PropTypes from 'prop-types'
 
 export const DatosPerColumn = ({ setcargaFamDialogStatus, setactionButton, setdata, actionButton }) => {
   const { dataPais } = useSelector((state) => state.personal.expediente.tablasBasicas)
@@ -116,6 +117,7 @@ export const DatosPerColumn = ({ setcargaFamDialogStatus, setactionButton, setda
       cell: (info) => <div className='text-center'>{info.getValue()}</div>
     },
     {
+      id: 'nombre',
       header: 'NOMBRE',
       accessorKey: 'nombre1',
       cell: (info) => (
@@ -167,6 +169,7 @@ export const DatosPerColumn = ({ setcargaFamDialogStatus, setactionButton, setda
       }
     },
     {
+      id: 'fecha nacimiento',
       header: 'NACIMIENTO',
       classname: 'text-center',
       accessorKey: 'fecha_nacimiento',
@@ -211,6 +214,7 @@ export const DatosPerColumn = ({ setcargaFamDialogStatus, setactionButton, setda
     },
     // TODO: hacer que el email se recorte por tamño de caracteres y mostrar el email 2
     {
+      id: 'email',
       header: 'EMAIL',
       accessorKey: 'email1',
       enableSorting: false,
@@ -236,6 +240,7 @@ export const DatosPerColumn = ({ setcargaFamDialogStatus, setactionButton, setda
       )
     },
     {
+      id: 'telefonos',
       header: 'TELEFONO',
       classname: 'text-center',
       enableSorting: false,
@@ -311,11 +316,13 @@ export const DatosPerColumn = ({ setcargaFamDialogStatus, setactionButton, setda
       cell: (info) => <div className='text-center'>{info.getValue() ? info.getValue() : 'N/A'}</div>
     },
     {
+      id: 'familiares',
       header: 'FAMILIARES',
       enableSorting: false,
+      classname: 'text-center',
       accessorKey: 'numero_familiares',
       cell: (info) => (
-        <div className='text-center'>
+        <div className='flex justify-center'>
           {
                 info.getValue() > 0
                   ? <Badge
@@ -339,6 +346,7 @@ export const DatosPerColumn = ({ setcargaFamDialogStatus, setactionButton, setda
     {
       header: 'PARROQUIA',
       enableSorting: false,
+      classname: 'text-center',
       accessorKey: 'parroquia',
       cell: (info) => (
         <div className='text-center'>
@@ -356,4 +364,16 @@ export const DatosPerColumn = ({ setcargaFamDialogStatus, setactionButton, setda
       cell: ({ row }) => <Actions row={row.original} />
     }
   ]
+}
+DatosPerColumn.propTypes = {
+  setcargaFamDialogStatus: PropTypes.func.isRequired,
+  setactionButton: PropTypes.func.isRequired,
+  setdata: PropTypes.func.isRequired,
+  actionButton: PropTypes.shape(
+    {
+      status: PropTypes.bool.isRequired,
+      textButton: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired
+    }
+  ).isRequired
 }

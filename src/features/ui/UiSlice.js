@@ -1,59 +1,71 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit'
 
 export const ui = createSlice({
-  name: "ui",
+  name: 'ui',
   initialState: {
-    theme: "",
-    layout: "",
+    theme: '',
+    layout: '',
     paginationNumber: 12,
-    siebarState: false,
     filters: {
-      search: "",
+      search: '',
       status: false,
-      url: "",
-      result: [],
+      url: '',
+      result: []
     },
-    menuState:{
-      route:"",
-      arrayRoute:[]
+    menuState: {
+      route: '',
+      arrayRoute: []
     },
     dialog: {
-      title: "",
-      message: "",
+      title: '',
+      message: '',
       status: false,
       duration: 3000,
-      variant: ""
-    },
+      variant: ''
+    }
   },
   reducers: {
     themeChange: (state, { payload }) => {
-      state.theme = payload;
+      state.theme = payload
     },
     layoutChanged: (state, { payload }) => {
-      state.layout = payload;
+      state.layout = payload
     },
     dialogChange: (state, { payload }) => {
-      state.dialog = payload;  
+      state.dialog = payload
     },
     filtersChange: (state, { payload }) => {
-      state.filters = payload;
+      state.filters = payload
     },
     resetDialog: (state) => {
-      state.dialog = { title: "", message: "", status: false, duration: 3000 };
+      state.dialog = { title: '', message: '', status: false, duration: 3000 }
     },
-    filterUrlChange:(state, {payload}) => {
-      state.filters = {...state.filters, url: payload};
+    filterUrlChange: (state, { payload }) => {
+      state.filters = { ...state.filters, url: payload }
     },
-    routeChange: (state, {payload}) => {
+    routeChange: (state, { payload }) => {
       state.menuState = payload
     },
-    siebarStateChange: (state, {payload}) => {
-      state.siebarState = payload;
+    siebarStateChange: (state, { payload }) => {
+      state.siebarState = payload
+    },
+    tablesFiltersState: (state, { payload }) => {
+      const storage = localStorage.getItem('tablesFilters')
+      let resp = JSON.parse(storage)
+      if (!storage) {
+        const dataTableDatosPer = payload
+        if (resp == null) {
+          localStorage.setItem('tablesFilters', JSON.stringify(dataTableDatosPer))
+        }
+      } else {
+        resp = { ...resp, [Object.keys(payload)[0]]: Object.values(payload)[0] }
+        localStorage.setItem('tablesFilters', JSON.stringify(resp))
+      }
     }
-  },
-});
+  }
+})
 
-export const { themeChange, layoutChanged, dialogChange, filtersChange, resetDialog, filterUrlChange, routeChange, siebarStateChange } =
-  ui.actions;
+export const { themeChange, layoutChanged, dialogChange, filtersChange, resetDialog, filterUrlChange, routeChange, siebarStateChange, tablesFiltersState } =
+  ui.actions
 
-export default ui.reducer;
+export default ui.reducer
