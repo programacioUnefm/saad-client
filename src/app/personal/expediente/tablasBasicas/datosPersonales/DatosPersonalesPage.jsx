@@ -112,10 +112,7 @@ export const DatosPersonalesPage = () => {
     const storage = localStorage.getItem('tablesFilters')
     const visibility = JSON.parse(storage)
     if (visibility && typeof visibility.datosPer !== 'undefined' && visibility.datosPer !== null) {
-      console.log(JSON.parse(storage).datosPer)
       setFiltersTable({ ...filtersTable, columnVisibility: JSON.parse(storage).datosPer })
-    } else {
-      console.log('visibility o datosPer no existen')
     }
   }, [])
 
