@@ -94,7 +94,7 @@ export const AddPersonalForm = ({ data, setactionButton }) => {
       resp = await dispatch(editEmploye(newData))
     }
 
-    switch (resp.responseCode) {
+    switch (resp.data.responseCode) {
       case 200:
         dispatch(
           dialogChange({
