@@ -84,10 +84,10 @@ export const DataTable = ({ data, columns, filtersTable = null, setFiltersTable 
 
   const { siebarState } = useSelector((state) => state.ui)
 
-  const scrollArea = 'w-[83vw] sm:w-[83vw]  xl:w-[85vw] 2xl:w-[90vw] rounded-md border bg-accent/10'
-  const sidebarTrue = 'lg:w-[68vw] md:w-[66vw]'
-  const sidebarFalse = 'lg:w-[83vw] md:w-[79vw]'
-  // TODO: HACEr que al quedar sin items que visualizar en tablesFilters muestre un mensaje diciendo que se quedo sin items que visualizar
+  const scrollArea = 'w-[83vw] sm:w-[83vw] rounded-md border bg-accent/10'
+  const sidebarTrue = 'md:w-[66vw] lg:w-[68vw] xl:w-[72vw] 2xl:w-[80vw]'
+  const sidebarFalse = 'lg:w-[83vw] md:w-[79vw] xl:w-[86vw] 2xl:w-[90vw]'
+  // TODO: HACER que al quedar sin items que visualizar en tablesFilters muestre un mensaje diciendo que se quedo sin items que visualizar
   return (
     <div>
       {data !== null
