@@ -139,6 +139,30 @@ export const DatosPersonalesPage = () => {
     filters: '',
     sorting: [],
     columnFilters: [],
+    columnOrder: [
+      'acciones1',
+      'cedula',
+      'documento',
+      'id',
+      'nombre',
+      'rif',
+      'direccion',
+      'nivel profesional',
+      'fecha nacimiento',
+      'email',
+      'telefonos',
+      'sexo',
+      'estado_civil',
+      'peso',
+      'altura',
+      'sangre',
+      'foto',
+      'edad',
+      'familiares',
+      'parroquia',
+      'idiomas',
+      'acciones'
+    ],
     view: 20,
     pagination: {
       pageIndex: 0,
@@ -449,7 +473,6 @@ export const DatosPersonalesPage = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end'>
             <DropdownMenuLabel>ACCIONES</DropdownMenuLabel>
-            {/* <DropdownMenuItem>Detalles</DropdownMenuItem> */}
             <DropdownMenuItem onClick={(e) => editPersonalHandle(row)}>Editar personal</DropdownMenuItem>
             <DropdownMenuItem onClick={(e) => setcargaFamDialogStatus({ status: true, employed: { ...row } })}>Carga familiar</DropdownMenuItem>
             <DropdownMenuItem>Discapacidades</DropdownMenuItem>

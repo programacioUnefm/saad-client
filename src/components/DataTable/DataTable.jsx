@@ -40,6 +40,7 @@ export const DataTable = ({ data, columns, filtersTable = null, setFiltersTable 
         sorting: filtersTable.sorting,
         columnVisibility: filtersTable.columnVisibility,
         columnFilters: filtersTable.columnFilters,
+        ...(filtersTable.columnOrder !== undefined && { columnOrder: filtersTable.columnOrder }),
         pagination: filtersTable.pagination,
         globalFilter: filtersTable.filters
       }

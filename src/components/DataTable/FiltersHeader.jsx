@@ -3,7 +3,6 @@ import { TableHead, TableHeader, TableRow } from '../ui/table'
 import { Button } from '../ui/button'
 import { flexRender } from '@tanstack/react-table'
 import { ArrowDownNarrowWide, ArrowLeftRight, ArrowUpNarrowWide } from 'lucide-react'
-import { FiltersDataTable } from './FiltersDataTable'
 
 export const FiltersHeader = ({ table, filtersTable, setFiltersTable }) => {
   // funcion para organizar los items de forma ascendentes o descendentes
@@ -90,11 +89,6 @@ export const FiltersHeader = ({ table, filtersTable, setFiltersTable }) => {
                               </Button>
                               )}
                           <br />
-                          <FiltersDataTable
-                            header={header}
-                            filtersTable={filtersTable}
-                            setFiltersTable={setFiltersTable}
-                          />
                         </div>
                       )}
                     </div>

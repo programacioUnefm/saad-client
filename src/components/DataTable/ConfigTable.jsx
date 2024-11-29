@@ -12,12 +12,10 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { Label } from '../ui/label'
 import { FileText, Sheet, Wrench } from 'lucide-react'
 import React from 'react'
-import { Switch } from '@/components/ui/switch'
 import { Button } from '../ui/button'
-import { ScrollArea } from '../ui/scroll-area'
+import { ColumnVisibility } from './ColumnVisibility'
 
 export const ConfigTable = ({ filtersTable, setFiltersTable }) => {
   // funcion para visualizar items en la tabla escoge cuales se quieren ver y cuales no con un switch
@@ -41,6 +39,14 @@ export const ConfigTable = ({ filtersTable, setFiltersTable }) => {
       }
     }))
   }
+
+  const handleReorderColumns = (newColumnVisibility) => {
+    setFiltersTable((prev) => ({
+      ...prev,
+      columnOrder: newColumnVisibility
+    }))
+  }
+
   return (
     <div className='flex justify-end items-center'>
       <DropdownMenu>
@@ -59,33 +65,7 @@ export const ConfigTable = ({ filtersTable, setFiltersTable }) => {
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
-                  <ScrollArea className='h-[200px] pr-2'>
-                    <div className='flex flex-col gap-2 py-4 px-2'>
-                      {Object.entries(filtersTable.columnVisibility).map(
-                        ([key, value]) => (
-                          <div key={key}>
-                            <div className='w-full uppercase flex items-center place-content-between pb-2'>
-                              <Label
-                                className='text-[11px]'
-                                htmlFor={key}
-                              >
-                                {key}
-                              </Label>
-                              <Switch
-                                id={key}
-                                className='ml-8'
-                                size='sm'
-                                checked={value}
-                                onCheckedChange={() =>
-                                  handleViewItems(key)}
-                              />
-                            </div>
-                            <hr />
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </ScrollArea>
+                  <ColumnVisibility handleViewItems={handleViewItems} filtersTable={filtersTable} onReorderColumns={handleReorderColumns} />
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>
             </DropdownMenuSub>
