@@ -5,19 +5,18 @@ import { MyAccount } from './MyAccount'
 import { useDispatch, useSelector } from 'react-redux'
 import { siebarStateChange } from '@/features/ui/UiSlice'
 import './css/headerApp.css'
+import { useEffect } from 'react'
 export const HeaderApp = () => {
   const { siebarState } = useSelector((state) => state.ui)
   const dispatch = useDispatch()
   const onSidebarChange = (state) => {
     dispatch(siebarStateChange(state))
   }
+  useEffect(() => {
+    const sidebarState = localStorage.getItem('sidebarState')
+    onSidebarChange(JSON.parse(sidebarState))
+  }, [])
 
-  // const [isJustified, setIsJustified] = useState(true)
-
-  // Maneja el cambio de estado al hacer clic
-  // const toggleIcon = () => {
-  //   setIsJustified(!isJustified)
-  // }
   return (
     <header className='flex h-14 items-center gap-4 border-b dark:bg-background bg-slate-200/60 px-4 lg:h-[60px] lg:px-6'>
       {/* menu movil */}

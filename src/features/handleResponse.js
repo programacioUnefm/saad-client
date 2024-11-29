@@ -3,12 +3,12 @@ export const handleResponse = (response) => {
   let message = ''
   switch (response.data.responseCode) {
     case 200:
-      message = 'Operación exitosa.'
-      console.log(message)
+      // message = 'Operación exitosa.'
+      // console.log(message)
       break
     case 201:
-      message = 'Recurso creado con éxito.'
-      console.log(message)
+      // message = 'Recurso creado con éxito.'
+      // console.log(message)
       break
     case 422:
       message = 'Datos inválidos. Por favor, verifica los campos.'

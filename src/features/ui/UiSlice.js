@@ -5,6 +5,7 @@ export const ui = createSlice({
   initialState: {
     theme: '',
     layout: '',
+    siebarState: null,
     paginationNumber: 12,
     filters: {
       search: '',
@@ -47,6 +48,7 @@ export const ui = createSlice({
       state.menuState = payload
     },
     siebarStateChange: (state, { payload }) => {
+      localStorage.setItem('sidebarState', payload)
       state.siebarState = payload
     },
     tablesFiltersState: (state, { payload }) => {
