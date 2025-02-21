@@ -6,20 +6,19 @@ import ContabilidadSlice from '../features/contabilidad/ContabilidadSlice'
 import PresupuestoSlice from '../features/presupuesto/PresupuestoSlice'
 import UsersSlice from '../features/control/usuarios/UsersSlice'
 import UiSlice from '../features/ui/UiSlice'
-import LogsSlice  from '@/features/control/logs/logsSlice'
-import PersonalSlice  from '@/features/personal/PersonalSlice'
-
+import LogsSlice from '@/features/control/logs/logsSlice'
+import PersonalSlice from '@/features/personal/PersonalSlice'
 
 export default configureStore({
   reducer: {
-    auth:LoginSlice,
-    ui:UiSlice,
-    compras:ComprasSlice,
-    habilitaduria:HabilitaduriaSlice,
-    contabilidad:ContabilidadSlice,
-    presupuesto:PresupuestoSlice,
-    usersList:UsersSlice,
-    logs:LogsSlice,
-    personal:PersonalSlice,
+    auth: LoginSlice,
+    ui: UiSlice,
+    compras: ComprasSlice,
+    habilitaduria: HabilitaduriaSlice,
+    contabilidad: ContabilidadSlice,
+    presupuesto: PresupuestoSlice,
+    usersList: UsersSlice,
+    logs: LogsSlice,
+    personal: PersonalSlice
   }
 })

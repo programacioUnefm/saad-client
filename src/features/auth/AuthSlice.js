@@ -1,59 +1,59 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit'
 
 export const Auth = createSlice({
-  name: "loginState",
+  name: 'loginState',
   initialState: {
-    id: "",
+    id: '',
     Authstatus: true,
-    email: "",
-    name: "",
-    last_name: "",
+    email: '',
+    name: '',
+    last_name: '',
     roles: [],
     roleList: [],
     permissions: [],
-    document_id: "",
-    token: "",
-    loadData:false,
+    document_id: '',
+    token: '',
+    loadData: false
   },
   reducers: {
     login: (state, { payload }) => {
-      let permissionsList = [];
-      let roleList = [];
+      let permissionsList = []
+      const roleList = []
       if (payload.Authstatus) {
         payload.roles.forEach((element) => {
-          roleList.push(element.code);
-          permissionsList.push(...element.permissions);
-          if(element.code == "ADMIN"){
-            permissionsList = ["*"];
+          roleList.push(element.code)
+          permissionsList.push(...element.permissions)
+          if (element.code === 'ADMIN') {
+            permissionsList = ['*']
           }
-        });
+        })
       }
-      state.id = payload.id;
-      state.Authstatus = payload.Authstatus;
-      state.name = payload.name;
-      state.roles = payload.roles;
-      state.email = payload.email;
-      state.roleList = roleList;
-      state.last_name = payload.last_name;
-      state.permissions = permissionsList;
-      state.document_id = payload.document_id;
-      state.token = payload.token;
-      state.loadData = true;
+      state.id = payload.id
+      state.Authstatus = payload.Authstatus
+      state.name = payload.name
+      state.roles = payload.roles
+      state.email = payload.email
+      state.roleList = roleList
+      state.last_name = payload.last_name
+      state.permissions = permissionsList
+      state.document_id = payload.document_id
+      state.token = payload.token
+      state.loadData = true
     },
 
     editMyUser: (state, { payload }) => {
-      state.document_id = payload.document_id;
-      state.name = payload.name;
-      state.last_name = payload.last_name;
-      state.email = payload.email;
+      state.document_id = payload.document_id
+      state.name = payload.name
+      state.last_name = payload.last_name
+      state.email = payload.email
     },
 
     logOut: (state, action) => {
-      console.log(action.payload);
-    },
-  },
-});
+      console.log(action.payload)
+    }
+  }
+})
 
-export const { login, logOut, editMyUser } = Auth.actions;
+export const { login, logOut, editMyUser } = Auth.actions
 
-export default Auth.reducer;
+export default Auth.reducer

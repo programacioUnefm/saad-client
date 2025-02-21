@@ -1,99 +1,98 @@
-import { saadApi } from "../../api/SaddApp";
-import { GetUsersList } from "../control/usuarios/UsersThunks";
-import { editMyUser, login } from "./AuthSlice";
-import { dialogChange, resetDialog } from "../ui/UiSlice";
+import { saadApi } from '../../api/SaddApp'
+import { GetUsersList } from '../control/usuarios/UsersThunks'
+import { editMyUser, login } from './AuthSlice'
+import { dialogChange, resetDialog } from '../ui/UiSlice'
 
 export const RegisterApp = (data) => {
   return async (dispatch) => {
     try {
-      const resp = await saadApi.post(`auth/register`, data);
-      let rutaActual = window.location.pathname;
-      if (rutaActual != "/login") {
-        dispatch(GetUsersList());
+      const resp = await saadApi.post('auth/register', data)
+      const rutaActual = window.location.pathname
+      if (rutaActual !== '/login') {
+        dispatch(GetUsersList())
       }
-      return resp.status;
+      return resp.status
     } catch (error) {
       // console.log(error)
-      const errorMessage = error.response.data.errors;
-      let message = "";
-      if (error.response.data.errors.document_id != undefined) {
-        message = error.response.data.errors.document_id[0];
+      let message = ''
+      if (error.response.data.errors.document_id !== undefined) {
+        message = error.response.data.errors.document_id[0]
       }
-      if (error.response.data.errors.email != undefined) {
-        if (message != "") {
-          message = message + " \n " + error.response.data.errors.email[0];
+      if (error.response.data.errors.email !== undefined) {
+        if (message !== '') {
+          message = message + ' \n ' + error.response.data.errors.email[0]
         } else {
-          message = error.response.data.errors.email[0];
+          message = error.response.data.errors.email[0]
         }
       }
       dispatch(
         dialogChange({
-          title: "Ups, parece haber un error",
-          message: message,
+          title: 'Ups, parece haber un error',
+          message,
           status: true,
           duration: 3000,
-          variant: "destructive",
+          variant: 'destructive'
         })
-      );
+      )
       setTimeout(() => {
-        dispatch(resetDialog());
-      }, 3000);
+        dispatch(resetDialog())
+      }, 3000)
     }
-  };
-};
+  }
+}
 
 export const editUser = (data) => {
   return async (dispatch) => {
     try {
-      const resp = await saadApi.put(`admin/users/${data.id}`, data);
-      dispatch(GetUsersList());
-      dispatch(editMyUser(data));
+      await saadApi.put(`admin/users/${data.id}`, data)
+      dispatch(GetUsersList())
+      dispatch(editMyUser(data))
       dispatch(
         dialogChange({
-          title: "Usuario Editado",
-          message: "",
+          title: 'Usuario Editado',
+          message: '',
           status: true,
           duration: 3000,
-          variant: "",
+          variant: ''
         })
-      );
-      return true;
+      )
+      return true
     } catch (error) {
-      if (codeError == 401) {
-        dispatch(LogOutApp());
-      }
+      // if (codeError === 401) {
+      //   dispatch(LogOutApp())
+      // }
     }
-  };
-};
+  }
+}
 
 export const LoginApp = (data) => {
   return async (dispatch) => {
     try {
-      const resp = await saadApi.post(`auth/login`, data);
-      const code = resp.data.responseCode;
-      const { data: user } = resp.data;
-      if (code == 200) {
-        const { data } = resp.data;
-        localStorage.setItem("token_access", data.token);
-        dispatch(login({ ...data, Authstatus: true }));
-        return code;
+      const resp = await saadApi.post('auth/login', data)
+      const code = resp.data.responseCode
+      // const { data: user } = resp.data
+      if (code === 200) {
+        const { data } = resp.data
+        localStorage.setItem('token_access', data.token)
+        dispatch(login({ ...data, Authstatus: true }))
+        return code
       }
     } catch (error) {
-      const codeError = error.response.status;
+      const codeError = error.response.status
       // dispatch(LogOutApp());
-      return codeError;
+      return codeError
     }
-  };
-};
+  }
+}
 
 export const VerifyUser = () => {
   return async (dispatch) => {
     try {
-      const resp = await saadApi.get(`/auth/whoIAm`);
-      const code = resp.data.responseCode;
-      const { data } = resp.data;
-      if (code == 200) {
-        const token = localStorage.getItem("token_access");
+      const resp = await saadApi.get('/auth/whoIAm')
+      const code = resp.data.responseCode
+      const { data } = resp.data
+      if (code === 200) {
+        const token = localStorage.getItem('token_access')
         const newState = {
           name: data.name,
           id: data.id,
@@ -102,14 +101,14 @@ export const VerifyUser = () => {
           email: data.email,
           last_name: data.last_name,
           roles: data.roles,
-          Authstatus: true,
-        };
-        dispatch(login(newState));
+          Authstatus: true
+        }
+        dispatch(login(newState))
       }
-      return { code };
+      return { code }
     } catch (error) {
-      //TODO: ver como resolver esto
-      console.log(error);
+      // TODO: ver como resolver esto
+      console.log(error)
       // const message = error.response.data.message;
       // const codeError = error.response.status;
 
@@ -147,17 +146,17 @@ export const VerifyUser = () => {
       //   }, 3000);
       // }
     }
-  };
-};
+  }
+}
 
 export const LogOutApp = () => {
+  localStorage.removeItem('token_access')
   return async (dispatch) => {
     try {
-      dispatch(login({ Authstatus: false, name: "", role: [], token: "" }));
-      const resp = await saadApi.get(`auth/logout`);
-      localStorage.removeItem("token_access");
+      dispatch(login({ Authstatus: false, name: '', role: [], token: '' }))
+      await saadApi.get('auth/logout')
       // const appUrl = import.meta.env.VITE_APP_URL;
       // window.location.href = `${appUrl}/login`;
     } catch (error) {}
-  };
-};
+  }
+}
