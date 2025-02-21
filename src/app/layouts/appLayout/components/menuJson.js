@@ -296,7 +296,7 @@ export const navbarMenu = [
   // },
   {
     title: 'Personal',
-    path: '/academico',
+    path: '/personal',
     permission: ['HOME_PERSONAL'],
     action: 'disable',
     icon: 'Users',
@@ -405,16 +405,18 @@ export const navbarMenu = [
             subMenu: [
               {
                 title: 'Datos personales',
-                path: '/personal/tablas-basicas/datos-personales',
+                path: '/personal/expediente/tablas-basicas/datos-personales',
                 permission: ['EXPEDIENTE_TABLASB_DATOS_PERSONALES'],
                 action: 'disable',
                 icon: 'ChevronRight'
+              },
+              {
+                title: 'Estructura institucional',
+                permission: ['PERSONAL_EXPEDIENTE_TABLASB'],
+                action: 'disable',
+                path: '/personal/expediente/tablas-basicas/institucion',
+                icon: 'ChevronRight'
               }
-              // {
-              //   title: "Dedicación",
-              //   path: "/personal/expediente/trabajos-anteriores",
-              //   icon: "ChevronRight",
-              // },
               // {
               //   title: "Dependencias",
               //   path: "/personal/expediente/trabajos-anteriores",

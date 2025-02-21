@@ -1,31 +1,114 @@
+/* eslint-disable indent */
 import React, { useEffect } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { LoginPage } from '../login/pages/LoginPage'
-import { ComprasPage } from '../app/administrativo/compras/ComprasPage'
-import { ContabilidadPage } from '../app/administrativo/contabilidad/ContabilidadPage'
-import { HabilitaduriaPage } from '../app/administrativo/habilitaduria/HabilitaduriaPage'
-import { PresupuestoPage } from '../app/administrativo/presupuesto/PresupuestoPage'
 import { DashboardPage } from '../app/dasboard/DashboardPage'
 import { ProtectedRoutes } from './ProtectedRoutes'
-import { RegistroControl } from '../app/administrativo/compras/components/RegistroControl'
-import { Administrativo } from '../app/administrativo/Administrativo'
-import { Movimientos } from '../app/administrativo/compras/components/Movimientos'
-import { Cierres } from '../app/administrativo/compras/components/Cierres'
-import { Reportes } from '../app/administrativo/compras/components/Reportes'
-import { TablasBasicas } from '../app/administrativo/compras/components/TablasBasicas'
-import { PlanCompras } from '../app/administrativo/compras/components/PlanCompras'
 import { UsersListPage } from '../app/control/admin_users/UsersListPage'
 import { layoutChanged, themeChange } from '../features/ui/UiSlice'
 import { VerifyUser } from '../features/auth/LoginThunk'
 import { login } from '../features/auth/AuthSlice'
 import { LogsPage } from '@/app/control/log/LogsPage'
-import { ActuacionPage } from '@/app/personal/expediente/regDatos/actuacion/ActuacionPage'
 import { NoAuthPage } from '@/app/layouts/unAuth/NoAuthPage'
 import { DatosPersonalesPage } from '@/app/personal/expediente/tablasBasicas/datosPersonales/DatosPersonalesPage'
 import { MyAccountConfig } from '@/app/myaccount/MyAccountConfig'
 import { PublicRoutes } from './PublicRoutes'
 import { NotFoundPage } from '@/app/layouts/404page/NotFoundPage'
+import { InstitucionPage } from '@/app/personal/expediente/tablasBasicas/estructuraInstitucional/InstitucionPage'
+
+export const navbarMenu = [
+  {
+    title: 'Inicio',
+    path: '/inicio',
+    icon: 'Home',
+    permission: ['HOME'],
+    component: <DashboardPage />,
+    action: 'disable'
+  },
+  {
+    title: 'Página no encontrada',
+    path: '/no-encontrada',
+    icon: 'Home',
+    permission: ['HOME'],
+    component: <NotFoundPage />,
+    action: 'hidden'
+  },
+  {
+    title: 'Mi cuenta',
+    path: '/mi-cuenta',
+    icon: '',
+    permission: ['NONE'],
+    component: <MyAccountConfig />,
+    action: 'hidden'
+  },
+  {
+    title: 'Personal',
+    path: '/personal',
+    permission: ['HOME_PERSONAL'],
+    action: 'disable',
+    icon: 'Users',
+    subMenu: [
+      {
+        title: 'Expediente',
+        path: '/personal/expediente',
+        permission: ['PERSONAL_EXPEDIENTE'],
+        action: 'disable',
+        icon: 'Library',
+        subMenu: [
+          {
+            title: 'Tablas básicas',
+            permission: ['PERSONAL_EXPEDIENTE_TABLASB'],
+            action: 'disable',
+            path: '/personal/expediente/tablas-basicas',
+            icon: 'Table',
+            subMenu: [
+              {
+                title: 'Datos personales',
+                path: '/personal/expediente/tablas-basicas/datos-personales',
+                permission: ['EXPEDIENTE_TABLASB_DATOS_PERSONALES'],
+                action: 'disable',
+                icon: 'ChevronRight',
+                component: <DatosPersonalesPage />
+              },
+              {
+                title: 'Estructura institucional',
+                permission: ['PERSONAL_EXPEDIENTE_TABLASB'],
+                action: 'disable',
+                path: '/personal/expediente/tablas-basicas/institucion',
+                component: <InstitucionPage />,
+                icon: 'ChevronRight'
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    title: 'Control',
+    path: '/control',
+    icon: 'Lock',
+    permission: ['HOME', 'HOME_CONTROL'],
+    action: 'only-admin',
+    subMenu: [
+      {
+        title: 'Administrar Usuarios',
+        path: '/control/usuarios',
+        permission: ['HOME_CONTROL', 'CONTROL_ADMIN_USERS'],
+        component: <UsersListPage />,
+        icon: 'ChevronRight'
+      },
+      {
+        title: 'Bitacora de sistema',
+        path: '/control/bitacora',
+        component: <LogsPage />,
+        permission: ['HOME_CONTROL', 'CONTROL_BITACORA'],
+        icon: 'ChevronRight'
+      }
+    ]
+  }
+]
 
 export const RouterApp = () => {
   // Variables iniciales obtenidas del almacenamiento local
@@ -78,61 +161,31 @@ export const RouterApp = () => {
             Authstatus
               ? (
                 <Navigate to='/inicio' replace /> // Si está autenticado, redirige a /inicio
-                )
+              )
               : (
                 <Navigate to='/login' replace /> // Si no, redirige a /login
-                )
+              )
           }
         />
         {/* Página de acceso no autorizado */}
         <Route path='/no-autorizado' element={<NoAuthPage />} />
         {/* Rutas privadas: solo accesibles con autenticación */}
         <Route element={<ProtectedRoutes />}>
-          {/* Página principal del usuario */}
-          <Route path='/inicio' element={<DashboardPage />} />
-          <Route path='/mi-cuenta' element={<MyAccountConfig />} />
-
-          {/* Módulo administrativo */}
-          <Route path='/administrativo' element={<Administrativo />} />
-          <Route path='/administrativo/compras' element={<ComprasPage />} />
-          <Route
-            path='/administrativo/compras/registro-control'
-            element={<RegistroControl />}
-          />
-          <Route
-            path='/administrativo/compras/plan-compras'
-            element={<PlanCompras />}
-          />
-          <Route
-            path='/administrativo/compras/movimientos'
-            element={<Movimientos />}
-          />
-          <Route path='/administrativo/compras/cierres' element={<Cierres />} />
-          <Route
-            path='/administrativo/compras/reportes'
-            element={<Reportes />}
-          />
-          <Route
-            path='/administrativo/compras/tablas-basicas'
-            element={<TablasBasicas />}
-          />
-          <Route path='/contabilidad' element={<ContabilidadPage />} />
-          <Route path='/habilitaduria' element={<HabilitaduriaPage />} />
-          <Route path='/presupuesto' element={<PresupuestoPage />} />
-
-          {/* Módulo personal */}
-          <Route
-            path='/personal/expediente/registro-datos/actuacion'
-            element={<ActuacionPage />}
-          />
-          <Route
-            path='/personal/tablas-basicas/datos-personales'
-            element={<DatosPersonalesPage />}
-          />
-
-          {/* Módulo de control */}
-          <Route path='/control/usuarios' element={<UsersListPage />} />
-          <Route path='/control/bitacora' element={<LogsPage />} />
+          {navbarMenu.map((menuItem, index) => (
+            <Route key={index} path={menuItem.path} element={menuItem.component}>
+              {menuItem.subMenu && menuItem.subMenu.map((subItem, subIndex) => (
+                <Route key={subIndex} path={subItem.path} element={subItem.component}>
+                  {subItem.subMenu && subItem.subMenu.map((subSubItem, subSubIndex) => (
+                    <Route key={subSubIndex} path={subSubItem.path} element={subSubItem.component}>
+                      {subSubItem.subMenu && subSubItem.subMenu.map((subSubSubItem, subSubSubIndex) => (
+                        <Route key={subSubSubIndex} path={subSubSubItem.path} element={subSubSubItem.component} />
+                      ))}
+                    </Route>
+                  ))}
+                </Route>
+              ))}
+            </Route>
+          ))}
         </Route>
       </Routes>
     </>

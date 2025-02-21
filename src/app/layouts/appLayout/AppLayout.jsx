@@ -8,9 +8,9 @@ import { TitleAndBradCrum } from './components/TitleAndBradCrum'
 import { HeaderApp } from './components/HeaderApp'
 import { Button } from '../../../components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
-import { navbarMenu } from './components/menuJson'
+import { navbarMenu } from '@/router/RouterApp'
 
-export function AppLayout ({
+export function AppLayout({
   children,
   title,
   titleButton = '',
@@ -37,7 +37,7 @@ export function AppLayout ({
       {sidebarComponent}
       <div className='flex flex-col bg-slate-50 dark:bg-background'>
         <HeaderApp />
-        <main className='flex flex-1 flex-col bg-muted/10 gap-4 p-4 lg:gap-6 lg:p-6'>
+        <main className='flex flex-col flex-1 gap-4 lg:gap-6 bg-muted/10 p-4 lg:p-6'>
           <div className='grid grid-cols-2'>
             <div>
               <TitleAndBradCrum title={title} />
@@ -50,8 +50,8 @@ export function AppLayout ({
               </div>
             )}
           </div>
-          <div className='p-5 dark:bg-background bg-slate-200/50 rounded-lg border border-dashed shadow-sm h-full'>
-            <ScrollArea className='h-[75vh] px-4 relative'>
+          <div className='bg-slate-200/50 dark:bg-background shadow-sm p-5 border border-dashed rounded-lg h-full'>
+            <ScrollArea className='relative px-4 h-[75vh]'>
               {children}
             </ScrollArea>
           </div>

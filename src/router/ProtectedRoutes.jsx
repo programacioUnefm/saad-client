@@ -1,19 +1,19 @@
 // Importación de dependencias necesarias
-import { navbarMenu } from '@/app/layouts/appLayout/components/menuJson'
+
 import { ChargeState } from '@/app/layouts/chargeState/ChargeState'
 import { NoAuthPage } from '@/app/layouts/unAuth/NoAuthPage'
 import { permissionCheck } from '@/features/PermissionCheck'
-import React, { useMemo, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom' // Importa useNavigate
-import IdleJs from 'idle-js'
-import { LogOutApp } from '@/features/auth/LoginThunk'
+import React, { useMemo } from 'react'
+import { useSelector } from 'react-redux'
+import { Outlet, useLocation } from 'react-router-dom' // Importa useNavigate
+import { navbarMenu } from './RouterApp'
+// import IdleJs from 'idle-js'
+// import { LogOutApp } from '@/features/auth/LoginThunk'
 
 export const ProtectedRoutes = ({ redirectTo = '/login' }) => {
   const auth = useSelector((state) => state.auth)
   const location = useLocation()
-  const dispatch = useDispatch()
-  const navigate = useNavigate() // Hook para redireccionar
+
   // Función recursiva para buscar la ruta actual dentro del menú de navegación
   const buscarRuta = (menu, rutaActual) => {
     for (const item of menu) {
@@ -71,12 +71,12 @@ export const ProtectedRoutes = ({ redirectTo = '/login' }) => {
   return permissionStatus === true
     ? (
       <Outlet /> // Muestra el contenido de la ruta si tiene permisos
-      )
+    )
     : permissionStatus === null
       ? (
         <ChargeState /> // Muestra estado de carga si los permisos están pendientes
-        )
+      )
       : (
         <NoAuthPage /> // Muestra página de no autorizado si no tiene permisos
-        )
+      )
 }

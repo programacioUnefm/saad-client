@@ -29,15 +29,15 @@ export const Sidebar = ({ menu }) => {
   ), [siebarState])
 
   return (
-    <div className='hidden border-r dark:bg-background bg-slate-200/60 md:block h-full'>
-      <div className='flex h-[100vh] max-h-screen flex-col gap-2 relative'>
+    <div className='hidden md:block bg-slate-200/60 dark:bg-background border-r h-full'>
+      <div className='relative flex flex-col gap-2 h-[100vh] max-h-screen'>
         <div className={`flex px-2 mt-4 ${siebarState && 'border-b'} mb-5`}>
           <Link to='/inicio' className='mb-2'>
             {mainLogo}
             {sidebarLogo}
           </Link>
         </div>
-        <ScrollArea className='h-full rounded-md pr-4'>
+        <ScrollArea className='pr-4 rounded-md h-full'>
           {siebarState ? <RenderMenu menu={menu} /> : <SidebarColapse menu={menu} />}
         </ScrollArea>
       </div>
